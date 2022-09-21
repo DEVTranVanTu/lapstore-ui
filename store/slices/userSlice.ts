@@ -4,18 +4,21 @@ import { AuthData, AuthResponse } from 'models'
 
 export interface userState {
   loading: boolean
-  data: AuthResponse
+  response: AuthResponse
 }
 
 const initialState: userState = {
   loading: false,
-  data: {
-    token: '',
-    user: {
-      _id: '',
-      email: '',
-      username: '',
-      role: '',
+  response: {
+    status: '',
+    data: {
+      token: '',
+      user: {
+        _id: '',
+        email: '',
+        username: '',
+        role: '',
+      },
     },
   },
 }
@@ -28,7 +31,7 @@ const userSlice = createSlice({
       state.loading = true
     },
     loginSuccess(state, action: PayloadAction<AuthResponse>) {
-      state.data = action.payload
+      state.response = action.payload
       state.loading = false
     },
     loginFailed(state) {
@@ -42,7 +45,7 @@ export const userActions = userSlice.actions
 
 // Selectors
 
-export const getUserInfor = (state: RootState) => state.user.data
+export const getUserInfor = (state: RootState) => state.user.response
 export const getUserInforLoading = (state: RootState) => state.user.loading
 // Reducer
 const userReducer = userSlice.reducer

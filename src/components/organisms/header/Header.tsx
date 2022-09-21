@@ -30,6 +30,8 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { getUserInfo } from 'utils'
+import { useAppSelector } from '../../../../store/hooks'
+import { getUserInforLoading } from '../../../../store/slices/userSlice'
 
 type HeaderProps = {
   className?: string
@@ -67,6 +69,7 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
   const handleChangeForm = (login: boolean) => {
     setLoginForm(login)
   }
+  const loading = useAppSelector(getUserInforLoading)
 
   const handleSignIn = (signIn: boolean) => {
     setDialogOpen(signIn)
@@ -87,7 +90,7 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
   useEffect(() => {
     let user = getUserInfo()
     setUserInfor(user)
-  }, [])
+  }, [loading])
 
   return (
     <div className={clsx(classes.root, className)}>

@@ -10,7 +10,6 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import { AuthData } from '@Models/user'
 import { useFormik } from 'formik'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import React, { FC, useCallback, useState } from 'react'
 import * as yup from 'yup'
 import { useAppDispatch } from '../../../../store/hooks'
@@ -82,8 +81,6 @@ const Login: FC<login> = ({ handleChangeForm, handleSignIn }) => {
   }
 
   const [passwordVisibility, setPasswordVisibility] = useState(false)
-
-  const router = useRouter()
 
   const togglePasswordVisibility = useCallback(() => {
     setPasswordVisibility((visible) => !visible)
