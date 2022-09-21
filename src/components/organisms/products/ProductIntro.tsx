@@ -2,48 +2,32 @@ import LapstoreAvatar from '@Atoms/ui/LapstoreAvatar'
 import LapstoreButton from '@Atoms/ui/LapstoreButton'
 import LapstoreRating from '@Molecules/rating/LapstoreRating'
 import LazyImage from '@Atoms/ui/LazyImage'
-import { H1, H2, H3, H6, Span } from '@Atoms/utils/Typography'
-import { useAppContext } from '@context/app/AppContext'
+import { H1, H2, H6, Span } from '@Atoms/utils/Typography'
 import { Box, Button, Grid } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
 import Remove from '@material-ui/icons/Remove'
-import { CartItem } from '@reducer/cartReducer'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import React, { Fragment, useCallback, useState } from 'react'
 import ImageViewer from 'react-simple-image-viewer'
 import FlexBox from '@Atoms/ui/FlexBox'
+import { formatVND } from 'utils'
+import { Product } from '@Models/product'
 
 export interface ProductIntroProps {
-  title?: string
+  productDetail: Product
   imgUrl?: string[]
-  productName: string
-  productThumbnail: string
-  rating?: number
-  discount?: number
-  price: number
-  id?: string | number
 }
 
 const ProductIntro: React.FC<ProductIntroProps> = ({
-  title,
+  productDetail,
   imgUrl = [],
-  productName,
-  productThumbnail,
-  rating,
-  discount,
-  price = 200,
-  id,
 }) => {
+  const { productName, productThumbnail, rating, price, quantity, comment } =
+    productDetail
   const [selectedImage, setSelectedImage] = useState(0)
   const [isViewerOpen, setIsViewerOpen] = useState(false)
   const [currentImage, setCurrentImage] = useState(0)
 
-  const { state, dispatch } = useAppContext()
-  const cartList: CartItem[] = state.cart.cartList
-  const router = useRouter()
-  const routerId = router.query.id as string
-  const cartItem = cartList.find((item) => item.id === id || item.id === routerId)
+  const [amount, setAmount] = useState(0)
 
   const handleImageClick = (ind: number) => () => {
     setSelectedImage(ind)
@@ -59,21 +43,19 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
     setIsViewerOpen(false)
   }
 
-  const handleCartAmountChange = useCallback(
-    (amount) => () => {
-      dispatch({
-        type: 'CHANGE_CART_AMOUNT',
-        payload: {
-          qty: amount,
-          name: productName,
-          price,
-          imgUrl: imgUrl[0],
-          id: id || routerId,
-        },
-      })
-    },
-    []
-  )
+  const handleCartAmountChange = () => {}
+
+  const increaseAmount = () => {
+    if (amount < 100) {
+      setAmount(amount + 1)
+    }
+  }
+
+  const decreaseAmount = () => {
+    if (amount > 0) {
+      setAmount(amount - 1)
+    }
+  }
 
   return (
     <Box width="100%">
@@ -81,8 +63,12 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
         <Grid item md={6} xs={12} alignItems="center">
           <Box>
             <FlexBox justifyContent="center" mb={6}>
-              {/* <LazyImage
-                src={productThumbnail || ''}
+              <LazyImage
+                src={
+                  productThumbnail
+                    ? productThumbnail
+                    : 'https://firebasestorage.googleapis.com/v0/b/lapstore-1de36.appspot.com/o/no-image.png?alt=media&token=66c374e3-a264-426a-b4ee-ec261b7a7399'
+                }
                 onClick={() =>
                   openImageViewer(imgUrl.indexOf(imgUrl[selectedImage]))
                 }
@@ -91,7 +77,7 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
                 width="auto"
                 loading="eager"
                 objectFit="contain"
-              /> */}
+              />
               {isViewerOpen && (
                 <ImageViewer
                   src={imgUrl}
@@ -142,20 +128,20 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
               />
             </Box>
             <H6 mr={1} lineHeight="1">
-              (50)
+              ({comment})
             </H6>
             <Span> Đánh giá</Span>
           </FlexBox>
 
-          <FlexBox alignItems="center" mb={2}>
-            <Box>Thương hiệu:</Box>
-            <Span ml={1}>Xiaomi</Span>
-          </FlexBox>
-
           <Box mb={3}>
             <H2 color="primary.main" mb={0.5} lineHeight="1">
-              ${price.toFixed(2)}
+              {formatVND(price)}
             </H2>
+          </Box>
+
+          <Box alignItems="center" mb={2}>
+            <Span>Còn lại:</Span>
+            <Span ml={1}>{quantity}</Span>
           </Box>
 
           <FlexBox className="add-cart" alignItems="center" mb={2}>
@@ -163,64 +149,38 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
               variant="outlined"
               color="primary"
               sx={{ padding: '3px' }}
-              // onClick={handleCartAmountChange((cartItem?.qty || 0) + 1)}
+              onClick={increaseAmount}
             >
               <Add fontSize="small" />
             </Button>
 
             <Fragment>
               <Box m={2} color="text.primary" fontWeight="600">
-                0
+                {amount}
               </Box>
               <Button
                 variant="outlined"
                 color="primary"
                 sx={{ padding: '3px' }}
-                // onClick={handleCartAmountChange(cartItem?.qty - 1)}
+                onClick={decreaseAmount}
               >
                 <Remove fontSize="small" />
               </Button>
             </Fragment>
           </FlexBox>
 
-          {!cartItem?.qty ? (
-            <LapstoreButton
-              variant="contained"
-              color="primary"
-              sx={{
-                mb: '36px',
-                px: '1.75rem',
-                height: '40px',
-              }}
-              onClick={handleCartAmountChange(1)}
-            >
-              Thêm vào giỏ hàng
-            </LapstoreButton>
-          ) : (
-            <FlexBox alignItems="center" mb={4.5}>
-              <LapstoreButton
-                sx={{ p: '9px' }}
-                variant="outlined"
-                size="small"
-                color="primary"
-                onClick={handleCartAmountChange(cartItem?.qty - 1)}
-              >
-                <Remove fontSize="small" />
-              </LapstoreButton>
-              <H3 fontWeight="600" mx={2.5}>
-                {cartItem?.qty.toString().padStart(2, '0')}
-              </H3>
-              <LapstoreButton
-                sx={{ p: '9px' }}
-                variant="outlined"
-                size="small"
-                color="primary"
-                onClick={handleCartAmountChange(cartItem?.qty + 1)}
-              >
-                <Add fontSize="small" />
-              </LapstoreButton>
-            </FlexBox>
-          )}
+          <LapstoreButton
+            variant="contained"
+            color="primary"
+            sx={{
+              mb: '36px',
+              px: '1.75rem',
+              height: '40px',
+            }}
+            onClick={handleCartAmountChange}
+          >
+            Thêm vào giỏ hàng
+          </LapstoreButton>
         </Grid>
       </Grid>
     </Box>

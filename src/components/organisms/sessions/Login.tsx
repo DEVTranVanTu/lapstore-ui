@@ -1,17 +1,20 @@
+import FlexBox from '@Atoms/ui/FlexBox'
 import LapstoreButton from '@Atoms/ui/LapstoreButton'
 import Image from '@Atoms/ui/LapstoreImage'
 import LapstoreTextField from '@Atoms/ui/LapstoreTextField'
-import FlexBox from '@Atoms/ui/FlexBox'
 import { H3, H6, Small } from '@Atoms/utils/Typography'
 import { Box, Card, CardProps, Divider, IconButton } from '@material-ui/core'
 import { styled } from '@material-ui/core/styles'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
+import { AuthData } from '@Models/user'
 import { useFormik } from 'formik'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useCallback, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import * as yup from 'yup'
+import { useAppDispatch } from '../../../../store/hooks'
+import { userActions } from '../../../../store/slices/userSlice'
 
 const fbStyle = {
   background: '#3B5998',
@@ -26,6 +29,11 @@ type StyledCardProps = {
   passwordVisibility?: boolean
 }
 
+interface login {
+  handleChangeForm: Function
+  handleSignIn: Function
+}
+
 const StyledCard = styled<React.FC<StyledCardProps & CardProps>>(
   ({ children, passwordVisibility, ...rest }) => <Card {...rest}>{children}</Card>
 )<CardProps>(({ theme, passwordVisibility }) => ({
@@ -33,10 +41,13 @@ const StyledCard = styled<React.FC<StyledCardProps & CardProps>>(
   [theme.breakpoints.down('sm')]: {
     width: '100%',
   },
-
+  '.signup': {
+    cursor: 'pointer',
+  },
   '.content': {
     textAlign: 'center',
     padding: '3rem 3.75rem 0px',
+    marginBottom: '3rem',
     [theme.breakpoints.down('xs')]: {
       padding: '1.5rem 1rem 0px',
     },
@@ -59,7 +70,17 @@ const StyledCard = styled<React.FC<StyledCardProps & CardProps>>(
   },
 }))
 
-const Login = () => {
+const Login: FC<login> = ({ handleChangeForm, handleSignIn }) => {
+  const dispatch = useAppDispatch()
+
+  const changeForm = () => {
+    handleChangeForm(false)
+  }
+
+  const checkSignIn = () => {
+    handleSignIn(false)
+  }
+
   const [passwordVisibility, setPasswordVisibility] = useState(false)
 
   const router = useRouter()
@@ -68,9 +89,9 @@ const Login = () => {
     setPasswordVisibility((visible) => !visible)
   }, [])
 
-  const handleFormSubmit = async (values: any) => {
-    router.push('/profile')
-    console.log(values)
+  const handleFormSubmit = async (values: AuthData) => {
+    dispatch(userActions.login(values))
+    checkSignIn()
   }
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
@@ -209,13 +230,16 @@ const Login = () => {
 
         <FlexBox justifyContent="center" alignItems="center" my="1.25rem">
           <Box>Bạn chưa có tài khoản?</Box>
-          <Link href="/signup">
-            <a>
-              <H6 ml={1} borderBottom="1px solid" borderColor="grey.900">
-                Đăng ký
-              </H6>
-            </a>
-          </Link>
+
+          <H6
+            ml={1}
+            className="signup"
+            borderBottom="1px solid"
+            borderColor="grey.900"
+            onClick={changeForm}
+          >
+            Đăng ký
+          </H6>
         </FlexBox>
       </form>
     </StyledCard>

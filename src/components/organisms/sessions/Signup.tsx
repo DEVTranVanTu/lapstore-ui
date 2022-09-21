@@ -2,25 +2,21 @@ import LapstoreButton from '@Atoms/ui/LapstoreButton'
 import LapstoreTextField from '@Atoms/ui/LapstoreTextField'
 import FlexBox from '@Atoms/ui/FlexBox'
 import { H3, H6, Small } from '@Atoms/utils/Typography'
-import {
-  Box,
-  Card,
-  CardProps,
-  Checkbox,
-  FormControlLabel,
-  IconButton,
-} from '@material-ui/core'
+import { Box, Card, CardProps, IconButton } from '@material-ui/core'
 import { styled } from '@material-ui/core/styles'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import { useFormik } from 'formik'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useCallback, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import * as yup from 'yup'
 
 type StyledCardProps = {
   passwordVisibility?: boolean
+}
+
+interface signup {
+  handleChangeForm: Function
 }
 
 const StyledCard = styled<React.FC<StyledCardProps & CardProps>>(
@@ -30,9 +26,12 @@ const StyledCard = styled<React.FC<StyledCardProps & CardProps>>(
   [theme.breakpoints.down('sm')]: {
     width: '100%',
   },
-
+  '.signin': {
+    cursor: 'pointer',
+  },
   '.content': {
     padding: '3rem 3.75rem 0px',
+    marginBottom: '3rem',
     [theme.breakpoints.down('xs')]: {
       padding: '1.5rem 1rem 0px',
     },
@@ -40,16 +39,15 @@ const StyledCard = styled<React.FC<StyledCardProps & CardProps>>(
   '.passwordEye': {
     color: passwordVisibility ? theme.palette.grey[600] : theme.palette.grey[400],
   },
-  '.agreement': {
-    marginTop: 12,
-    marginBottom: 24,
-  },
 }))
 
-const Signup = () => {
+const Signup: FC<signup> = ({ handleChangeForm }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false)
-
   const router = useRouter()
+
+  const changeForm = () => {
+    handleChangeForm(true)
+  }
 
   const togglePasswordVisibility = useCallback(() => {
     setPasswordVisibility((visible) => !visible)
@@ -178,29 +176,6 @@ const Signup = () => {
           helperText={touched.re_password && errors.re_password}
         />
 
-        <FormControlLabel
-          className="agreement"
-          name="agreement"
-          onChange={handleChange}
-          control={
-            <Checkbox
-              size="small"
-              color="secondary"
-              checked={values.agreement || false}
-            />
-          }
-          label={
-            <FlexBox flexWrap="wrap" alignItems="center" justifyContent="flex-start">
-              Tôi đồng ý với các điều khoản trên
-              <a href="/" target="_blank" rel="noreferrer noopener">
-                <H6 ml={1} borderBottom="1px solid" borderColor="grey.900">
-                  Điều khoản
-                </H6>
-              </a>
-            </FlexBox>
-          }
-        />
-
         <LapstoreButton
           variant="contained"
           color="primary"
@@ -214,13 +189,15 @@ const Signup = () => {
         </LapstoreButton>
         <FlexBox justifyContent="center" alignItems="center" my="1.25rem">
           <Box>Bạn đã có tài khoản?</Box>
-          <Link href="/login">
-            <a>
-              <H6 ml={1} borderBottom="1px solid" borderColor="grey.900">
-                Đăng nhập
-              </H6>
-            </a>
-          </Link>
+          <H6
+            ml={1}
+            className="signin"
+            borderBottom="1px solid"
+            borderColor="grey.900"
+            onClick={changeForm}
+          >
+            Đăng nhập
+          </H6>
         </FlexBox>
       </form>
     </StyledCard>
@@ -243,14 +220,6 @@ const formSchema = yup.object().shape({
     .string()
     .oneOf([yup.ref('password'), null], 'Passwords must match')
     .required('Please re-type password'),
-  agreement: yup
-    .bool()
-    .test(
-      'agreement',
-      'You have to agree with our Terms and Conditions!',
-      (value) => value === true
-    )
-    .required('You have to agree with our Terms and Conditions!'),
 })
 
 export default Signup

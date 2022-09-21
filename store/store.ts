@@ -13,14 +13,19 @@ import productBySubReducer, {
   productDetailReducer,
 } from './slices/productBySubSlice'
 import productReducer from './slices/productSlice'
+import reviewReducer, { addReviewReducer } from './slices/reviewSlice'
+import userReducer from './slices/userSlice'
 
 const rootReducer = combineReducers({
-  brand:brandReducer,
+  user: userReducer,
+  brand: brandReducer,
   categoryNav: categoryNavReducer,
   product: productReducer,
   inventory: inventoryReducer,
+  review: reviewReducer,
   productBySub: productBySubReducer,
   productDetail: productDetailReducer,
+  addReview: addReviewReducer,
 })
 
 const sagaMiddleware = createSagaMiddleware()

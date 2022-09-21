@@ -44,6 +44,7 @@ const initialProductState: productState = {
     discount: 0,
     status: 0,
     quantity: 0,
+    specs: [],
   },
 }
 export interface payload {

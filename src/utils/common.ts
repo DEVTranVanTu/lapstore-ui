@@ -15,3 +15,37 @@ export const linkToName = (name: string): string => {
     .replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '')
     .replace(/\s/gi, '-')
 }
+
+export function formatVND(value?: number) {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  }).format(value || 0)
+}
+
+export function getUserInfo() {
+  const user = localStorage.getItem('user_infor')
+  return user ? JSON.parse(user) : undefined
+}
+
+export function setUserInfo(data: object) {
+  const user =
+    data && typeof data === 'object' ? JSON.stringify(data) : JSON.stringify({})
+  return localStorage.setItem('user_infor', user)
+}
+
+export function removeUserInfo() {
+  return localStorage.removeItem('user_infor')
+}
+
+export function getAuthToken() {
+  return localStorage.getItem('token')
+}
+
+export function setAuthToken(token: string) {
+  return localStorage.setItem('token', token)
+}
+
+export function removeAuthToken() {
+  return localStorage.removeItem('token')
+}

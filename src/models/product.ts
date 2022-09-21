@@ -1,3 +1,8 @@
+export type spec = {
+  key: string
+  value: any
+}
+
 export interface Product {
   _id?: string
   productName: string
@@ -8,6 +13,8 @@ export interface Product {
   discount: number
   status: number
   quantity: number
+  comment: number
+  specs: spec[]
   createdAt?: number
   updatedAt?: number
 }

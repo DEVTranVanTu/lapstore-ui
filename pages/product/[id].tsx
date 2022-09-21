@@ -2,7 +2,6 @@ import NavbarLayout from '@Layouts/NavbarLayout'
 import ProductDescription from '@Organisms/products/ProductDescription'
 import ProductIntro from '@Organisms/products/ProductIntro'
 import ProductReview from '@Organisms/products/ProductReview'
-import RelatedProducts from '@Organisms/products/RelatedProducts'
 import { Box, Tab, Tabs } from '@material-ui/core'
 import { styled } from '@material-ui/core/styles'
 import React, { useEffect, useState } from 'react'
@@ -13,6 +12,14 @@ import {
   productDetailActions,
 } from '../../store/slices/productBySubSlice'
 import { useRouter } from 'next/router'
+import {
+  addReviewActions,
+  reviewActions,
+  selectReviewList,
+  selectReviewLoading,
+} from '../../store/slices/reviewSlice'
+import { addReviewLoading } from '../../store/slices/reviewSlice'
+import { Review } from '@Models/review'
 
 const StyledTabs = styled(Tabs)(({ theme }) => ({
   marginTop: 80,
@@ -38,18 +45,33 @@ const ProductDetails = () => {
   }
 
   const productDetail = useAppSelector(getProductDetail)
-  const loading = useAppSelector(getProductDetailLoading)
+
+  const reviews = useAppSelector(selectReviewList)
+
+  const loading1 = useAppSelector(getProductDetailLoading)
+
+  const loading2 = useAppSelector(selectReviewLoading)
+
+  const loading = loading1 && loading2
+
+  const loading3 = useAppSelector(addReviewLoading)
+
+  const addReview = (data: Review) => {
+    dispatch(addReviewActions.addReview(data))
+  }
 
   useEffect(() => {
     id && dispatch(productDetailActions.fetchProductDetail(id))
-  }, [dispatch, id])
+    id && dispatch(reviewActions.fetchReviewList(id))
+  }, [dispatch, loading3, id])
+
   return (
     <NavbarLayout>
       {loading ? (
         ''
       ) : (
         <>
-          <ProductIntro {...productDetail} />
+          <ProductIntro productDetail={productDetail} />
 
           <StyledTabs
             value={selectedOption}
@@ -58,15 +80,22 @@ const ProductDetails = () => {
             textColor="primary"
           >
             <Tab className="inner-tab" label="Description" />
-            <Tab className="inner-tab" label="Review (3)" />
+            <Tab
+              className="inner-tab"
+              label={`Review (${
+                reviews.filter((review) => !!review.review).length
+              })`}
+            />
           </StyledTabs>
 
           <Box mb={6}>
-            {selectedOption === 0 && <ProductDescription />}
-            {selectedOption === 1 && <ProductReview />}
+            {selectedOption === 0 && (
+              <ProductDescription specs={productDetail.specs || []} />
+            )}
+            {selectedOption === 1 && (
+              <ProductReview reviews={reviews} addReview={addReview} />
+            )}
           </Box>
-
-          <RelatedProducts />
         </>
       )}
     </NavbarLayout>
