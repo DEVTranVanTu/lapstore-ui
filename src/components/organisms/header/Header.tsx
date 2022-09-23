@@ -14,10 +14,18 @@ import {
   Dialog,
   Drawer,
   IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
   useMediaQuery,
 } from '@material-ui/core'
 import { useTheme } from '@material-ui/core/styles'
-import { NotificationsNoneOutlined, ShoppingCartOutlined } from '@material-ui/icons'
+import {
+  Logout,
+  NotificationsNoneOutlined,
+  Person,
+  ShoppingCartOutlined,
+} from '@material-ui/icons'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import PersonOutline from '@material-ui/icons/PersonOutline'
 import { makeStyles } from '@material-ui/styles'
@@ -28,8 +36,9 @@ import Login from '@Organisms/sessions/Login'
 import Signup from '@Organisms/sessions/Signup'
 import clsx from 'clsx'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { getUserInfo } from 'utils'
+import { getUserInfo, removeAuthToken, removeUserInfo } from 'utils'
 import { useAppSelector } from '../../../../store/hooks'
 import { getUserInforLoading } from '../../../../store/slices/userSlice'
 
@@ -53,31 +62,60 @@ const useStyles = makeStyles(({ palette, ...theme }: MuiThemeProps) => ({
       height: layoutConstant.mobileHeaderHeight,
     },
   },
+  userInfor: {
+    cursor: 'pointer',
+  },
 }))
 
 const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
-  const [sidenavOpen, setSidenavOpen] = useState(false)
-  const [dialogOpen, setDialogOpen] = useState(false)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
+
+  const classes = useStyles()
+  const router = useRouter()
+
+  const [sidenavOpen, setSidenavOpen] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [loginForm, setLoginForm] = useState(true)
+  const [isLogout, setIsLogout] = useState<Boolean>(false)
+  const [userInfor, setUserInfor] = useState<any>(null)
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
 
   const toggleSidenav = () => setSidenavOpen(!sidenavOpen)
   const toggleDialog = () => setDialogOpen(!dialogOpen)
 
-  const [loginForm, setLoginForm] = useState(true)
-  const [userInfor, setUserInfor] = useState<any>(null)
-  const handleChangeForm = (login: boolean) => {
-    setLoginForm(login)
-  }
   const loading = useAppSelector(getUserInforLoading)
 
   const handleSignIn = (signIn: boolean) => {
     setDialogOpen(signIn)
   }
+
+  const handleChangeForm = (login: boolean) => {
+    setLoginForm(login)
+  }
+
   const { state } = useAppContext()
   const { cartList } = state.cart
 
-  const classes = useStyles()
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const onRedirectProfile = () => {
+    router.push('/')
+  }
+
+  const onLogout = () => {
+    removeUserInfo()
+    removeAuthToken()
+    const isLogoutStatus = !isLogout
+    setIsLogout(isLogoutStatus)
+  }
 
   const cartHandle = (
     <Badge badgeContent={cartList.length} color="primary">
@@ -90,7 +128,7 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
   useEffect(() => {
     let user = getUserInfo()
     setUserInfor(user)
-  }, [loading])
+  }, [loading, isLogout])
 
   return (
     <div className={clsx(classes.root, className)}>
@@ -151,12 +189,61 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
             ml={2}
             p={1.25}
             display={userInfor ? 'flex' : 'none'}
+            className={classes.userInfor}
+            onClick={(event) => handleClick(event)}
           >
             <LapstoreAvatar src={userInfor?.profile?.photo} height={30} width={30} />
             <Box ml={2}>
               <Span color="grey.600">{userInfor?.username}</Span>
             </Box>
           </FlexBox>
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            onClick={handleClose}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                overflow: 'visible',
+                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                mt: 1.5,
+                '& .MuiAvatar-root': {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                '&:before': {
+                  content: '""',
+                  display: 'block',
+                  position: 'absolute',
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: 'background.paper',
+                  transform: 'translateY(-50%) rotate(45deg)',
+                  zIndex: 0,
+                },
+              },
+            }}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          >
+            <MenuItem onClick={onRedirectProfile}>
+              <ListItemIcon>
+                <Person fontSize="small" />
+              </ListItemIcon>
+              Profile
+            </MenuItem>
+            <MenuItem onClick={onLogout}>
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              Logout
+            </MenuItem>
+          </Menu>
           <Box component={IconButton} ml={2} p={1.25} onClick={toggleDialog}>
             <NotificationsNoneOutlined />
           </Box>
