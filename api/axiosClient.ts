@@ -1,4 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { useRouter } from 'next/router'
+import { getAuthToken } from 'utils'
 
 const axiosClient = axios.create({
   baseURL: 'http://localhost:5555/api',
@@ -11,6 +13,13 @@ const axiosClient = axios.create({
 axiosClient.interceptors.request.use(
   function (config: AxiosRequestConfig) {
     // Do something before request is sent
+    const token = getAuthToken()
+    if (config.headers === undefined) {
+      config.headers = {}
+    }
+    if (token) {
+      config.headers['Authorization'] = 'Bearer ' + token
+    }
     return config
   },
   function (error) {
@@ -29,7 +38,12 @@ axiosClient.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    return Promise.reject(error)
+    if (401 === error.response.status) {
+      // handle error
+      return Promise.reject(error)
+    } else {
+      return Promise.reject(error)
+    }
   }
 )
 

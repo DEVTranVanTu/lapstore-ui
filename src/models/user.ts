@@ -11,6 +11,7 @@ export interface AuthResponse {
       _id: string
       email: string
       username: string
+      profile?: any
       role: string
     }
   }
@@ -22,16 +23,10 @@ export interface User {
   username: string
   profile: any
   role: string
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 export interface userInfor {
-  userName: string
-  email: string
-  dateOfBirth: any
-  phoneNumber: string
-  photo: string
-  address: string
-  province: string
-  district: string
-  wards: string
+  user: User
 }
