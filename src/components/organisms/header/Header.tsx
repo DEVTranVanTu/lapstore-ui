@@ -107,7 +107,7 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
   }
 
   const onRedirectProfile = () => {
-    router.push('/')
+    router.push('/account/profile')
   }
 
   const onLogout = () => {

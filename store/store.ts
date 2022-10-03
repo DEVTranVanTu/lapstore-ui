@@ -14,10 +14,15 @@ import productBySubReducer, {
 } from './slices/productBySubSlice'
 import productReducer from './slices/productSlice'
 import reviewReducer, { addReviewReducer } from './slices/reviewSlice'
-import userReducer from './slices/userSlice'
+import userReducer, {
+  userProfileReducer,
+  userUpdateReducer,
+} from './slices/userSlice'
 
 const rootReducer = combineReducers({
   user: userReducer,
+  userProfile: userProfileReducer,
+  updateProfile: userUpdateReducer,
   brand: brandReducer,
   categoryNav: categoryNavReducer,
   product: productReducer,
