@@ -1,7 +1,7 @@
 import { Drawer } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import clsx from 'clsx'
-import React, { cloneElement, Fragment, useEffect, useState } from 'react'
+import React, { cloneElement, Fragment, ReactNode, useEffect, useState } from 'react'
 
 const useStyles = makeStyles(() => ({
   handle: {
@@ -13,6 +13,7 @@ export interface SidenavProps {
   position?: 'left' | 'right'
   open?: boolean
   width?: number
+  children: ReactNode
   handle: React.ReactElement
   toggleSidenav?: () => void
 }

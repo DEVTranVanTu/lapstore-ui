@@ -1,9 +1,13 @@
 import { Container } from '@material-ui/core'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import Navbar from '@Organisms/navbar/Navbar'
 import AppLayout from './AppLayout'
 
-const NavbarLayout: React.FC = ({ children }) => {
+export interface NavbarLayout {
+  children: ReactNode
+}
+
+const NavbarLayout: React.FC<NavbarLayout> = ({ children }) => {
   return (
     <AppLayout navbar={<Navbar />}>
       <Container sx={{ my: '2rem' }}>{children}</Container>

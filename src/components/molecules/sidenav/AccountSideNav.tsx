@@ -12,6 +12,7 @@ import {
 import { LocalMall, Notifications, Person } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/styles'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 
 type Props = {
@@ -19,6 +20,9 @@ type Props = {
 }
 
 const useStyles = makeStyles(() => ({
+  active: {
+    borderRight: '2px solid #1266f1',
+  },
   link: {
     display: 'flex',
     width: '100%',
@@ -27,6 +31,8 @@ const useStyles = makeStyles(() => ({
 
 export default function AccountSideNav({ userInfor }: Props) {
   const classes = useStyles()
+  const { pathname } = useRouter()
+
   return (
     <Box>
       <FlexBox alignItems="center" p={1.25}>
@@ -38,9 +44,11 @@ export default function AccountSideNav({ userInfor }: Props) {
         </Box>
       </FlexBox>
       <Divider />
-      <Box>
+      <Box mt={3}>
         <MenuList>
-          <MenuItem>
+          <MenuItem
+            className={pathname === '/account/profile' ? classes.active : ''}
+          >
             <Link href={'/account/profile'}>
               <a className={classes.link}>
                 <ListItemIcon>
@@ -50,7 +58,9 @@ export default function AccountSideNav({ userInfor }: Props) {
               </a>
             </Link>
           </MenuItem>
-          <MenuItem>
+          <MenuItem
+            className={pathname === '/account/notification' ? classes.active : ''}
+          >
             <Link href={'/account/notification'}>
               <a className={classes.link}>
                 <ListItemIcon>
@@ -60,7 +70,7 @@ export default function AccountSideNav({ userInfor }: Props) {
               </a>
             </Link>
           </MenuItem>
-          <MenuItem>
+          <MenuItem className={pathname === '/account/orders' ? classes.active : ''}>
             <Link href={'/account/orders'}>
               <a className={classes.link}>
                 <ListItemIcon>

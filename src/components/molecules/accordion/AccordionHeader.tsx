@@ -3,12 +3,13 @@ import { BoxProps } from '@material-ui/core'
 import { styled } from '@material-ui/core/styles'
 import ChevronRight from '@material-ui/icons/ChevronRight'
 import { SxProps } from '@material-ui/system'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 interface AccordionHeaderProps {
   showIcon?: boolean
   sx?: SxProps
   open?: boolean
+  children: ReactNode
 }
 
 const StyledFlexBox = styled<React.FC<AccordionHeaderProps>>(

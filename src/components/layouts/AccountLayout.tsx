@@ -3,8 +3,12 @@ import NavbarLayout from '@Layouts/NavbarLayout'
 import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import AccountSideNav from '@Molecules/sidenav/AccountSideNav'
-import { FC, useEffect, useState } from 'react'
+import { FC, ReactNode, useEffect, useState } from 'react'
 import { getUserInfo } from 'utils'
+
+export interface AccountLayout {
+  children: ReactNode
+}
 const useStyles = makeStyles(() => ({
   boxContent: {
     background: '#ffffff',
@@ -15,7 +19,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const AccountLayout: FC = ({ children }) => {
+const AccountLayout: FC<AccountLayout> = ({ children }) => {
   const classes = useStyles()
 
   const [userInfor, setUserInfor] = useState<any>(null)

@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { useRouter } from 'next/router'
 import { getAuthToken } from 'utils'
 
 const axiosClient = axios.create({

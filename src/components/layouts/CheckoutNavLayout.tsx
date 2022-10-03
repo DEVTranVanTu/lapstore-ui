@@ -3,10 +3,14 @@ import Stepper from '@Organisms/stepper/Stepper'
 import { Container, Grid } from '@material-ui/core'
 import { Box } from '@material-ui/system'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import AppLayout from './AppLayout'
 
-const CheckoutNavLayout: React.FC = ({ children }) => {
+interface checkout {
+  children: ReactNode
+}
+
+const CheckoutNavLayout: React.FC<checkout> = ({ children }) => {
   const [selectedStep, setSelectedStep] = useState(0)
 
   const router = useRouter()

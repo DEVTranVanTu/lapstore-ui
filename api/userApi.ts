@@ -12,7 +12,10 @@ const userApi = {
   },
   updateProfile(id: String, data: Object): Promise<User> {
     const url = `auth/users/${id}`
-    return axiosClient.post(url, data)
+    const profile = {
+      profile: data,
+    }
+    return axiosClient.post(url, profile)
   },
 }
 

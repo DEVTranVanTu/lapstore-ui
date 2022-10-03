@@ -22,12 +22,17 @@ export interface ListParams {
   [key: string]: any
 }
 
-export interface Params{
-  page:number
-  limit:number
-  search?:string
+export interface Params {
+  page: number
+  limit: number
+  search?: string
 }
 
 export interface LayoutProps {
   children: ReactNode
+}
+
+export interface Token {
+  token: string
+  expired: boolean
 }

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { AuthData, AuthResponse, userInfor } from 'models'
+import { AuthData, AuthResponse, UpdateProfile, User, userInfor } from 'models'
 
 export interface userState {
   loading: boolean
@@ -92,3 +92,52 @@ export const getUserProfile = (state: RootState) => state.userProfile.response
 export const getUserProfileLoading = (state: RootState) => state.userProfile.loading
 
 export const userProfileReducer = userProfileSlice.reducer
+
+export interface updateProfileState {
+  loading: boolean
+  data: {
+    user: User
+  }
+}
+
+export interface uploadProfilePayload {
+  id: string
+  data: UpdateProfile
+}
+
+const initialUpdateProfileState: updateProfileState = {
+  loading: false,
+  data: {
+    user: {
+      _id: '',
+      email: '',
+      username: '',
+      profile: {},
+      role: '',
+    },
+  },
+}
+
+const userProfileUpdateSlice = createSlice({
+  name: 'updateProfileSlice',
+  initialState: initialUpdateProfileState,
+  reducers: {
+    uploadProfile(state, action: PayloadAction<uploadProfilePayload>) {
+      state.loading = true
+    },
+    uploadProfileSuccess(state, action: PayloadAction<userInfor>) {
+      state.loading = false
+      state.data = action.payload
+    },
+    uploadProfileFaild(state) {
+      state.loading = false
+    },
+  },
+})
+
+export const userProfileUpdateAction = userProfileUpdateSlice.actions
+
+export const updateProfile = (state: RootState) => state.updateProfile.data
+export const updateProfileLoading = (state: RootState) => state.updateProfile.loading
+
+export const userUpdateReducer = userProfileUpdateSlice.reducer

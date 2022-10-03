@@ -30,3 +30,9 @@ export interface User {
 export interface userInfor {
   user: User
 }
+
+export interface UpdateProfile {
+  profile: {
+    data: User
+  }
+}

@@ -1,4 +1,3 @@
-import { AppProvider } from '@context/app/AppContext'
 import createCache from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
 import MuiTheme from '@Atoms/themes/MuiTheme'

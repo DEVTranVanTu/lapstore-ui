@@ -3,7 +3,12 @@ import { AuthData, AuthResponse, userInfor } from 'models'
 import { all, call, put, takeLatest } from 'redux-saga/effects'
 import { setAuthToken, setUserInfo } from 'utils'
 import userApi from '../../api/userApi'
-import { userActions, userProfileActions } from '../slices/userSlice'
+import {
+  uploadProfilePayload,
+  userActions,
+  userProfileActions,
+  userProfileUpdateAction,
+} from '../slices/userSlice'
 
 function* login(action: PayloadAction<AuthData>) {
   try {
@@ -29,9 +34,24 @@ function* getUserProfile(action: PayloadAction<String>) {
   }
 }
 
+function* updateProfile(action: PayloadAction<uploadProfilePayload>) {
+  try {
+    const response: userInfor = yield call(
+      userApi.updateProfile,
+      action.payload.id,
+      action.payload.data
+    )
+
+    yield put(userProfileUpdateAction.uploadProfileSuccess(response))
+  } catch (error) {
+    yield put(userProfileUpdateAction.uploadProfileFaild())
+  }
+}
+
 export default function* userSaga() {
   yield all([
     takeLatest(userActions.login.type, login),
     takeLatest(userProfileActions.getUserProfile.type, getUserProfile),
+    takeLatest(userProfileUpdateAction.uploadProfile.type, updateProfile),
   ])
 }

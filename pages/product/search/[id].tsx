@@ -23,7 +23,7 @@ export default function ProductSearchResult() {
   const isTablet = width < 1024
 
   const toggleView = useCallback(
-    (v) => () => {
+    (v: string) => () => {
       setView(v)
     },
     []

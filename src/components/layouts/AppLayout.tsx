@@ -2,11 +2,12 @@ import Header from '@Organisms/header/Header'
 import MobileNavigationBar from '@Molecules/mobilenavigation/MobileNavigationBar'
 import Sticky from '@Molecules/sticky/Sticky'
 import Head from 'next/head'
-import React, { Fragment, useCallback, useState } from 'react'
+import React, { Fragment, ReactNode, useCallback, useState } from 'react'
 
 type AppLayoutProps = {
   title?: string
   navbar?: React.ReactChild
+  children: ReactNode
 }
 
 const AppLayout: React.FC<AppLayoutProps> = ({
@@ -16,7 +17,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({
 }) => {
   const [isFixed, setIsFixed] = useState(false)
 
-  const toggleIsFixed = useCallback((fixed) => {
+  const toggleIsFixed = useCallback((fixed: boolean) => {
     setIsFixed(fixed)
   }, [])
 
