@@ -19,7 +19,6 @@ import { userInfor } from '@Models/user'
 import React, { ChangeEvent, FC, useState } from 'react'
 import { getDays, getMonths, getYears } from 'utils'
 import uploadApi from '../../../../api/uploadApi'
-import { useAppDispatch } from '../../../../store/hooks'
 
 export interface Profile {
   profile: userInfor
@@ -83,7 +82,6 @@ const Profile: FC<Profile> = ({ profile, updateProfile }) => {
     }
   }
 
-  const dispatch = useAppDispatch()
   const classes = useStyles()
 
   const days = getDays()
@@ -120,7 +118,7 @@ const Profile: FC<Profile> = ({ profile, updateProfile }) => {
     const data = {
       phoneNumber: userProfile.phoneNumber,
       photo: images,
-      dateOfBirth: date.year + ' ' + date.month + ' ' + date.day,
+      dateOfBirth: date.year + '-' + date.month + '-' + date.day,
       sex: userProfile.sex,
       province: userProfile.province,
       district: userProfile.district,

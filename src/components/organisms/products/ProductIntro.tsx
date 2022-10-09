@@ -33,7 +33,7 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
     setSelectedImage(ind)
   }
 
-  const openImageViewer = useCallback((index) => {
+  const openImageViewer = useCallback((index: number) => {
     setCurrentImage(index)
     setIsViewerOpen(true)
   }, [])

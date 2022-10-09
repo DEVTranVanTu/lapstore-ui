@@ -1,7 +1,6 @@
 import LapstoreCard from '@Atoms/ui/LapstoreCard'
-import LapstoreRating from '@Molecules/rating/LapstoreRating'
 import LazyImage from '@Atoms/ui/LazyImage'
-import { H3 } from '@Atoms/utils/Typography'
+import { H3, Span } from '@Atoms/utils/Typography'
 import { useAppContext } from '@context/app/AppContext'
 import {
   Box,
@@ -24,7 +23,7 @@ import Link from 'next/link'
 import React, { Fragment, useCallback, useState } from 'react'
 import FlexBox from '@Atoms/ui/FlexBox'
 import ProductIntro from '../products/ProductIntro'
-import { linkToName } from 'utils'
+import { linkToName, formatVND } from 'utils'
 
 export interface ProductCardDetailProps {
   className?: string
@@ -127,10 +126,7 @@ const ProductCardDetail: React.FC<ProductCardDetailProps> = ({
   productThumbnail,
   productName,
   price,
-  description,
   discount,
-  status,
-  quantity,
   rating,
   hoverEffect,
 }) => {
@@ -149,6 +145,19 @@ const ProductCardDetail: React.FC<ProductCardDetailProps> = ({
 
   const toggleIsFavorite = async () => {
     setIsFavorite((fav) => !fav)
+  }
+
+  const productDetail = {
+    productName,
+    productThumbnail,
+    price,
+    discount,
+    rating,
+    description: '',
+    status: 1,
+    quantity: 0,
+    comment: 0,
+    specs: [],
   }
 
   // const handleCartAmountChange = useCallback(
@@ -227,19 +236,16 @@ const ProductCardDetail: React.FC<ProductCardDetailProps> = ({
 
           <FlexBox height="70px">
             <Box flex="1 1 0" minWidth="0px" mr={1}>
-              <FlexBox alignItems="center">
-                <LapstoreRating value={rating || 0} color="warn" readOnly />
-                <Box fontSize="12px" ml="5px">
-                  (20)
-                </Box>
-              </FlexBox>
               <Box alignItems="center" mt={0.5}>
                 <Box pr={1} fontWeight="600" color="primary.main">
-                  {price - (price * discount) / 100} đ
+                  {formatVND(price - (price * discount) / 100)}
                 </Box>
                 {!!discount && (
                   <Box color="grey.600" fontWeight="600">
-                    <del>{price} đ</del>
+                    <del>{formatVND(price)}</del>
+                    <Span ml={2} color={'primary.main'}>
+                      {discount}%
+                    </Span>
                   </Box>
                 )}
               </Box>
@@ -283,13 +289,7 @@ const ProductCardDetail: React.FC<ProductCardDetailProps> = ({
 
       <Dialog open={open} maxWidth={false} onClose={toggleDialog}>
         <DialogContent className={classes.dialogContent}>
-          <ProductIntro
-            imgUrl={[productThumbnail]}
-            productName={productName}
-            productThumbnail={productThumbnail}
-            price={price}
-            rating={rating}
-          />
+          <ProductIntro imgUrl={[productThumbnail]} productDetail={productDetail} />
           <IconButton
             sx={{ position: 'absolute', top: '0', right: '0' }}
             onClick={toggleDialog}

@@ -1,11 +1,11 @@
 import AccountLayout from '@Layouts/AccountLayout'
-import { Box } from '@material-ui/core'
+import Notification from '@Organisms/account/Notification'
 import React from 'react'
 
 export default function notification() {
   return (
     <AccountLayout>
-      <Box>Notification</Box>
+      <Notification />
     </AccountLayout>
   )
 }
