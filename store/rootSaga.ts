@@ -6,6 +6,7 @@ import brandSaga from './sagas/brandSaga'
 import inventorySaga from './sagas/inventorySaga'
 import reviewSaga from './sagas/reviewSaga'
 import userSaga from './sagas/userSaga'
+import cartSaga from './sagas/cartSaga'
 
 export default function* rootSaga() {
   yield all([
@@ -15,6 +16,7 @@ export default function* rootSaga() {
     inventorySaga(),
     reviewSaga(),
     userSaga(),
+    cartSaga(),
     productBySubSaga(),
   ])
 }

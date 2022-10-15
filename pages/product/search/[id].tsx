@@ -49,8 +49,6 @@ export default function ProductSearchResult() {
   const products = useAppSelector(selectProductListBySub)
   const loading = useAppSelector(selectProductLoadingBySub)
 
-  console.log(products)
-
   useEffect(() => {
     id && dispatch(productBySubActions.fetchProductListBySub({ id, params }))
   }, [dispatch, id, params])

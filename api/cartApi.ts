@@ -1,10 +1,15 @@
-import { Brand } from '@Models/index'
+import { Cart } from '@Models/cart'
+import { AddToCart } from '../store/slices/cartSlice'
 import axiosClient from './axiosClient'
 
 const cartApi = {
-  getCart(): Promise<Brand[]> {
-    const url = '/brands'
+  getCart(id: string): Promise<Cart> {
+    const url = `/cart/user/${id}`
     return axiosClient.get(url)
+  },
+  addToCart(data: AddToCart) {
+    const url = '/cart'
+    return axiosClient.post(url, data)
   },
 }
 

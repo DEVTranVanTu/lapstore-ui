@@ -9,8 +9,11 @@ import Remove from '@material-ui/icons/Remove'
 import React, { Fragment, useCallback, useState } from 'react'
 import ImageViewer from 'react-simple-image-viewer'
 import FlexBox from '@Atoms/ui/FlexBox'
-import { formatVND } from 'utils'
+import { formatVND, getUserInfo } from 'utils'
 import { Product } from '@Models/product'
+import { useAppDispatch } from '../../../../store/hooks'
+import { cartActions } from '../../../../store/slices/cartSlice'
+import { useRouter } from 'next/router'
 
 export interface ProductIntroProps {
   productDetail: Product
@@ -21,7 +24,9 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
   productDetail,
   imgUrl = [],
 }) => {
-  const { productName, productThumbnail, rating, price, quantity, comment } =
+  const dispatch = useAppDispatch()
+  const router = useRouter()
+  const { productName, productThumbnail, rating, price, quantity, comment, _id } =
     productDetail
   const [selectedImage, setSelectedImage] = useState(0)
   const [isViewerOpen, setIsViewerOpen] = useState(false)
@@ -43,10 +48,8 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
     setIsViewerOpen(false)
   }
 
-  const handleCartAmountChange = () => {}
-
   const increaseAmount = () => {
-    if (amount < 100) {
+    if (amount < quantity) {
       setAmount(amount + 1)
     }
   }
@@ -55,6 +58,17 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
     if (amount > 0) {
       setAmount(amount - 1)
     }
+  }
+
+  const handleCartAmountChange = () => {
+    const user = getUserInfo()
+
+    const data = {
+      userId: user._id,
+      productId: _id || '',
+      quantity: amount,
+    }
+    dispatch(cartActions.addToCart(data)) && router.push('/cart')
   }
 
   return (
@@ -149,11 +163,10 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
               variant="outlined"
               color="primary"
               sx={{ padding: '3px' }}
-              onClick={increaseAmount}
+              onClick={decreaseAmount}
             >
-              <Add fontSize="small" />
+              <Remove fontSize="small" />
             </Button>
-
             <Fragment>
               <Box m={2} color="text.primary" fontWeight="600">
                 {amount}
@@ -162,9 +175,9 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
                 variant="outlined"
                 color="primary"
                 sx={{ padding: '3px' }}
-                onClick={decreaseAmount}
+                onClick={increaseAmount}
               >
-                <Remove fontSize="small" />
+                <Add fontSize="small" />
               </Button>
             </Fragment>
           </FlexBox>

@@ -6,13 +6,11 @@ import LapstoreButton from '@Atoms/ui/LapstoreButton'
 import Image from '@Atoms/ui/LapstoreImage'
 import { layoutConstant } from '@Atoms/utils/constants'
 import { Span } from '@Atoms/utils/Typography'
-import { useAppContext } from '@context/app/AppContext'
 import {
   Badge,
   Box,
   Container,
   Dialog,
-  Drawer,
   IconButton,
   ListItemIcon,
   Menu,
@@ -30,7 +28,6 @@ import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import PersonOutline from '@material-ui/icons/PersonOutline'
 import { makeStyles } from '@material-ui/styles'
 import CategoryMenu from '@Molecules/category/CategoryMenu'
-import MiniCart from '@Molecules/minicart/MiniCart'
 import SearchBox from '@Molecules/searchbox/SearchBox'
 import Login from '@Organisms/sessions/Login'
 import Signup from '@Organisms/sessions/Signup'
@@ -39,7 +36,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { getUserInfo, removeAuthToken, removeUserInfo } from 'utils'
-import { useAppSelector } from '../../../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
+import { cartActions, getCart } from '../../../../store/slices/cartSlice'
 import { getUserInforLoading } from '../../../../store/slices/userSlice'
 
 type HeaderProps = {
@@ -70,11 +68,10 @@ const useStyles = makeStyles(({ palette, ...theme }: MuiThemeProps) => ({
 const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
-
+  const dispatch = useAppDispatch()
   const classes = useStyles()
   const router = useRouter()
 
-  const [sidenavOpen, setSidenavOpen] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [loginForm, setLoginForm] = useState(true)
   const [isLogout, setIsLogout] = useState<Boolean>(false)
@@ -83,7 +80,6 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
-  const toggleSidenav = () => setSidenavOpen(!sidenavOpen)
   const toggleDialog = () => setDialogOpen(!dialogOpen)
 
   const loading = useAppSelector(getUserInforLoading)
@@ -95,9 +91,6 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
   const handleChangeForm = (login: boolean) => {
     setLoginForm(login)
   }
-
-  const { state } = useAppContext()
-  const { cartList } = state.cart
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -117,10 +110,14 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
     setIsLogout(isLogoutStatus)
   }
 
+  const cart = useAppSelector(getCart)
+
   const cartHandle = (
-    <Badge badgeContent={cartList.length} color="primary">
-      <Box component={IconButton} ml={2.5} p={1.25} onClick={toggleSidenav}>
-        <ShoppingCartOutlined />
+    <Badge badgeContent={cart?.products?.length} color="primary">
+      <Box component={IconButton} ml={2.5} p={1.25}>
+        <Link href="/cart">
+          <ShoppingCartOutlined />
+        </Link>
       </Box>
     </Badge>
   )
@@ -128,7 +125,10 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
   useEffect(() => {
     let user = getUserInfo()
     setUserInfor(user)
-  }, [loading, isLogout])
+    const id = user._id
+
+    id && dispatch(cartActions.getCartByUser(id))
+  }, [dispatch, loading, isLogout])
 
   return (
     <div className={clsx(classes.root, className)}>
@@ -262,10 +262,6 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
             <Signup handleChangeForm={handleChangeForm} />
           )}
         </Dialog>
-
-        <Drawer open={sidenavOpen} anchor="right" onClose={toggleSidenav}>
-          <MiniCart />
-        </Drawer>
       </Container>
     </div>
   )

@@ -47,8 +47,9 @@ export default function Notification({}: Props) {
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Tất cả" {...a11yProps(0)} />
           <Tab label="Chờ lấy hàng" {...a11yProps(1)} />
-          <Tab label="Đã giao" {...a11yProps(2)} />
-          <Tab label="Đã hủy" {...a11yProps(3)} />
+          <Tab label="Đang giao hàng" {...a11yProps(2)} />
+          <Tab label="Đã giao" {...a11yProps(3)} />
+          <Tab label="Đã hủy" {...a11yProps(4)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -58,9 +59,12 @@ export default function Notification({}: Props) {
         Chờ lấy hàng
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Đã giao
+        Đang giao hàng
       </TabPanel>
       <TabPanel value={value} index={3}>
+        Đã giao
+      </TabPanel>
+      <TabPanel value={value} index={4}>
         Đã hủy
       </TabPanel>
     </Box>

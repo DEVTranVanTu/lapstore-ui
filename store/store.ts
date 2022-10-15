@@ -7,6 +7,7 @@ import {
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from './rootSaga'
 import brandReducer from './slices/brandSlice'
+import cartReducer from './slices/cartSlice'
 import categoryNavReducer from './slices/categoryNavSlice'
 import inventoryReducer from './slices/inventorySlice'
 import productBySubReducer, {
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   userProfile: userProfileReducer,
   updateProfile: userUpdateReducer,
   brand: brandReducer,
+  cart: cartReducer,
   categoryNav: categoryNavReducer,
   product: productReducer,
   inventory: inventoryReducer,
