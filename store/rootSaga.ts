@@ -7,6 +7,7 @@ import inventorySaga from './sagas/inventorySaga'
 import reviewSaga from './sagas/reviewSaga'
 import userSaga from './sagas/userSaga'
 import cartSaga from './sagas/cartSaga'
+import notificationSaga from './sagas/notificationSaga'
 
 export default function* rootSaga() {
   yield all([
@@ -18,5 +19,6 @@ export default function* rootSaga() {
     userSaga(),
     cartSaga(),
     productBySubSaga(),
+    notificationSaga(),
   ])
 }

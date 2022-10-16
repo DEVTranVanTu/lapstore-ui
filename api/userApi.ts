@@ -17,6 +17,10 @@ const userApi = {
     }
     return axiosClient.post(url, profile)
   },
+  getListAdmin() {
+    const url = '/auth/users/admin'
+    return axiosClient.get(url)
+  },
 }
 
 export default userApi

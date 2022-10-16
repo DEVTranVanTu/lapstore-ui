@@ -28,6 +28,7 @@ import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import PersonOutline from '@material-ui/icons/PersonOutline'
 import { makeStyles } from '@material-ui/styles'
 import CategoryMenu from '@Molecules/category/CategoryMenu'
+import NotificationHeader from '@Molecules/notification/NotificationHeader'
 import SearchBox from '@Molecules/searchbox/SearchBox'
 import Login from '@Organisms/sessions/Login'
 import Signup from '@Organisms/sessions/Signup'
@@ -38,6 +39,12 @@ import React, { useEffect, useState } from 'react'
 import { getUserInfo, removeAuthToken, removeUserInfo } from 'utils'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { cartActions, getCart } from '../../../../store/slices/cartSlice'
+import {
+  deleteNotificationActions,
+  getDeleteNotificationLoading,
+  getNotifications,
+  notificationActions,
+} from '../../../../store/slices/notificationSlice'
 import { getUserInforLoading } from '../../../../store/slices/userSlice'
 
 type HeaderProps = {
@@ -80,6 +87,10 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
+  const [anchorNotification, setAnchorNotification] =
+    React.useState<null | HTMLElement>(null)
+  const openNotification = Boolean(anchorNotification)
+
   const toggleDialog = () => setDialogOpen(!dialogOpen)
 
   const loading = useAppSelector(getUserInforLoading)
@@ -99,6 +110,16 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
     setAnchorEl(null)
   }
 
+  const handleClickNotification = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorNotification(event.currentTarget)
+  }
+  const handleCloseNotification = () => {
+    setAnchorNotification(null)
+  }
+
+  const onDeleteNotification = (id: String) => {
+    dispatch(deleteNotificationActions.deleteNotification(id))
+  }
   const onRedirectProfile = () => {
     router.push('/account/profile')
   }
@@ -111,7 +132,7 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
   }
 
   const cart = useAppSelector(getCart)
-
+  const notifications = useAppSelector(getNotifications)
   const cartHandle = (
     <Badge badgeContent={cart?.products?.length} color="primary">
       <Box component={IconButton} ml={2.5} p={1.25}>
@@ -122,13 +143,68 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
     </Badge>
   )
 
+  const notificationHandle = (
+    <div>
+      <Badge badgeContent={notifications?.length} color="primary">
+        <Box
+          component={IconButton}
+          ml={2.5}
+          p={1.25}
+          onClick={(event) => handleClickNotification(event)}
+        >
+          <NotificationsNoneOutlined />
+        </Box>
+      </Badge>
+      <Menu
+        open={openNotification}
+        anchorEl={anchorNotification}
+        onClose={handleCloseNotification}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
+            '& .MuiAvatar-root': {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            '&:before': {
+              content: '""',
+              display: 'block',
+              position: 'absolute',
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
+        <NotificationHeader
+          data={notifications}
+          onDeleteNotification={onDeleteNotification}
+        />
+      </Menu>
+    </div>
+  )
+  const notificationLoading = useAppSelector(getDeleteNotificationLoading)
+
   useEffect(() => {
     let user = getUserInfo()
     setUserInfor(user)
     const id = user._id
 
     id && dispatch(cartActions.getCartByUser(id))
-  }, [dispatch, loading, isLogout])
+    id && dispatch(notificationActions.getNotification(id))
+  }, [dispatch, loading, isLogout, notificationLoading])
 
   return (
     <div className={clsx(classes.root, className)}>
@@ -244,9 +320,7 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
               Logout
             </MenuItem>
           </Menu>
-          <Box component={IconButton} ml={2} p={1.25} onClick={toggleDialog}>
-            <NotificationsNoneOutlined />
-          </Box>
+          {notificationHandle}
           {cartHandle}
         </FlexBox>
 

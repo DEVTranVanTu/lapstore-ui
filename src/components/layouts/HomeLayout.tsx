@@ -8,7 +8,7 @@ import Footer from '@Organisms/footer/Footer'
 type HomeLayoutProps = {
   title?: string
   navbar?: React.ReactChild
-  chilren: ReactNode
+  children: ReactNode
 }
 
 const HomeLayout: React.FC<HomeLayoutProps> = ({

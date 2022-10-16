@@ -4,6 +4,8 @@ import { all, call, put, takeLatest } from 'redux-saga/effects'
 import { setAuthToken, setUserInfo } from 'utils'
 import userApi from '../../api/userApi'
 import {
+  listAdminActions,
+  listAdminPayload,
   uploadProfilePayload,
   userActions,
   userProfileActions,
@@ -48,10 +50,22 @@ function* updateProfile(action: PayloadAction<uploadProfilePayload>) {
   }
 }
 
+function* listAdmin() {
+  try {
+    const response: listAdminPayload = yield call(userApi.getListAdmin)
+    console.log('response', response)
+
+    yield put(listAdminActions.getListAdminSuccess(response))
+  } catch (error) {
+    yield put(listAdminActions.getListAdminFaild)
+  }
+}
+
 export default function* userSaga() {
   yield all([
     takeLatest(userActions.login.type, login),
     takeLatest(userProfileActions.getUserProfile.type, getUserProfile),
     takeLatest(userProfileUpdateAction.uploadProfile.type, updateProfile),
+    takeLatest(listAdminActions.getListAdmin.type, listAdmin),
   ])
 }

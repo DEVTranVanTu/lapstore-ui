@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 export const capitalizeString = (str: string): string => {
   if (!str) return ''
 
@@ -21,6 +23,10 @@ export function formatVND(value?: number) {
     style: 'currency',
     currency: 'VND',
   }).format(value || 0)
+}
+
+export function formatDay(value?: Date) {
+  return dayjs(value).format('DD/MM/YYYY')
 }
 
 export function getUserInfo() {

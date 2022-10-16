@@ -141,3 +141,45 @@ export const updateProfile = (state: RootState) => state.updateProfile.data
 export const updateProfileLoading = (state: RootState) => state.updateProfile.loading
 
 export const userUpdateReducer = userProfileUpdateSlice.reducer
+
+export interface listAdminPayload {
+  loading: boolean
+  data: User[]
+}
+
+const initialListAdminState: listAdminPayload = {
+  loading: false,
+  data: [
+    {
+      _id: '',
+      email: '',
+      username: '',
+      profile: {},
+      role: '',
+    },
+  ],
+}
+
+const listAdminSlice = createSlice({
+  name: 'list admin',
+  initialState: initialListAdminState,
+  reducers: {
+    getListAdmin(state) {
+      state.loading = true
+    },
+    getListAdminSuccess(state, action: PayloadAction<listAdminPayload>) {
+      state.loading = false
+      state.data = action.payload.data
+    },
+    getListAdminFaild(state) {
+      state.loading = false
+    },
+  },
+})
+
+export const listAdminActions = listAdminSlice.actions
+
+export const listAdmin = (state: RootState) => state.listAdmin.data
+export const listAdminLoading = (state: RootState) => state.listAdmin.loading
+
+export const listAdminReducer = listAdminSlice.reducer

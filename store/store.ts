@@ -10,12 +10,17 @@ import brandReducer from './slices/brandSlice'
 import cartReducer from './slices/cartSlice'
 import categoryNavReducer from './slices/categoryNavSlice'
 import inventoryReducer from './slices/inventorySlice'
+import notificationReducer, {
+  deleteNotificationReducer,
+  editNotificationReducer,
+} from './slices/notificationSlice'
 import productBySubReducer, {
   productDetailReducer,
 } from './slices/productBySubSlice'
 import productReducer from './slices/productSlice'
 import reviewReducer, { addReviewReducer } from './slices/reviewSlice'
 import userReducer, {
+  listAdminReducer,
   userProfileReducer,
   userUpdateReducer,
 } from './slices/userSlice'
@@ -26,10 +31,14 @@ const rootReducer = combineReducers({
   updateProfile: userUpdateReducer,
   brand: brandReducer,
   cart: cartReducer,
+  notification: notificationReducer,
+  deleteNotification: deleteNotificationReducer,
+  editNotification: editNotificationReducer,
   categoryNav: categoryNavReducer,
   product: productReducer,
   inventory: inventoryReducer,
   review: reviewReducer,
+  listAdmin: listAdminReducer,
   productBySub: productBySubReducer,
   productDetail: productDetailReducer,
   addReview: addReviewReducer,

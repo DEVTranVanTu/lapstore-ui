@@ -1,8 +1,8 @@
 import { Box, Button, TextField } from '@material-ui/core'
 import { styled } from '@material-ui/core/styles'
-import { debounce } from '@material-ui/core/utils'
 import SearchOutlined from '@material-ui/icons/SearchOutlined'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 const StyledBox = styled(Box)(({ theme }) => ({
   '.searchIcon': {
@@ -24,19 +24,15 @@ const StyledBox = styled(Box)(({ theme }) => ({
 const SearchBox = () => {
   const [resultList, setResultList] = useState<string[]>([])
   const parentRef = useRef()
-
-  const search = debounce((e) => {
-    const value = e.target?.value
-
-    if (!value) setResultList([])
-    else setResultList(dummySearchResult)
-  }, 200)
-
-  const hanldeSearch = useCallback((event) => {
-    event.persist()
-    search(event)
-  }, [])
-
+  const router = useRouter()
+  const [searchValue, setSearchValue] = useState('')
+  const hanldeSearch = () => {
+    if (!searchValue) setResultList([])
+    else {
+      setResultList(dummySearchResult)
+      router.push(`/product/search?keyword=${searchValue}`)
+    }
+  }
   const handleDocumentClick = () => {
     setResultList([])
   }
@@ -49,7 +45,11 @@ const SearchBox = () => {
   }, [])
 
   const buttonSearch = (
-    <Button className="buttonsearch" startIcon={<SearchOutlined />}></Button>
+    <Button
+      className="buttonsearch"
+      startIcon={<SearchOutlined />}
+      onClick={hanldeSearch}
+    ></Button>
   )
 
   return (
@@ -64,7 +64,7 @@ const SearchBox = () => {
         variant="outlined"
         placeholder="Nhập từ khóa cần tìm ..."
         fullWidth
-        onChange={hanldeSearch}
+        onChange={(e) => setSearchValue(e.target.value)}
         InputProps={{
           sx: {
             paddingRight: 0,

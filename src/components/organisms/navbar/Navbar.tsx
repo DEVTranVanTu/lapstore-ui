@@ -2,22 +2,22 @@ import LapstoreButton from '@Atoms/ui/LapstoreButton'
 import LapstoreCard from '@Atoms/ui/LapstoreCard'
 import CategoryMenu from '@Molecules/category/CategoryMenu'
 import FlexBox from '@Atoms/ui/FlexBox'
-// import Category from '@Atoms/icons/Category'
 import LazyImage from '@Atoms/ui/LazyImage'
 import NavLink from '@Molecules/navlink/NavLink'
 import { Span } from '@Atoms/utils/Typography'
-import { Box, Container } from '@material-ui/core'
+import { Box, Container, Dialog } from '@material-ui/core'
 import { Menu } from '@material-ui/icons'
 import ChevronRight from '@material-ui/icons/ChevronRight'
 import { makeStyles } from '@material-ui/styles'
 import { MuiThemeProps } from '@Atoms/themes/theme'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import {
   brandActions,
   selectBrandList,
   selectBrandLoading,
 } from '../../../../store/slices/brandSlice'
+import ShopInfor from '@Organisms/dialog/ShopInfor'
 
 export interface NavbarProps {
   navListOpen?: boolean
@@ -79,6 +79,10 @@ const Navbar: React.FC<NavbarProps> = ({ navListOpen }) => {
 
   const brands = useAppSelector(selectBrandList)
   const loading = useAppSelector(selectBrandLoading)
+
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const toggleDialog = () => setDialogOpen(!dialogOpen)
 
   useEffect(() => {
     dispatch(brandActions.fetchBrandList())
@@ -152,14 +156,14 @@ const Navbar: React.FC<NavbarProps> = ({ navListOpen }) => {
         </FlexBox>
         <FlexBox>
           <Box>
-            <NavLink href="/" className={classes.navLink}>
-              Hỗ trợ
-            </NavLink>
-            <NavLink href="/" className={classes.navLink}>
-              Liên hệ
-            </NavLink>
+            <Span className={classes.navLink} onClick={toggleDialog}>
+              Liên hệ với Shop
+            </Span>
           </Box>
         </FlexBox>
+        <Dialog open={dialogOpen} scroll="body" onClose={toggleDialog}>
+          <ShopInfor />
+        </Dialog>
       </Container>
     </LapstoreCard>
   )
