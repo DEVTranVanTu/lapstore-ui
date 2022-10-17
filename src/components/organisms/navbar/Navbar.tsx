@@ -18,6 +18,7 @@ import {
   selectBrandLoading,
 } from '../../../../store/slices/brandSlice'
 import ShopInfor from '@Organisms/dialog/ShopInfor'
+import { linkToName } from 'utils'
 
 export interface NavbarProps {
   navListOpen?: boolean
@@ -95,8 +96,7 @@ const Navbar: React.FC<NavbarProps> = ({ navListOpen }) => {
           brands.map((brand, i) => (
             <NavLink
               className={classes.navLink}
-              href="/"
-              target="_blank"
+              href={`/product/brand/${linkToName(brand.brandName)}-cat.${brand._id}`}
               key={i}
               rel="noopener noreferrer"
             >

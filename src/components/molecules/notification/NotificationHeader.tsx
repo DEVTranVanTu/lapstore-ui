@@ -46,12 +46,11 @@ const useStyles = makeStyles(() => ({
 }))
 
 export default function NotificationHeader({ data, onDeleteNotification }: Props) {
-  console.log(data)
   const classes = useStyles()
 
   return (
     <Box padding={2}>
-      {data.length > 0 ? (
+      {data.length > 0 && data[0]._id ? (
         <>
           {data?.map((notification, i) => (
             <FlexBox

@@ -9,7 +9,10 @@ import rootSaga from './rootSaga'
 import brandReducer from './slices/brandSlice'
 import cartReducer from './slices/cartSlice'
 import categoryNavReducer from './slices/categoryNavSlice'
-import inventoryReducer from './slices/inventorySlice'
+import inventoryReducer, {
+  inventoryByBrandReducer,
+  inventorySearchReducer,
+} from './slices/inventorySlice'
 import notificationReducer, {
   deleteNotificationReducer,
   editNotificationReducer,
@@ -37,6 +40,8 @@ const rootReducer = combineReducers({
   categoryNav: categoryNavReducer,
   product: productReducer,
   inventory: inventoryReducer,
+  inventorySearch: inventorySearchReducer,
+  inventoryByBrand: inventoryByBrandReducer,
   review: reviewReducer,
   listAdmin: listAdminReducer,
   productBySub: productBySubReducer,

@@ -12,11 +12,10 @@ import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import {
-  productBySubActions,
-  selectProductListBySub,
-  selectProductLoadingBySub,
-} from '../../../store/slices/productBySubSlice'
-
+  inventoryByBrandActions,
+  selectInventoryBybrandLoading,
+  selectInventoryListByBrand,
+} from '../../../store/slices/inventorySlice'
 export default function ProductBrandResult() {
   const [view, setView] = useState('grid')
   const width = useWindowSize()
@@ -46,11 +45,11 @@ export default function ProductBrandResult() {
     })
   }
 
-  const products = useAppSelector(selectProductListBySub)
-  const loading = useAppSelector(selectProductLoadingBySub)
+  const products = useAppSelector(selectInventoryListByBrand)
+  const loading = useAppSelector(selectInventoryBybrandLoading)
 
   useEffect(() => {
-    id && dispatch(productBySubActions.fetchProductListBySub({ id, params }))
+    id && dispatch(inventoryByBrandActions.fetchInventoryListByBrand({ id, params }))
   }, [dispatch, id, params])
 
   const searchBy = router.query.id

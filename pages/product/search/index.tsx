@@ -12,10 +12,10 @@ import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import {
-  productBySubActions,
-  selectProductListBySub,
-  selectProductLoadingBySub,
-} from '../../../store/slices/productBySubSlice'
+  inventorySearchActions,
+  selectInventoryListSearch,
+  selectInventorySearchLoading,
+} from '../../../store/slices/inventorySlice'
 
 export default function ProductSearchInputResult() {
   const [view, setView] = useState('grid')
@@ -32,8 +32,7 @@ export default function ProductSearchInputResult() {
   const dispatch = useAppDispatch()
 
   const router = useRouter()
-
-  const id: string = String(router.query.id)?.split('.', -1)[1]
+  const keyword = router.query.keyword
 
   const [params, setParams] = useState({
     page: 1,
@@ -46,10 +45,22 @@ export default function ProductSearchInputResult() {
     })
   }
 
+  const products = useAppSelector(selectInventoryListSearch)
+  const loading = useAppSelector(selectInventorySearchLoading)
+
+  useEffect(() => {
+    keyword &&
+      dispatch(
+        inventorySearchActions.fetchSearchInventoryList({
+          keyword: keyword.toString(),
+          params,
+        })
+      )
+  }, [keyword, dispatch, params])
+
   return (
     <NavbarLayout>
-      <div>test</div>
-      {/* <Box pt={2.5}>
+      <Box pt={2.5}>
         <Card
           sx={{
             display: 'flex',
@@ -66,10 +77,8 @@ export default function ProductSearchInputResult() {
           elevation={1}
         >
           <div>
-            <H5>Searching for “ {searchBy} ”</H5>
-            <Paragraph color="grey.600">
-              {products.data.length} results found
-            </Paragraph>
+            <H5>Searching for “ {keyword}”</H5>
+            <Paragraph color="grey.600">10 results found</Paragraph>
           </div>
           <FlexBox alignItems="center" flexWrap="wrap" my="0.5rem">
             <FlexBox alignItems="center" flex="1 1 0">
@@ -146,7 +155,7 @@ export default function ProductSearchInputResult() {
             />
           </Grid>
         </Grid>
-      </Box> */}
+      </Box>
     </NavbarLayout>
   )
 }

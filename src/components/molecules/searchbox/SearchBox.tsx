@@ -2,7 +2,7 @@ import { Box, Button, TextField } from '@material-ui/core'
 import { styled } from '@material-ui/core/styles'
 import SearchOutlined from '@material-ui/icons/SearchOutlined'
 import { useRouter } from 'next/router'
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const StyledBox = styled(Box)(({ theme }) => ({
   '.searchIcon': {

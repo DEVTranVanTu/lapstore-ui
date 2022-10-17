@@ -8,6 +8,7 @@ export interface Product {
   productName: string
   productThumbnail: string
   description: string
+  inventory?: string
   price: number
   rating: number
   discount: number

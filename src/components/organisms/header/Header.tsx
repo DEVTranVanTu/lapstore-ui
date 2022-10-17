@@ -145,7 +145,10 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
 
   const notificationHandle = (
     <div>
-      <Badge badgeContent={notifications?.length} color="primary">
+      <Badge
+        badgeContent={notifications[0]?._id && notifications?.length}
+        color="primary"
+      >
         <Box
           component={IconButton}
           ml={2.5}
@@ -200,7 +203,7 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
   useEffect(() => {
     let user = getUserInfo()
     setUserInfor(user)
-    const id = user._id
+    const id = user?._id
 
     id && dispatch(cartActions.getCartByUser(id))
     id && dispatch(notificationActions.getNotification(id))
