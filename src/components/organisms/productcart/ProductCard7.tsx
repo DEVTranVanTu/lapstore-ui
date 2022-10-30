@@ -1,68 +1,54 @@
 import Image from '@Atoms/ui/LapstoreImage'
 import FlexBox from '@Atoms/ui/FlexBox'
-import { Span } from '@Atoms/utils/Typography'
-import { useAppContext } from '@context/app/AppContext'
+import { Paragraph, Span } from '@Atoms/utils/Typography'
 import { Button, IconButton } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
 import Close from '@material-ui/icons/Close'
 import Remove from '@material-ui/icons/Remove'
 import { Box } from '@material-ui/system'
 import Link from 'next/link'
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import ProductCard7Style from './ProductCard7Style'
+import { Product } from '@Models/product'
+import { formatDay, formatVND } from 'utils'
 
 export interface ProductCard7Props {
-  id: string | number
-  name: string
-  qty: number
-  price: number
-  imgUrl?: string
+  products: {
+    product: Product
+    quantity: number
+  }
+  selectCartItem: Function
 }
 
-const ProductCard7: React.FC<ProductCard7Props> = ({
-  id,
-  name,
-  qty,
-  price,
-  imgUrl,
-}) => {
-  const { dispatch } = useAppContext()
-  const handleCartAmountChange = useCallback(
-    (amount) => () => {
-      dispatch({
-        type: 'CHANGE_CART_AMOUNT',
-        payload: {
-          qty: amount,
-          name,
-          price,
-          imgUrl,
-          id,
-        },
-      })
-    },
-    []
-  )
+const ProductCard7: React.FC<ProductCard7Props> = ({ products, selectCartItem }) => {
+  const handleCartAmountChange = () => {}
   const [checked, setChecked] = useState(false)
   const handleChange = (event: any) => {
     setChecked(event.target.checked)
+    const data = {
+      productId: products.product._id,
+      quantity: products.quantity,
+    }
+    selectCartItem(data)
   }
 
   return (
     <ProductCard7Style>
       <FormControlLabel
+        className="checkbox"
         control={
           <Checkbox size={'medium'} checked={checked} onChange={handleChange} />
         }
         label=""
       />
       <Image
-        src={imgUrl || '/assets/images/products/iphone-xi.png'}
+        src={products.product.productThumbnail}
         height={140}
         width={140}
         display="block"
-        alt={name}
+        alt={products.product.productName}
       />
       <FlexBox
         className="product-details"
@@ -71,13 +57,24 @@ const ProductCard7: React.FC<ProductCard7Props> = ({
         minWidth="0px"
         width="100%"
       >
-        <Link href={`/product/${id}`}>
-          <a>
-            <Span className="title" fontWeight="600" fontSize="18px" mb={1}>
-              {name}
+        <Box>
+          <Link href={`/product/${products.product._id}`}>
+            <a>
+              <Span className="title" fontWeight="600" fontSize="18px" mb={1}>
+                {products.product.productName}
+              </Span>
+            </a>
+          </Link>
+          <Paragraph color={'#1266f1'} fontWeight={600}>
+            {formatVND(products.product.price)}
+          </Paragraph>
+          <Paragraph>
+            Đã thêm ngày:
+            <Span ml={1} fontWeight={600}>
+              {formatDay(products.product.createdAt)}
             </Span>
-          </a>
-        </Link>
+          </Paragraph>
+        </Box>
         <Box position="absolute" right="1rem" top="1rem">
           <IconButton
             size="small"
@@ -85,7 +82,7 @@ const ProductCard7: React.FC<ProductCard7Props> = ({
               padding: '4px',
               ml: '12px',
             }}
-            onClick={handleCartAmountChange(0)}
+            onClick={handleCartAmountChange}
           >
             <Close fontSize="small" />
           </IconButton>
@@ -93,32 +90,28 @@ const ProductCard7: React.FC<ProductCard7Props> = ({
 
         <FlexBox justifyContent="space-between" alignItems="flex-end">
           <FlexBox flexWrap="wrap" alignItems="center">
-            <Span color="grey.600" mr={1}>
-              ${price.toFixed(2)} x {qty}
-            </Span>
-            <Span fontWeight={600} color="primary.main" mr={2}>
-              ${(price * qty).toFixed(2)}
-            </Span>
+            <Span color="grey.600" mr={1}></Span>
+            <Span fontWeight={600} color="primary.main" mr={2}></Span>
           </FlexBox>
 
           <FlexBox alignItems="center">
             <Button
               variant="outlined"
               color="primary"
-              disabled={qty === 1}
+              disabled={products.quantity === 1}
               sx={{ p: '5px' }}
-              onClick={handleCartAmountChange(qty - 1)}
+              onClick={handleCartAmountChange}
             >
               <Remove fontSize="small" />
             </Button>
             <Span mx={1} fontWeight="600" fontSize="15px">
-              {qty}
+              {products.quantity}
             </Span>
             <Button
               variant="outlined"
               color="primary"
               sx={{ p: '5px' }}
-              onClick={handleCartAmountChange(qty + 1)}
+              onClick={handleCartAmountChange}
             >
               <Add fontSize="small" />
             </Button>

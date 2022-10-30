@@ -10,7 +10,9 @@ const ProductCard7Style = styled(Card)<MuiThemeProps>(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   marginBottom: '1.5rem',
   boxShadow: theme.shadows[2],
-
+  '& .checkbox': {
+    marginLeft: '10px',
+  },
   '& .product-details': {
     padding: '20px',
   },

@@ -21,6 +21,7 @@ import productBySubReducer, {
   productDetailReducer,
 } from './slices/productBySubSlice'
 import productReducer from './slices/productSlice'
+import provinceReducer from './slices/provinceSlice'
 import reviewReducer, { addReviewReducer } from './slices/reviewSlice'
 import userReducer, {
   listAdminReducer,
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   editNotification: editNotificationReducer,
   categoryNav: categoryNavReducer,
   product: productReducer,
+  province: provinceReducer,
   inventory: inventoryReducer,
   inventorySearch: inventorySearchReducer,
   inventoryByBrand: inventoryByBrandReducer,

@@ -16,6 +16,6 @@ export interface Product {
   quantity: number
   comment: number
   specs: spec[]
-  createdAt?: number
-  updatedAt?: number
+  createdAt?: Date
+  updatedAt?: Date
 }

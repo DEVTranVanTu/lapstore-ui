@@ -1,7 +1,7 @@
-import Navbar from '@Organisms/navbar/Navbar'
-import Stepper from '@Organisms/stepper/Stepper'
+import { Paragraph } from '@Atoms/utils/Typography'
 import { Container, Grid } from '@material-ui/core'
 import { Box } from '@material-ui/system'
+import Navbar from '@Organisms/navbar/Navbar'
 import { useRouter } from 'next/router'
 import React, { ReactNode, useEffect, useState } from 'react'
 import AppLayout from './AppLayout'
@@ -16,35 +16,13 @@ const CheckoutNavLayout: React.FC<checkout> = ({ children }) => {
   const router = useRouter()
   const { pathname } = router
 
-  const handleStepChange = (step: number) => {
-    switch (step) {
-      case 0:
-        router.push('/cart')
-        break
-      case 1:
-        router.push('/checkout')
-        break
-      case 2:
-        router.push('/payment')
-        break
-      case 3:
-        router.push('/orders')
-        break
-      default:
-        break
-    }
-  }
-
   useEffect(() => {
     switch (pathname) {
       case '/cart':
-        setSelectedStep(1)
+        setSelectedStep(0)
         break
       case '/checkout':
-        setSelectedStep(2)
-        break
-      case '/payment':
-        setSelectedStep(3)
+        setSelectedStep(1)
         break
       default:
         break
@@ -57,14 +35,13 @@ const CheckoutNavLayout: React.FC<checkout> = ({ children }) => {
         <Box mb={3}>
           <Grid container spacing={3}>
             <Grid item lg={8} md={8} xs={12}>
-              <Stepper
-                stepperList={stepperList}
-                selectedStep={selectedStep}
-                onChange={handleStepChange}
-              />
+              <Paragraph fontSize={22} fontWeight={600} color={'#1266f1'}>
+                {stepperList[selectedStep].title}
+              </Paragraph>
             </Grid>
           </Grid>
         </Box>
+
         {children}
       </Container>
     </AppLayout>
@@ -74,10 +51,6 @@ const CheckoutNavLayout: React.FC<checkout> = ({ children }) => {
 const stepperList = [
   {
     title: 'Cart',
-    disabled: false,
-  },
-  {
-    title: 'Details',
     disabled: false,
   },
   {

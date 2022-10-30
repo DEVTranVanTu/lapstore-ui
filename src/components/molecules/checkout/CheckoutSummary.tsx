@@ -56,16 +56,6 @@ const CheckoutSummary = () => {
       >
         $2610.00
       </Typography>
-
-      <TextField placeholder="Voucher" variant="outlined" size="small" fullWidth />
-      <Button
-        variant="outlined"
-        color="primary"
-        fullWidth
-        sx={{ mt: '1rem', mb: '30px' }}
-      >
-        Apply Voucher
-      </Button>
     </Card1>
   )
 }

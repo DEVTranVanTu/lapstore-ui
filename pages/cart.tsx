@@ -2,181 +2,88 @@ import FlexBox from '@Atoms/ui/FlexBox'
 import CheckoutNavLayout from '@Layouts/CheckoutNavLayout'
 import ProductCard7 from '@Organisms/productcart/ProductCard7'
 import { Span } from '@Atoms/utils/Typography'
-import { useAppContext } from '@context/app/AppContext'
-import countryList from '@data/countryList'
-import {
-  Autocomplete,
-  Button,
-  Card,
-  Divider,
-  Grid,
-  MenuItem,
-  TextField,
-} from '@material-ui/core'
-import { CartItem } from '@reducer/cartReducer'
+import { Button, Card, Divider, Grid } from '@material-ui/core'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { formatVND, getUserInfo } from 'utils'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { cartActions, getCart, getCartLoading } from '../store/slices/cartSlice'
 
 const Cart = () => {
-  const { state } = useAppContext()
-  const cartList: CartItem[] = state.cart.cartList
-
-  const getTotalPrice = () => {
+  const getTotalPrice = (data: any) => {
     return (
-      cartList.reduce(
-        (accumulator, item) => accumulator + item.price * item.qty,
+      data.reduce(
+        (pre: number, cur: any) => pre + cur.quantity * cur.product.price,
         0
       ) || 0
     )
   }
 
+  const dispatch = useAppDispatch()
+
+  const [products, setProducts] = useState([])
+
+  const cart = useAppSelector(getCart)
+  const loading = useAppSelector(getCartLoading)
+  console.log(cart)
+
+  const selectCartItem = (data: any) => {
+    setProducts(products)
+  }
+
+  useEffect(() => {
+    let user = getUserInfo()
+    const id = user?._id
+
+    id && dispatch(cartActions.getCartByUser(id))
+  }, [dispatch])
+
   return (
     <CheckoutNavLayout>
-      <Grid container spacing={3}>
-        <Grid item lg={8} md={8} xs={12}>
-          {cartList.map((item) => (
-            <ProductCard7 key={item.id} {...item} />
-          ))}
-        </Grid>
-        <Grid item lg={4} md={4} xs={12}>
-          <Card
-            sx={{
-              padding: '1.5rem 1.75rem',
-              '@media only screen and (max-width: 678px)': {
-                padding: '1rem',
-              },
-            }}
-          >
-            <FlexBox justifyContent="space-between" alignItems="center" mb={2}>
-              <Span color="grey.600">Total:</Span>
-              <FlexBox alignItems="flex-end">
-                <Span fontSize="18px" fontWeight="600" lineHeight="1">
-                  ${getTotalPrice().toFixed(2)}
-                </Span>
-                <Span fontWeight="600" fontSize="14px" lineHeight="1">
-                  00
-                </Span>
-              </FlexBox>
-            </FlexBox>
-
-            <Divider sx={{ mb: '1rem' }} />
-
-            <FlexBox alignItems="center" mb={2}>
-              <Span fontWeight="600" mr={1.25}>
-                Additional Comments
-              </Span>
-              <Span
-                fontSize="12px"
-                color="primary.main"
-                lineHeight="1"
-                p="6px 10px"
-                bgcolor="primary.light"
-                borderRadius="3px"
-              >
-                Note
-              </Span>
-            </FlexBox>
-
-            <TextField
-              variant="outlined"
-              rows={6}
-              fullWidth
-              multiline
-              sx={{ mb: '1rem' }}
-            />
-
-            <Divider sx={{ mb: '1rem' }} />
-
-            <TextField
-              label="Voucher"
-              placeholder="Voucher"
-              size="small"
-              variant="outlined"
-              fullWidth
-            />
-
-            <Button
-              variant="outlined"
-              color="primary"
-              fullWidth
+      {loading ? (
+        ''
+      ) : (
+        <Grid container spacing={3}>
+          <Grid item lg={8} md={8} xs={12}>
+            {cart.products.map((item: any) => (
+              <ProductCard7
+                key={item.product._id}
+                products={item}
+                selectCartItem={selectCartItem}
+              />
+            ))}
+          </Grid>
+          <Grid item lg={4} md={4} xs={12}>
+            <Card
               sx={{
-                mt: '1rem',
-                mb: '30px',
+                padding: '1.5rem 1.75rem',
+                '@media only screen and (max-width: 678px)': {
+                  padding: '1rem',
+                },
               }}
             >
-              Apply Voucher
-            </Button>
+              <FlexBox justifyContent="space-between" alignItems="center" mb={2}>
+                <Span color="grey.600">Tổng:</Span>
+                <FlexBox alignItems="flex-end">
+                  <Span fontSize="18px" fontWeight="600" lineHeight="1">
+                    {formatVND(getTotalPrice(cart.products))}
+                  </Span>
+                </FlexBox>
+              </FlexBox>
 
-            <Divider sx={{ mb: '1rem' }} />
+              <Divider sx={{ mb: '1rem' }} />
 
-            <Span fontWeight="600" mb={2} display="block">
-              Shipping Estimates
-            </Span>
-
-            <Autocomplete
-              options={countryList}
-              getOptionLabel={(option) => option.label}
-              fullWidth
-              sx={{ mb: '1rem' }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Country"
-                  placeholder="Select Country"
-                  variant="outlined"
-                  size="small"
-                />
-              )}
-            />
-
-            <TextField
-              label="State"
-              placeholder="Select State"
-              select
-              variant="outlined"
-              size="small"
-              fullWidth
-            >
-              {stateList.map((item) => (
-                <MenuItem value={item.value} key={item.label}>
-                  {item.label}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            <TextField
-              label="Zip Code"
-              placeholder="3100"
-              variant="outlined"
-              size="small"
-              fullWidth
-              sx={{ mt: '1rem' }}
-            />
-
-            <Button variant="outlined" color="primary" fullWidth sx={{ my: '1rem' }}>
-              Calculate Shipping
-            </Button>
-
-            <Link href="/checkout">
-              <Button variant="contained" color="primary" fullWidth>
-                Checkout Now
-              </Button>
-            </Link>
-          </Card>
+              <Link href="/checkout">
+                <Button variant="contained" color="primary" fullWidth>
+                  Mua ngay
+                </Button>
+              </Link>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </CheckoutNavLayout>
   )
 }
-
-const stateList = [
-  {
-    value: 'New York',
-    label: 'New York',
-  },
-  {
-    value: 'Chicago',
-    label: 'Chicago',
-  },
-]
 
 export default Cart

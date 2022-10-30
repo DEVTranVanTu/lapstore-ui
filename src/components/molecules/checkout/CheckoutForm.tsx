@@ -1,37 +1,36 @@
 import Card1 from '@Atoms/ui/Card1'
-import countryList from '@data/countryList'
-import {
-  Autocomplete,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  TextField,
-  Typography,
-} from '@material-ui/core'
+import { Autocomplete, Button, Grid, TextField, Typography } from '@material-ui/core'
 import { Formik } from 'formik'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import * as yup from 'yup'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
+import {
+  provinceActions,
+  selectProvinceList,
+  selectProvinceLoading,
+} from '../../../../store/slices/provinceSlice'
 
 const CheckoutForm = () => {
-  const [sameAsShipping, setSameAsShipping] = useState(false)
   const router = useRouter()
+
+  const dispatch = useAppDispatch()
+
+  const province = useAppSelector(selectProvinceList)
+  const loading = useAppSelector(selectProvinceLoading)
+
+  const [districts, setDistricts] = useState([])
+  const [wards, setWards] = useState([])
+  console.log(province)
 
   const handleFormSubmit = async (values: any) => {
     console.log(values)
-    router.push('/payment')
   }
 
-  const handleCheckboxChange =
-    (values: typeof initialValues, setFieldValue: any) => (e: any, _: boolean) => {
-      const checked = e.currentTarget.checked
-
-      setSameAsShipping(checked)
-      setFieldValue('same_as_shipping', checked)
-      setFieldValue('billing_name', checked ? values.shipping_name : '')
-    }
+  useEffect(() => {
+    dispatch(provinceActions.fetchProvinceList())
+  }, [dispatch])
 
   return (
     <Formik
@@ -54,11 +53,10 @@ const CheckoutForm = () => {
               Shipping Address
             </Typography>
 
-            <Grid container spacing={6}>
+            <Grid container spacing={2}>
               <Grid item sm={6} xs={12}>
                 <TextField
                   name="shipping_name"
-                  label="Full Name"
                   fullWidth
                   sx={{ mb: '1rem' }}
                   onBlur={handleBlur}
@@ -67,9 +65,10 @@ const CheckoutForm = () => {
                   error={!!touched.shipping_name && !!errors.shipping_name}
                   helperText={touched.shipping_name && errors.shipping_name}
                 />
+              </Grid>
+              <Grid item sm={6} xs={12}>
                 <TextField
                   name="shipping_contact"
-                  label="Phone Number"
                   fullWidth
                   sx={{ mb: '1rem' }}
                   onBlur={handleBlur}
@@ -78,78 +77,80 @@ const CheckoutForm = () => {
                   error={!!touched.shipping_contact && !!errors.shipping_contact}
                   helperText={touched.shipping_contact && errors.shipping_contact}
                 />
-                <TextField
-                  name="shipping_zip"
-                  label="Zip Code"
-                  type="number"
-                  fullWidth
-                  sx={{ mb: '1rem' }}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.shipping_zip || ''}
-                  error={!!touched.shipping_zip && !!errors.shipping_zip}
-                  helperText={touched.shipping_zip && errors.shipping_zip}
-                />
-                <TextField
-                  name="shipping_address1"
-                  label="Address 1"
-                  fullWidth
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.shipping_address1 || ''}
-                  error={!!touched.shipping_address1 && !!errors.shipping_address1}
-                  helperText={touched.shipping_address1 && errors.shipping_address1}
-                />
               </Grid>
-              <Grid item sm={6} xs={12}>
-                <TextField
-                  name="shipping_email"
-                  label="Email Address"
-                  type="email"
-                  fullWidth
-                  sx={{ mb: '1rem' }}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.shipping_email || ''}
-                  error={!!touched.shipping_email && !!errors.shipping_email}
-                  helperText={touched.shipping_email && errors.shipping_email}
-                />
-                <TextField
-                  name="shipping_company"
-                  label="Company"
-                  fullWidth
-                  sx={{ mb: '1rem' }}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.shipping_company || ''}
-                  error={!!touched.shipping_company && !!errors.shipping_company}
-                  helperText={touched.shipping_company && errors.shipping_company}
-                />
-
+              <Grid item sm={4} xs={12}>
                 <Autocomplete
-                  options={countryList}
-                  getOptionLabel={(option) => option.label || ''}
-                  value={values.shipping_country}
+                  options={province}
+                  getOptionLabel={(option: any) => option.name || ''}
+                  value={values.shipping_province}
                   sx={{ mb: '1rem' }}
                   fullWidth
-                  onChange={(_e, value) => setFieldValue('shipping_country', value)}
+                  onChange={(_e, value) => {
+                    setFieldValue('shipping_province', value),
+                      setDistricts(value.districts)
+                  }}
                   renderInput={(params) => (
                     <TextField
-                      label="Country"
                       placeholder="Select Country"
                       variant="outlined"
-                      error={!!touched.shipping_country && !!errors.shipping_country}
+                      error={
+                        !!touched.shipping_province && !!errors.shipping_province
+                      }
                       helperText={
-                        touched.shipping_country && errors.shipping_country
+                        touched.shipping_province && errors.shipping_province
                       }
                       {...params}
                     />
                   )}
                 />
-
+              </Grid>
+              <Grid item sm={4} xs={12}>
+                <Autocomplete
+                  options={districts}
+                  getOptionLabel={(option: any) => option.name || ''}
+                  value={values.shipping_district}
+                  sx={{ mb: '1rem' }}
+                  fullWidth
+                  onChange={(_e, value) => {
+                    setFieldValue('shipping_district', value), setWards(value.wards)
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      placeholder="Select District"
+                      variant="outlined"
+                      error={
+                        !!touched.shipping_district && !!errors.shipping_district
+                      }
+                      helperText={
+                        touched.shipping_district && errors.shipping_district
+                      }
+                      {...params}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item sm={4} xs={12}>
+                <Autocomplete
+                  options={wards}
+                  getOptionLabel={(option: any) => option.name || ''}
+                  value={values.shipping_ward}
+                  sx={{ mb: '1rem' }}
+                  fullWidth
+                  onChange={(_e, value) => setFieldValue('shipping_ward', value)}
+                  renderInput={(params) => (
+                    <TextField
+                      placeholder="Select Ward"
+                      variant="outlined"
+                      error={!!touched.shipping_ward && !!errors.shipping_ward}
+                      helperText={touched.shipping_ward && errors.shipping_ward}
+                      {...params}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
                   name="shipping_address2"
-                  label="Address 2"
                   fullWidth
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -160,129 +161,6 @@ const CheckoutForm = () => {
               </Grid>
             </Grid>
           </Card1>
-
-          <Card1 sx={{ mb: '2rem' }}>
-            <Typography fontWeight="600" mb={2}>
-              Billing Address
-            </Typography>
-
-            <FormControlLabel
-              label="Same as shipping address"
-              control={<Checkbox size="small" color="secondary" />}
-              sx={{
-                mb: sameAsShipping ? '' : '1rem',
-                zIndex: 1,
-                position: 'relative',
-              }}
-              onChange={handleCheckboxChange(values, setFieldValue)}
-            />
-
-            {!sameAsShipping && (
-              <Grid container spacing={6}>
-                <Grid item sm={6} xs={12}>
-                  <TextField
-                    name="billing_name"
-                    label="Full Name"
-                    fullWidth
-                    sx={{ mb: '1rem' }}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.billing_name || ''}
-                    error={!!touched.billing_name && !!errors.billing_name}
-                    helperText={touched.billing_name && errors.billing_name}
-                  />
-                  <TextField
-                    name="billing_contact"
-                    label="Phone Number"
-                    fullWidth
-                    sx={{ mb: '1rem' }}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.billing_contact || ''}
-                    error={!!touched.billing_contact && !!errors.billing_contact}
-                    helperText={touched.billing_contact && errors.billing_contact}
-                  />
-                  <TextField
-                    name="billing_zip"
-                    label="Zip Code"
-                    type="number"
-                    fullWidth
-                    sx={{ mb: '1rem' }}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.billing_zip || ''}
-                    error={!!touched.billing_zip && !!errors.billing_zip}
-                    helperText={touched.billing_zip && errors.billing_zip}
-                  />
-                  <TextField
-                    name="billing_address1"
-                    label="Address 1"
-                    fullWidth
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.billing_address1 || ''}
-                    error={!!touched.billing_address1 && !!errors.billing_address1}
-                    helperText={touched.billing_address1 && errors.billing_address1}
-                  />
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                  <TextField
-                    name="billing_email"
-                    label="Email Address"
-                    type="email"
-                    fullWidth
-                    sx={{ mb: '1rem' }}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.billing_email || ''}
-                    error={!!touched.billing_email && !!errors.billing_email}
-                    helperText={touched.billing_email && errors.billing_email}
-                  />
-                  <TextField
-                    name="billing_company"
-                    label="Company"
-                    fullWidth
-                    sx={{ mb: '1rem' }}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.billing_company || ''}
-                    error={!!touched.billing_company && !!errors.billing_company}
-                    helperText={touched.billing_company && errors.billing_company}
-                  />
-                  <Autocomplete
-                    options={countryList}
-                    getOptionLabel={(option) => option.label || ''}
-                    value={values.billing_country}
-                    sx={{ mb: '1rem' }}
-                    fullWidth
-                    onChange={(_e, value) => setFieldValue('billing_country', value)}
-                    renderInput={(params) => (
-                      <TextField
-                        label="Country"
-                        placeholder="Select Country"
-                        error={!!touched.billing_country && !!errors.billing_country}
-                        helperText={
-                          touched.billing_country && errors.billing_country
-                        }
-                        {...params}
-                      />
-                    )}
-                  />
-                  <TextField
-                    name="billing_address2"
-                    label="Address 2"
-                    fullWidth
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.billing_address2 || ''}
-                    error={!!touched.billing_address2 && !!errors.billing_address2}
-                    helperText={touched.billing_address2 && errors.billing_address2}
-                  />
-                </Grid>
-              </Grid>
-            )}
-          </Card1>
-
           <Grid container spacing={6}>
             <Grid item sm={6} xs={12}>
               <Link href="/cart">
@@ -303,24 +181,29 @@ const CheckoutForm = () => {
   )
 }
 
-const initialValues = {
+interface initialValues {
+  shipping_name: any
+  shipping_email: any
+  shipping_contact: any
+  shipping_company: any
+  shipping_zip: any
+  shipping_province: any
+  shipping_district: any
+  shipping_ward: any
+  shipping_address1: any
+  shipping_address2: any
+}
+const initialValues: initialValues = {
   shipping_name: '',
   shipping_email: '',
   shipping_contact: '',
   shipping_company: '',
   shipping_zip: '',
-  shipping_country: countryList[229],
+  shipping_province: 'Thành phố Hà Nội',
+  shipping_district: 'Quận Ba Đình',
+  shipping_ward: 'Phường Phúc Xá',
   shipping_address1: '',
   shipping_address2: '',
-
-  billing_name: '',
-  billing_email: '',
-  billing_contact: '',
-  billing_company: '',
-  billing_zip: '',
-  billing_country: countryList[229],
-  billing_address1: '',
-  billing_address2: '',
 }
 
 // uncommect these fields below for from validation
@@ -329,7 +212,7 @@ const checkoutSchema = yup.object().shape({
   // shipping_email: yup.string().email("invalid email").required("required"),
   // shipping_contact: yup.string().required("required"),
   // shipping_zip: yup.string().required("required"),
-  // shipping_country: yup.object().required("required"),
+  // shipping_province: yup.object().required("required"),
   // shipping_address1: yup.string().required("required"),
   // billing_name: yup.string().required("required"),
   // billing_email: yup.string().required("required"),
