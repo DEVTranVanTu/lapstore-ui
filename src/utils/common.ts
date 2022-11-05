@@ -55,3 +55,18 @@ export function setAuthToken(token: string) {
 export function removeAuthToken() {
   return localStorage.removeItem('token')
 }
+
+export function setCartItemToPayment(data: object) {
+  const item =
+    data && typeof data === 'object' ? JSON.stringify(data) : JSON.stringify({})
+  return localStorage.setItem('cart_item', item)
+}
+
+export function getCartItemToPayment() {
+  const item = localStorage.getItem('cart_item')
+  return item ? JSON.parse(item) : undefined
+}
+
+export const removeCartItem = () => {
+  return localStorage.removeItem('cart_item')
+}

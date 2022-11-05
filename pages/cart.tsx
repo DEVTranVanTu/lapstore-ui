@@ -5,30 +5,46 @@ import { Span } from '@Atoms/utils/Typography'
 import { Button, Card, Divider, Grid } from '@material-ui/core'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { formatVND, getUserInfo } from 'utils'
+import { formatVND, getUserInfo, setCartItemToPayment } from 'utils'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { cartActions, getCart, getCartLoading } from '../store/slices/cartSlice'
 
 const Cart = () => {
   const getTotalPrice = (data: any) => {
     return (
-      data.reduce(
-        (pre: number, cur: any) => pre + cur.quantity * cur.product.price,
-        0
-      ) || 0
+      data.reduce((pre: number, cur: any) => pre + cur.quantity * cur.price, 0) || 0
     )
   }
 
   const dispatch = useAppDispatch()
 
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState<any>([])
+  const [totalPrice, setTotalPrice] = useState(0)
 
   const cart = useAppSelector(getCart)
   const loading = useAppSelector(getCartLoading)
-  console.log(cart)
 
   const selectCartItem = (data: any) => {
-    setProducts(products)
+    const listProduct = products
+    const index = listProduct.findIndex((i: any) => i.productId === data.productId)
+    if (index >= 0) {
+      listProduct.splice(index, 1)
+    } else {
+      listProduct.push(data)
+    }
+    setTotalPrice(getTotalPrice(listProduct))
+
+    setProducts(listProduct)
+    let user = getUserInfo()
+    const id = user?._id
+    const cartId = cart._id
+    const cartInfor = {
+      userId: id,
+      cartId: cartId,
+      products: listProduct,
+      totalPrice: totalPrice,
+    }
+    setCartItemToPayment(cartInfor)
   }
 
   useEffect(() => {
@@ -36,11 +52,11 @@ const Cart = () => {
     const id = user?._id
 
     id && dispatch(cartActions.getCartByUser(id))
-  }, [dispatch])
+  }, [dispatch, products])
 
   return (
     <CheckoutNavLayout>
-      {loading ? (
+      {loading && cart.products.length > 0 ? (
         ''
       ) : (
         <Grid container spacing={3}>
@@ -66,7 +82,7 @@ const Cart = () => {
                 <Span color="grey.600">Tổng:</Span>
                 <FlexBox alignItems="flex-end">
                   <Span fontSize="18px" fontWeight="600" lineHeight="1">
-                    {formatVND(getTotalPrice(cart.products))}
+                    {formatVND(totalPrice)}
                   </Span>
                 </FlexBox>
               </FlexBox>

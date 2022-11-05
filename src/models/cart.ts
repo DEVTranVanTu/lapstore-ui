@@ -1,4 +1,5 @@
 export interface Cart {
+  _id?: string
   userId: string
   status: string
   modifiedOn?: string

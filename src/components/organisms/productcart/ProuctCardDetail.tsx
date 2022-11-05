@@ -10,7 +10,6 @@ import {
   DialogContent,
   IconButton,
 } from '@material-ui/core'
-import Add from '@material-ui/icons/Add'
 import Close from '@material-ui/icons/Close'
 import Favorite from '@material-ui/icons/Favorite'
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
@@ -160,23 +159,6 @@ const ProductCardDetail: React.FC<ProductCardDetailProps> = ({
     specs: [],
   }
 
-  // const handleCartAmountChange = useCallback(
-  //   (amount) => () => {
-  //     dispatch({
-  //       type: 'CHANGE_CART_AMOUNT',
-  //       payload: {
-  //         name: productName,
-  //         qty: quantity,
-  //         price,
-  //         productThumbnail,
-  //         id,
-  //       },
-  //     })
-
-  //   },
-  //   []
-  // )
-
   return (
     <LapstoreCard className={classes.root} hoverEffect={hoverEffect}>
       <div className={classes.imageHolder}>
@@ -258,15 +240,6 @@ const ProductCardDetail: React.FC<ProductCardDetailProps> = ({
               justifyContent={!!cartItem?.qty ? 'space-between' : 'flex-start'}
               width="30px"
             >
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{ padding: '3px' }}
-                // onClick={handleCartAmountChange((cartItem?.qty || 0) + 1)}
-              >
-                <Add fontSize="small" />
-              </Button>
-
               {!!cartItem?.qty && (
                 <Fragment>
                   <Box color="text.primary" fontWeight="600">

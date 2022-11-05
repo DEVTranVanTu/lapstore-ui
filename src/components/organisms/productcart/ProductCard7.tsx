@@ -29,6 +29,9 @@ const ProductCard7: React.FC<ProductCard7Props> = ({ products, selectCartItem })
     setChecked(event.target.checked)
     const data = {
       productId: products.product._id,
+      price: products.product.price,
+      productThumbnail: products.product.productThumbnail,
+      productName: products.product.productName,
       quantity: products.quantity,
     }
     selectCartItem(data)
