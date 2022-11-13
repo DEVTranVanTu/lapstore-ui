@@ -7,7 +7,7 @@ import {
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from './rootSaga'
 import brandReducer from './slices/brandSlice'
-import cartReducer from './slices/cartSlice'
+import cartReducer, { addToCartReducer } from './slices/cartSlice'
 import categoryNavReducer from './slices/categoryNavSlice'
 import inventoryReducer, {
   inventoryByBrandReducer,
@@ -21,7 +21,10 @@ import orderReducer from './slices/orderSlice'
 import productBySubReducer, {
   productDetailReducer,
 } from './slices/productBySubSlice'
-import productReducer from './slices/productSlice'
+import productReducer, {
+  topProductDiscountReducer,
+  topProductReducer,
+} from './slices/productSlice'
 import provinceReducer from './slices/provinceSlice'
 import reviewReducer, { addReviewReducer } from './slices/reviewSlice'
 import userReducer, {
@@ -51,6 +54,9 @@ const rootReducer = combineReducers({
   productDetail: productDetailReducer,
   addReview: addReviewReducer,
   order: orderReducer,
+  topProducts: topProductReducer,
+  topProductDiscount: topProductDiscountReducer,
+  addToCart: addToCartReducer,
 })
 
 const sagaMiddleware = createSagaMiddleware()

@@ -11,7 +11,7 @@ import {
   Slider,
 } from 'pure-react-carousel'
 import 'pure-react-carousel/dist/react-carousel.es.css'
-import React, { Fragment } from 'react'
+import React, { Fragment, ReactNode } from 'react'
 
 export interface CarouselProps {
   naturalSlideWidth?: number
@@ -38,6 +38,7 @@ export interface CarouselProps {
   rightButtonClass?: string
   leftButtonStyle?: CSSProperties
   rightButtonStyle?: CSSProperties
+  children: ReactNode
 }
 
 const useStyles = makeStyles(({ palette, breakpoints }: MuiThemeProps) => ({

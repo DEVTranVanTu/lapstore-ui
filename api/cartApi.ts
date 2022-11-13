@@ -11,6 +11,10 @@ const cartApi = {
     const url = '/cart'
     return axiosClient.post(url, data)
   },
+  removeCartItem(data: any) {
+    const url = '/cart/remove'
+    return axiosClient.post(url, data)
+  },
 }
 
 export default cartApi

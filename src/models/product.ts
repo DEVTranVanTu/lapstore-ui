@@ -19,3 +19,9 @@ export interface Product {
   createdAt?: Date
   updatedAt?: Date
 }
+
+export interface topProduct {
+  productDetail: Product
+  quantity: Number
+  rating: number
+}

@@ -7,6 +7,7 @@ export interface CategorySectionCreatorProps {
   icon?: ReactNode
   title?: string
   seeMoreLink?: string
+  children: ReactNode
 }
 
 const useStyles = makeStyles(() => ({
@@ -19,7 +20,6 @@ const useStyles = makeStyles(() => ({
 }))
 const CategorySectionCreator: React.FC<CategorySectionCreatorProps> = ({
   icon,
-  seeMoreLink,
   title,
   children,
 }) => {
@@ -29,13 +29,7 @@ const CategorySectionCreator: React.FC<CategorySectionCreatorProps> = ({
     <Box mb={7.5} mt={5}>
       <Container sx={{ pb: '1rem' }} className={classes.root}>
         <Box p={'2rem 0 0.5rem 0'}>
-          {title && (
-            <CategorySectionHeader
-              title={title}
-              seeMoreLink={seeMoreLink}
-              icon={icon}
-            />
-          )}
+          {title && <CategorySectionHeader title={title} icon={icon} />}
 
           {children}
         </Box>

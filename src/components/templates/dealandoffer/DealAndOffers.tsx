@@ -6,17 +6,32 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import CategorySectionCreator from '@Molecules/categorysection/CategorySectionCreator'
 import TopSelling from '@Organisms/productcart/TopSelling'
-import dealAndOffers from '@data/dealAndOffers'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
+import {
+  selectTopProductList,
+  topProductActions,
+} from '../../../../store/slices/productSlice'
+import { linkToName } from 'utils'
 
 const DealAndOffers = () => {
   const [visibleSlides, setVisibleSlides] = useState(4)
   const width = useWindowSize()
+
+  const dispatch = useAppDispatch()
+
+  const topProducts = useAppSelector(selectTopProductList)
+
+  console.log('topProducts', topProducts)
 
   useEffect(() => {
     if (width < 650) setVisibleSlides(1)
     else if (width < 950) setVisibleSlides(2)
     else setVisibleSlides(4)
   }, [width])
+
+  useEffect(() => {
+    dispatch(topProductActions.fetchTopProductList())
+  }, [dispatch])
 
   return (
     <CategorySectionCreator
@@ -25,21 +40,20 @@ const DealAndOffers = () => {
       seeMoreLink="#"
     >
       <Carousel
-        totalSlides={dealAndOffers.length}
+        totalSlides={topProducts.length}
         visibleSlides={visibleSlides}
         autoPlay={true}
       >
-        {dealAndOffers.map((item, ind) => (
-          <Link href={item.categoryUrl} key={ind}>
+        {topProducts?.map((item, ind) => (
+          <Link
+            href={`/product/${linkToName(item.productDetail.productName)}-sku.${
+              item.productDetail._id
+            }`}
+            key={ind}
+          >
             <a>
               <LapstoreCard elevation={0}>
-                <TopSelling
-                  title={item.title}
-                  imgUrl={item.imgUrl}
-                  price={item.price}
-                  rating={item.rating}
-                  sould={item.sould}
-                />
+                <TopSelling product={item} />
               </LapstoreCard>
             </a>
           </Link>

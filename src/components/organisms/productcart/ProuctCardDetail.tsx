@@ -19,10 +19,15 @@ import { CSSProperties, makeStyles } from '@material-ui/styles'
 import { CartItem } from '@reducer/cartReducer'
 import { MuiThemeProps } from '@Atoms/themes/theme'
 import Link from 'next/link'
-import React, { Fragment, useCallback, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import FlexBox from '@Atoms/ui/FlexBox'
 import ProductIntro from '../products/ProductIntro'
 import { linkToName, formatVND } from 'utils'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
+import {
+  getProductDetail,
+  productDetailActions,
+} from '../../../../store/slices/productBySubSlice'
 
 export interface ProductCardDetailProps {
   className?: string
@@ -36,7 +41,7 @@ export interface ProductCardDetailProps {
   discount: number
   status: number
   quantity: number
-  _id?: string | number
+  _id?: string
 }
 
 const useStyles = makeStyles(({ palette, ...theme }: MuiThemeProps) => ({
@@ -126,38 +131,22 @@ const ProductCardDetail: React.FC<ProductCardDetailProps> = ({
   productName,
   price,
   discount,
-  rating,
   hoverEffect,
 }) => {
-  const [isFavorite, setIsFavorite] = useState(false)
+  const dispatch = useAppDispatch()
   const [open, setOpen] = useState(false)
 
   const classes = useStyles({ hoverEffect })
-  const { state, dispatch } = useAppContext()
-  const cartItem: CartItem | undefined = state.cart.cartList.find(
-    (item) => item.id === _id
-  )
 
   const toggleDialog = useCallback(() => {
     setOpen((open) => !open)
   }, [])
 
-  const toggleIsFavorite = async () => {
-    setIsFavorite((fav) => !fav)
-  }
+  const productDetail = useAppSelector(getProductDetail)
 
-  const productDetail = {
-    productName,
-    productThumbnail,
-    price,
-    discount,
-    rating,
-    description: '',
-    status: 1,
-    quantity: 0,
-    comment: 0,
-    specs: [],
-  }
+  useEffect(() => {
+    _id && dispatch(productDetailActions.fetchProductDetail(_id))
+  }, [dispatch])
 
   return (
     <LapstoreCard className={classes.root} hoverEffect={hoverEffect}>
@@ -174,13 +163,6 @@ const ProductCardDetail: React.FC<ProductCardDetailProps> = ({
         <div className="extra-icons">
           <IconButton sx={{ p: '6px' }} onClick={toggleDialog}>
             <RemoveRedEye color="secondary" fontSize="small" />
-          </IconButton>
-          <IconButton sx={{ p: '6px' }} onClick={toggleIsFavorite}>
-            {isFavorite ? (
-              <Favorite color="primary" fontSize="small" />
-            ) : (
-              <FavoriteBorder fontSize="small" />
-            )}
           </IconButton>
         </div>
 
@@ -232,30 +214,6 @@ const ProductCardDetail: React.FC<ProductCardDetailProps> = ({
                 )}
               </Box>
             </Box>
-
-            <FlexBox
-              className="add-cart"
-              flexDirection="column-reverse"
-              alignItems="center"
-              justifyContent={!!cartItem?.qty ? 'space-between' : 'flex-start'}
-              width="30px"
-            >
-              {!!cartItem?.qty && (
-                <Fragment>
-                  <Box color="text.primary" fontWeight="600">
-                    {cartItem?.qty}
-                  </Box>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    sx={{ padding: '3px' }}
-                    // onClick={handleCartAmountChange(cartItem?.qty - 1)}
-                  >
-                    <Remove fontSize="small" />
-                  </Button>
-                </Fragment>
-              )}
-            </FlexBox>
           </FlexBox>
         </Box>
       </div>

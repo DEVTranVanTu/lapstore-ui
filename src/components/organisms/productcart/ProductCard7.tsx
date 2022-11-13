@@ -12,18 +12,51 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import ProductCard7Style from './ProductCard7Style'
 import { Product } from '@Models/product'
-import { formatDay, formatVND } from 'utils'
+import { formatVND, getUserInfo, linkToName } from 'utils'
+import { useAppDispatch } from '../../../../store/hooks'
+import { addToCartActions } from '../../../../store/slices/cartSlice'
 
 export interface ProductCard7Props {
+  cartId?: String
   products: {
     product: Product
     quantity: number
   }
   selectCartItem: Function
+  removeCartItem: Function
 }
 
-const ProductCard7: React.FC<ProductCard7Props> = ({ products, selectCartItem }) => {
-  const handleCartAmountChange = () => {}
+const ProductCard7: React.FC<ProductCard7Props> = ({
+  products,
+  selectCartItem,
+  cartId,
+  removeCartItem,
+}) => {
+  const dispatch = useAppDispatch()
+
+  const handleRemoveCartIten = () => {
+    const dataRemove = {
+      cart: cartId,
+      products: [
+        {
+          productId: products.product._id,
+          quantity: products.quantity,
+        },
+      ],
+    }
+    removeCartItem(dataRemove)
+  }
+  const handleCartAmountChange = (inc: Boolean) => {
+    let user = getUserInfo()
+    const id = user?._id
+
+    const data = {
+      userId: id,
+      productId: products.product._id || '',
+      quantity: inc ? products.quantity + 1 : products.quantity - 1,
+    }
+    dispatch(addToCartActions.addToCart(data))
+  }
   const [checked, setChecked] = useState(false)
   const handleChange = (event: any) => {
     setChecked(event.target.checked)
@@ -61,21 +94,19 @@ const ProductCard7: React.FC<ProductCard7Props> = ({ products, selectCartItem })
         width="100%"
       >
         <Box>
-          <Link href={`/product/${products.product._id}`}>
+          <Link
+            href={`/product/${linkToName(products.product.productName)}-sku.${
+              products.product._id
+            }`}
+          >
             <a>
-              <Span className="title" fontWeight="600" fontSize="18px" mb={1}>
+              <Span fontWeight="600" fontSize="18px" mb={1}>
                 {products.product.productName}
               </Span>
             </a>
           </Link>
           <Paragraph color={'#1266f1'} fontWeight={600}>
             {formatVND(products.product.price)}
-          </Paragraph>
-          <Paragraph>
-            Đã thêm ngày:
-            <Span ml={1} fontWeight={600}>
-              {formatDay(products.product.createdAt)}
-            </Span>
           </Paragraph>
         </Box>
         <Box position="absolute" right="1rem" top="1rem">
@@ -85,7 +116,7 @@ const ProductCard7: React.FC<ProductCard7Props> = ({ products, selectCartItem })
               padding: '4px',
               ml: '12px',
             }}
-            onClick={handleCartAmountChange}
+            onClick={handleRemoveCartIten}
           >
             <Close fontSize="small" />
           </IconButton>
@@ -103,7 +134,7 @@ const ProductCard7: React.FC<ProductCard7Props> = ({ products, selectCartItem })
               color="primary"
               disabled={products.quantity === 1}
               sx={{ p: '5px' }}
-              onClick={handleCartAmountChange}
+              onClick={() => handleCartAmountChange(false)}
             >
               <Remove fontSize="small" />
             </Button>
@@ -114,7 +145,7 @@ const ProductCard7: React.FC<ProductCard7Props> = ({ products, selectCartItem })
               variant="outlined"
               color="primary"
               sx={{ p: '5px' }}
-              onClick={handleCartAmountChange}
+              onClick={() => handleCartAmountChange(true)}
             >
               <Add fontSize="small" />
             </Button>

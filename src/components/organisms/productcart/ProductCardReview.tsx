@@ -10,17 +10,14 @@ import Link from 'next/link'
 import React, { useCallback, useState } from 'react'
 import FlexBox from '@Atoms/ui/FlexBox'
 import ProductIntro from '../products/ProductIntro'
+import { Product } from '@Models/product'
+import { linkToName } from 'utils'
 
 export interface ProductCardReviewProps {
   className?: string
   style?: CSSProperties
-  rating?: number
   hoverEffect?: boolean
-  imgUrl: string
-  title: string
-  price: number
-  off?: number
-  id: string | number
+  topProductDiscount: Product
 }
 
 const useStyles = makeStyles(({ palette, ...theme }: MuiThemeProps) => ({
@@ -78,6 +75,7 @@ const useStyles = makeStyles(({ palette, ...theme }: MuiThemeProps) => ({
     paddingRight: 3,
     top: '10px',
     left: '10px',
+    zIndex: 1,
   },
   details: {
     padding: '1rem',
@@ -101,11 +99,7 @@ const useStyles = makeStyles(({ palette, ...theme }: MuiThemeProps) => ({
 }))
 
 const ProductCardReview: React.FC<ProductCardReviewProps> = ({
-  id,
-  imgUrl,
-  title,
-  price,
-  off = 0,
+  topProductDiscount,
   hoverEffect,
 }) => {
   const [open, setOpen] = useState(false)
@@ -119,12 +113,12 @@ const ProductCardReview: React.FC<ProductCardReviewProps> = ({
   return (
     <LapstoreCard className={classes.root} hoverEffect={hoverEffect}>
       <div className={classes.imageHolder}>
-        {!!off && (
+        {!!topProductDiscount.discount && (
           <Chip
             className={classes.offerChip}
             color="primary"
             size="small"
-            label={`${off}% off`}
+            label={`${topProductDiscount.discount}% off`}
           />
         )}
 
@@ -134,14 +128,18 @@ const ProductCardReview: React.FC<ProductCardReviewProps> = ({
           </IconButton>
         </div>
 
-        <Link href={`/product/${id}`}>
+        <Link
+          href={`/product/${linkToName(topProductDiscount.productName)}-sku.${
+            topProductDiscount._id
+          }`}
+        >
           <a>
             <LazyImage
-              src={imgUrl}
+              src={topProductDiscount.productThumbnail}
               layout="responsive"
               width="100%"
               height="auto"
-              alt={title}
+              alt={topProductDiscount.productName}
             />
           </a>
         </Link>
@@ -150,7 +148,11 @@ const ProductCardReview: React.FC<ProductCardReviewProps> = ({
       <div className={classes.details}>
         <FlexBox>
           <Box flex="1 1 0" minWidth="0px" mr={1}>
-            <Link href={`/product/${id}`}>
+            <Link
+              href={`/product/${linkToName(topProductDiscount.productName)}-sku.${
+                topProductDiscount._id
+              }`}
+            >
               <a>
                 <H3
                   className="title"
@@ -159,9 +161,9 @@ const ProductCardReview: React.FC<ProductCardReviewProps> = ({
                   fontWeight="600"
                   color="text.secondary"
                   mb={1}
-                  title={title}
+                  title={topProductDiscount.productName}
                 >
-                  {title}
+                  {topProductDiscount.productName}
                 </H3>
               </a>
             </Link>
@@ -171,7 +173,10 @@ const ProductCardReview: React.FC<ProductCardReviewProps> = ({
 
       <Dialog open={open} maxWidth={false} onClose={toggleDialog}>
         <DialogContent className={classes.dialogContent}>
-          <ProductIntro imgUrl={[imgUrl]} title={title} price={price} />
+          <ProductIntro
+            imgUrl={[topProductDiscount.productThumbnail]}
+            productDetail={topProductDiscount}
+          />
           <IconButton
             sx={{ position: 'absolute', top: '0', right: '0' }}
             onClick={toggleDialog}
@@ -182,15 +187,6 @@ const ProductCardReview: React.FC<ProductCardReviewProps> = ({
       </Dialog>
     </LapstoreCard>
   )
-}
-
-ProductCardReview.defaultProps = {
-  id: '324321',
-  title: 'ASUS ROG Strix G15',
-  imgUrl: '/assets/images/products/macbook.png',
-  price: 450,
-  rating: 0,
-  off: 20,
 }
 
 export default ProductCardReview

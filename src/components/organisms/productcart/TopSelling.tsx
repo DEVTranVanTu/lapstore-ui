@@ -6,12 +6,9 @@ import { H4, Span } from '@Atoms/utils/Typography'
 import FlexBox from '@Atoms/ui/FlexBox'
 import LapstoreRating from '@Molecules/rating/LapstoreRating'
 import { makeStyles } from '@material-ui/styles'
+import { topProduct } from '@Models/product'
 export interface TopSellingProps {
-  imgUrl: string
-  title: string
-  rating: number
-  price: string
-  sould: number
+  product: topProduct
 }
 
 const useStyles = makeStyles(() => ({
@@ -32,13 +29,7 @@ const useStyles = makeStyles(() => ({
   }),
 }))
 
-const TopSelling: React.FC<TopSellingProps> = ({
-  title,
-  imgUrl,
-  rating,
-  price,
-  sould,
-}) => {
+const TopSelling: React.FC<TopSellingProps> = ({ product }) => {
   const classes = useStyles()
 
   return (
@@ -47,7 +38,7 @@ const TopSelling: React.FC<TopSellingProps> = ({
         <Box position="relative" height="150px" borderRadius="8px">
           <LazyImage
             className="image-product"
-            src={imgUrl}
+            src={product.productDetail?.productThumbnail}
             layout="fill"
             objectFit="cover"
             borderRadius="8px"
@@ -65,18 +56,18 @@ const TopSelling: React.FC<TopSellingProps> = ({
             whiteSpace={'normal'}
             mb={2}
           >
-            {title}
+            {product.productDetail?.productName}
           </H4>
           <Span height={20} mt={3} fontWeight={'600'}>
-            {price}&nbsp;đ
+            {product.productDetail?.price}&nbsp;đ
           </Span>
           <FlexBox
             height={30}
             alignItems={'center'}
             justifyContent={'space-between'}
           >
-            <LapstoreRating value={rating | 0} color="warn" readOnly />
-            <Span fontSize={'12px'}>Đã bán:&nbsp;{sould}</Span>
+            <LapstoreRating value={product.rating | 0} color="warn" readOnly />
+            <Span fontSize={'12px'}>Đã bán:&nbsp;{product.quantity}</Span>
           </FlexBox>
         </Box>
       </Box>

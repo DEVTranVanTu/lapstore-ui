@@ -7,7 +7,14 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { formatVND, getUserInfo, setCartItemToPayment } from 'utils'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { cartActions, getCart, getCartLoading } from '../store/slices/cartSlice'
+import {
+  addToCartLoading,
+  addToCartSuccess,
+  cartActions,
+  getCart,
+  getCartLoading,
+  removeSuccess,
+} from '../store/slices/cartSlice'
 
 const Cart = () => {
   const getTotalPrice = (data: any) => {
@@ -23,7 +30,9 @@ const Cart = () => {
 
   const cart = useAppSelector(getCart)
   const loading = useAppSelector(getCartLoading)
-
+  const checkRemoveSuccess = useAppSelector(removeSuccess)
+  const checkAddToCart = useAppSelector(addToCartSuccess)
+  const loadingAddToCart = useAppSelector(addToCartLoading)
   const selectCartItem = (data: any) => {
     const listProduct = products
     const index = listProduct.findIndex((i: any) => i.productId === data.productId)
@@ -47,12 +56,25 @@ const Cart = () => {
     setCartItemToPayment(cartInfor)
   }
 
+  const removeCartItem = (data: any) => {
+    dispatch(cartActions.removeCartItem(data))
+  }
+
   useEffect(() => {
     let user = getUserInfo()
     const id = user?._id
+    console.log('reload')
 
     id && dispatch(cartActions.getCartByUser(id))
-  }, [dispatch, products])
+  }, [dispatch, products, checkRemoveSuccess, checkAddToCart])
+
+  useEffect(() => {
+    let user = getUserInfo()
+    const id = user?._id
+    console.log('reload')
+
+    id && dispatch(cartActions.getCartByUser(id))
+  }, [dispatch, checkAddToCart, loadingAddToCart])
 
   return (
     <CheckoutNavLayout>
@@ -64,8 +86,10 @@ const Cart = () => {
             {cart.products.map((item: any) => (
               <ProductCard7
                 key={item.product._id}
+                cartId={cart._id}
                 products={item}
                 selectCartItem={selectCartItem}
+                removeCartItem={removeCartItem}
               />
             ))}
           </Grid>
@@ -90,7 +114,12 @@ const Cart = () => {
               <Divider sx={{ mb: '1rem' }} />
 
               <Link href="/checkout">
-                <Button variant="contained" color="primary" fullWidth>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  disabled={products.length <= 0}
+                >
                   Mua ngay
                 </Button>
               </Link>

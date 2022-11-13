@@ -12,7 +12,7 @@ import FlexBox from '@Atoms/ui/FlexBox'
 import { formatVND, getUserInfo } from 'utils'
 import { Product } from '@Models/product'
 import { useAppDispatch } from '../../../../store/hooks'
-import { cartActions } from '../../../../store/slices/cartSlice'
+import { addToCartActions, cartActions } from '../../../../store/slices/cartSlice'
 import { useRouter } from 'next/router'
 
 export interface ProductIntroProps {
@@ -26,8 +26,16 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
 }) => {
   const dispatch = useAppDispatch()
   const router = useRouter()
-  const { productName, productThumbnail, rating, price, quantity, comment, _id } =
-    productDetail
+  const {
+    productName,
+    productThumbnail,
+    rating,
+    price,
+    discount,
+    quantity,
+    comment,
+    _id,
+  } = productDetail
   const [selectedImage, setSelectedImage] = useState(0)
   const [isViewerOpen, setIsViewerOpen] = useState(false)
   const [currentImage, setCurrentImage] = useState(0)
@@ -68,7 +76,7 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
       productId: _id || '',
       quantity: amount,
     }
-    dispatch(cartActions.addToCart(data)) && router.push('/cart')
+    dispatch(addToCartActions.addToCart(data)) && router.push('/cart')
   }
 
   return (
@@ -148,9 +156,19 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
           </FlexBox>
 
           <Box mb={3}>
-            <H2 color="primary.main" mb={0.5} lineHeight="1">
-              {formatVND(price)}
-            </H2>
+            <Box alignItems="center" mt={0.5}>
+              <H2 pr={1} fontWeight="600" color="primary.main">
+                {formatVND(price - (price * discount) / 100)}
+              </H2>
+              {!!discount && (
+                <Box color="grey.600" fontWeight="600">
+                  <del>{formatVND(price)}</del>
+                  <Span ml={2} color={'primary.main'}>
+                    {discount}%
+                  </Span>
+                </Box>
+              )}
+            </Box>
           </Box>
 
           <Box alignItems="center" mb={2}>
@@ -185,6 +203,7 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
           <LapstoreButton
             variant="contained"
             color="primary"
+            disabled={amount <= 0}
             sx={{
               mb: '36px',
               px: '1.75rem',
