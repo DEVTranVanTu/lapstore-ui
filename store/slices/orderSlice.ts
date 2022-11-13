@@ -12,6 +12,7 @@ export interface PaymentParams {
 
 export interface PaymentData {
   loading: boolean
+  success: boolean
   data: {
     success: boolean
     message: string
@@ -20,6 +21,7 @@ export interface PaymentData {
 
 const initialState: PaymentData = {
   loading: false,
+  success: false,
   data: {
     success: false,
     message: '',
@@ -35,6 +37,7 @@ const orderSlice = createSlice({
     },
     paymentSuccess(state, action: PayloadAction<PaymentData>) {
       state.loading = false
+      state.success = true
       state.data = action.payload.data
     },
     paymentFaild(state) {
@@ -48,8 +51,9 @@ export const orderActions = orderSlice.actions
 
 // Selectors
 
-export const getOrder = (state: RootState) => state.cart.data
-export const getOrderLoading = (state: RootState) => state.cart.loading
+export const getOrder = (state: RootState) => state.order.data
+export const getOrderLoading = (state: RootState) => state.order.loading
+export const paymentSuccess = (state: RootState) => state.order.success
 // Reducer
 const orderReducer = orderSlice.reducer
 export default orderReducer

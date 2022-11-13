@@ -57,6 +57,8 @@ export function removeAuthToken() {
 }
 
 export function setCartItemToPayment(data: object) {
+  console.log(data)
+
   const item =
     data && typeof data === 'object' ? JSON.stringify(data) : JSON.stringify({})
   return localStorage.setItem('cart_item', item)
@@ -67,6 +69,6 @@ export function getCartItemToPayment() {
   return item ? JSON.parse(item) : undefined
 }
 
-export const removeCartItem = () => {
+export const removeStoreCartItem = () => {
   return localStorage.removeItem('cart_item')
 }

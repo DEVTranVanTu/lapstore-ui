@@ -5,7 +5,12 @@ import { Span } from '@Atoms/utils/Typography'
 import { Button, Card, Divider, Grid } from '@material-ui/core'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { formatVND, getUserInfo, setCartItemToPayment } from 'utils'
+import {
+  formatVND,
+  getUserInfo,
+  setCartItemToPayment,
+  removeStoreCartItem,
+} from 'utils'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import {
   addToCartLoading,
@@ -53,6 +58,7 @@ const Cart = () => {
       products: listProduct,
       totalPrice: totalPrice,
     }
+
     setCartItemToPayment(cartInfor)
   }
 
@@ -63,7 +69,7 @@ const Cart = () => {
   useEffect(() => {
     let user = getUserInfo()
     const id = user?._id
-    console.log('reload')
+    removeStoreCartItem()
 
     id && dispatch(cartActions.getCartByUser(id))
   }, [dispatch, products, checkRemoveSuccess, checkAddToCart])
@@ -71,8 +77,7 @@ const Cart = () => {
   useEffect(() => {
     let user = getUserInfo()
     const id = user?._id
-    console.log('reload')
-
+    removeStoreCartItem()
     id && dispatch(cartActions.getCartByUser(id))
   }, [dispatch, checkAddToCart, loadingAddToCart])
 

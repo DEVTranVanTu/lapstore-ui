@@ -22,13 +22,11 @@ import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import {
   provinceActions,
   selectProvinceList,
-  selectProvinceLoading,
 } from '../../../../store/slices/provinceSlice'
 import { formatVND, getCartItemToPayment } from 'utils'
 import ProductCard7Style from '@Organisms/productcart/ProductCard7Style'
 import { Box } from '@material-ui/system'
-import id from 'date-fns/esm/locale/id/index.js'
-import { orderActions } from '../../../../store/slices/orderSlice'
+import { orderActions, paymentSuccess } from '../../../../store/slices/orderSlice'
 
 const CheckoutForm = () => {
   const router = useRouter()
@@ -37,7 +35,7 @@ const CheckoutForm = () => {
   const [products, setProducts] = useState<any>([])
 
   const province = useAppSelector(selectProvinceList)
-  const loading = useAppSelector(selectProvinceLoading)
+  const checkPaymentSuccess = useAppSelector(paymentSuccess)
 
   const [districts, setDistricts] = useState([])
   const [wards, setWards] = useState([])
@@ -57,16 +55,19 @@ const CheckoutForm = () => {
       payment: { method: values.payment_method },
       shipping: values,
     }
-    console.log(data)
     if (data) {
       dispatch(orderActions.payment(data))
     }
   }
 
   useEffect(() => {
+    checkPaymentSuccess && router.push('/cart')
+  }, [checkPaymentSuccess])
+
+  useEffect(() => {
     const cartItem = getCartItemToPayment()
 
-    setProducts(cartItem.products)
+    setProducts(cartItem?.products)
     dispatch(provinceActions.fetchProvinceList())
   }, [dispatch])
 
