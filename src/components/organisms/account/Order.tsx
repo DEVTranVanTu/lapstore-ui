@@ -1,5 +1,6 @@
 import { Box, Tab, Tabs, Typography } from '@material-ui/core'
 import React from 'react'
+import OrderList from './components/OrderList'
 
 type Props = {}
 
@@ -20,11 +21,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   )
 }
@@ -35,7 +32,7 @@ function a11yProps(index: number) {
     'aria-controls': `simple-tabpanel-${index}`,
   }
 }
-export default function Notification({}: Props) {
+export default function Order({}: Props) {
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -53,19 +50,19 @@ export default function Notification({}: Props) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        Tất cả
+        <OrderList filter="" />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Chờ lấy hàng
+        <OrderList filter="0" />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Đang giao hàng
+        <OrderList filter="1" />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Đã giao
+        <OrderList filter="2" />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Đã hủy
+        <OrderList filter="3" />
       </TabPanel>
     </Box>
   )

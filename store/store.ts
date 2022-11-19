@@ -17,7 +17,10 @@ import notificationReducer, {
   deleteNotificationReducer,
   editNotificationReducer,
 } from './slices/notificationSlice'
-import orderReducer from './slices/orderSlice'
+import orderReducer, {
+  cancelOrderReducer,
+  listOrderReducer,
+} from './slices/orderSlice'
 import productBySubReducer, {
   productDetailReducer,
 } from './slices/productBySubSlice'
@@ -57,6 +60,8 @@ const rootReducer = combineReducers({
   topProducts: topProductReducer,
   topProductDiscount: topProductDiscountReducer,
   addToCart: addToCartReducer,
+  listOrder: listOrderReducer,
+  cancelOrder: cancelOrderReducer,
 })
 
 const sagaMiddleware = createSagaMiddleware()

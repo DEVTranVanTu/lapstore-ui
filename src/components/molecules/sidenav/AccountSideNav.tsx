@@ -58,7 +58,7 @@ export default function AccountSideNav({ userInfor }: Props) {
               </a>
             </Link>
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             className={pathname === '/account/notification' ? classes.active : ''}
           >
             <Link href={'/account/notification'}>
@@ -69,7 +69,7 @@ export default function AccountSideNav({ userInfor }: Props) {
                 <ListItemText>Notification</ListItemText>
               </a>
             </Link>
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem className={pathname === '/account/orders' ? classes.active : ''}>
             <Link href={'/account/orders'}>
               <a className={classes.link}>

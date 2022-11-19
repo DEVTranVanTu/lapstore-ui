@@ -53,7 +53,21 @@ const CheckoutForm = () => {
       cartId: cartItem.cartId,
       products: productItem,
       payment: { method: values.payment_method },
-      shipping: values,
+      shipping: {
+        ...values,
+        shipping_province: {
+          codeName: values.shipping_province.codename,
+          name: values.shipping_province.name,
+        },
+        shipping_district: {
+          codeName: values.shipping_district.codename,
+          name: values.shipping_district.name,
+        },
+        shipping_ward: {
+          codeName: values.shipping_ward.codename,
+          name: values.shipping_ward.name,
+        },
+      },
     }
     if (data) {
       dispatch(orderActions.payment(data))

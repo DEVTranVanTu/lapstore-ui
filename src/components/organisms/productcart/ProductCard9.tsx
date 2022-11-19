@@ -35,17 +35,6 @@ export interface ProductCard9Props {
     url: string
   }>
   [key: string]: unknown
-  // className?: string;
-  // style?: CSSProperties;
-  // imgUrl: string;
-  // title: string;
-  // price: number;
-  // off: number;
-  // rating?: number;
-  // subcategories?: Array<{
-  //   title: string;
-  //   url: string;
-  // }>;
 }
 
 const ProductCard9: React.FC<ProductCard9Props> = ({
