@@ -2,6 +2,7 @@ import { Order } from '@Models/order'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 import { payload } from './productBySubSlice'
+import { addShippingResponse, initialAddShippingState } from './shippingSlice'
 
 export interface PaymentParams {
   userId: string
@@ -132,3 +133,33 @@ export const cancelOrderLoading = (state: RootState) => state.cancelOrder.loadin
 export const cancelOrderData = (state: RootState) => state.cancelOrder.data
 
 export const cancelOrderReducer = cancelOrderSlice.reducer
+
+export interface updateShippingPayload {
+  id: string
+  data: any
+}
+
+const changeShippingSlice = createSlice({
+  name: 'change shipping',
+  initialState: initialAddShippingState,
+  reducers: {
+    changeShippingAddress(state, action: PayloadAction<updateShippingPayload>) {
+      state.loading = true
+    },
+    changeShippingAddressSuccess(state, action: PayloadAction<addShippingResponse>) {
+      state.loading = false
+      state.data = action.payload
+    },
+    changeShippingAddressFaild(state) {
+      state.loading = false
+    },
+  },
+})
+
+export const changeShippingActions = changeShippingSlice.actions
+
+export const changeShippingLoading = (state: RootState) =>
+  state.changeShipping.loading
+export const changeShippingData = (state: RootState) => state.changeShipping.data
+
+export const changeShippingReducer = changeShippingSlice.reducer

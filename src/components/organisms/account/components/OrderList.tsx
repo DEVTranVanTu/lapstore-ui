@@ -10,14 +10,18 @@ import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import {
   cancelOrderActions,
   cancelOrderLoading,
+  changeShippingActions,
+  changeShippingData,
+  changeShippingLoading,
   getListOrderData,
   getListOrderLoading,
   listOrderActions,
 } from '../../../../../store/slices/orderSlice'
 import FlexBox from '@Atoms/ui/FlexBox'
 import { makeStyles } from '@material-ui/styles'
-import { IconButton, Pagination } from '@material-ui/core'
+import { Dialog, IconButton, Pagination } from '@material-ui/core'
 import { BorderColorOutlined, Delete } from '@material-ui/icons'
+import ShippingForm from '@Molecules/checkout/ShippingForm'
 
 type Props = {
   filter: String
@@ -43,12 +47,19 @@ const useStyles = makeStyles(() => ({
 
 export default function OrderList({ filter }: Props) {
   const dispatch = useAppDispatch()
-  const loading = useAppSelector(getListOrderLoading)
   const list = useAppSelector(getListOrderData)
 
   const cancleLoading = useAppSelector(cancelOrderLoading)
+  const changeShippingAddressData = useAppSelector(changeShippingData)
+  const [id, setId] = useState('')
 
   const classes = useStyles()
+
+  const [shipping, setShipping] = useState({})
+
+  const [dialogOpen, setDialogOpen] = useState(false)
+
+  const toggleDialog = () => setDialogOpen(!dialogOpen)
 
   const [params, setParams] = useState({
     page: 1,
@@ -93,15 +104,34 @@ export default function OrderList({ filter }: Props) {
     dispatch(cancelOrderActions.cancelOrder(id))
   }
 
-  const changeShippingAddress = (id: String) => {
-    console.log(id)
+  const [orderId, setOrderId] = useState('')
+
+  const changeShippingAddress = (item: any) => {
+    setOrderId(item._id)
+    setId(item.shipping._id)
+    toggleDialog()
+  }
+
+  const selectAddress = (data: any) => {
+    setShipping(data)
+    const newData = {
+      shipping: data,
+    }
+    onChangeShippingAddress(newData)
+  }
+
+  const onChangeShippingAddress = (data: any) => {
+    if (id !== data.shipping._id) {
+      dispatch(changeShippingActions.changeShippingAddress({ id: orderId, data }))
+      setDialogOpen(false)
+    }
   }
 
   useEffect(() => {
     let user = getUserInfo()
     const id = user?._id
     id && dispatch(listOrderActions.getListOrder({ id, params }))
-  }, [params, dispatch, cancleLoading])
+  }, [params, dispatch, cancleLoading, changeShippingAddressData])
 
   return (
     <Box>
@@ -152,18 +182,18 @@ export default function OrderList({ filter }: Props) {
                   <FlexBox justifyContent={'space-between'}>
                     <Paragraph fontWeight="500" fontSize="15px">
                       Địa chỉ giao hàng:{' '}
-                      {item?.shipping.shipping_address +
+                      {item?.shipping?.shipping.shipping_address +
                         ', ' +
-                        item?.shipping.shipping_ward?.name +
+                        item?.shipping?.shipping.shipping_ward?.name +
                         ', ' +
-                        item?.shipping.shipping_district?.name +
+                        item?.shipping?.shipping.shipping_district?.name +
                         ', ' +
-                        item?.shipping.shipping_province?.name}
+                        item?.shipping?.shipping.shipping_province?.name}
                     </Paragraph>
                     <IconButton
                       disabled={item.status === 2 || item.status === 3}
                       className={classes.iconEdit}
-                      onClick={() => changeShippingAddress(item._id)}
+                      onClick={() => changeShippingAddress(item)}
                     >
                       <BorderColorOutlined fontSize="small" />
                     </IconButton>
@@ -191,6 +221,9 @@ export default function OrderList({ filter }: Props) {
         color="primary"
         onChange={handleChange}
       />
+      <Dialog open={dialogOpen} scroll="body" onClose={toggleDialog}>
+        <ShippingForm selectAddress={selectAddress} id={id} />
+      </Dialog>
     </Box>
   )
 }

@@ -14,6 +14,10 @@ const orderApi = {
     const url = `/order/cancel/${id}`
     return axiosClient.delete(url)
   },
+  changeShipping(id: String, data: any) {
+    const url = `/order/address/${id}`
+    return axiosClient.put(url, data)
+  },
 }
 
 export default orderApi

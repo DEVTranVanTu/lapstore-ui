@@ -19,6 +19,7 @@ import notificationReducer, {
 } from './slices/notificationSlice'
 import orderReducer, {
   cancelOrderReducer,
+  changeShippingReducer,
   listOrderReducer,
 } from './slices/orderSlice'
 import productBySubReducer, {
@@ -30,6 +31,7 @@ import productReducer, {
 } from './slices/productSlice'
 import provinceReducer from './slices/provinceSlice'
 import reviewReducer, { addReviewReducer } from './slices/reviewSlice'
+import ShippingReducer, { addShippingReducer } from './slices/shippingSlice'
 import userReducer, {
   listAdminReducer,
   userProfileReducer,
@@ -62,6 +64,9 @@ const rootReducer = combineReducers({
   addToCart: addToCartReducer,
   listOrder: listOrderReducer,
   cancelOrder: cancelOrderReducer,
+  shipping: ShippingReducer,
+  addShipping: addShippingReducer,
+  changeShipping: changeShippingReducer,
 })
 
 const sagaMiddleware = createSagaMiddleware()

@@ -74,7 +74,7 @@ export default function NotificationHeader({ data, onDeleteNotification }: Props
                   </Paragraph>
                   <Paragraph mt={1} color="#666">
                     <Span ml={2}>#{notification.idToReview}</Span>
-                    <Link href={'/order'}>
+                    <Link href={'/account/orders'}>
                       <a>
                         <Span
                           ml={2}

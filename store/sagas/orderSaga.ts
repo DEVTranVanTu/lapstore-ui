@@ -6,12 +6,15 @@ import orderApi from '../../api/orderApi'
 import {
   cancelOrderActions,
   cancelResponse,
+  changeShippingActions,
   listOrderActions,
   orderActions,
   PaymentData,
   PaymentParams,
+  updateShippingPayload,
 } from '../slices/orderSlice'
 import { payload } from '../slices/productBySubSlice'
+import { addShippingResponse } from '../slices/shippingSlice'
 
 function* payment(action: PayloadAction<PaymentParams>) {
   try {
@@ -47,10 +50,23 @@ function* cancelOrder(action: PayloadAction<String>) {
   }
 }
 
+function* changeShipping(action: PayloadAction<updateShippingPayload>) {
+  try {
+    const response: addShippingResponse = yield call(
+      orderApi.changeShipping,
+      action.payload.id,
+      action.payload.data
+    )
+    yield put(changeShippingActions.changeShippingAddressSuccess(response))
+  } catch (error) {
+    yield put(changeShippingActions.changeShippingAddressFaild())
+  }
+}
 export default function* brandSaga() {
   yield all([
     takeLatest(orderActions.payment.type, payment),
     takeLatest(listOrderActions.getListOrder.type, listOrder),
     takeLatest(cancelOrderActions.cancelOrder.type, cancelOrder),
+    takeLatest(changeShippingActions.changeShippingAddress.type, changeShipping),
   ])
 }
