@@ -3,7 +3,6 @@ import HomeLayout from '@Layouts/HomeLayout'
 import DealAndOffer from '@Templates/dealandoffer/DealAndOffers'
 import Recommended from '@Templates/recommended/Recommended'
 import LaptopMacbook from '@Organisms/laptopmacbook/LaptopMacbook'
-// import ProductsElectronics from '@Organisms/productelectronics/ProductsElectronics'
 
 const Home = () => {
   return (

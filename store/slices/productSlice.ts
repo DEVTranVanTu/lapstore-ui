@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { ListParams, Product, topProduct } from 'models'
+import { ListParams, ListResponse, Params, Product, topProduct } from 'models'
+import { ProductBySubState } from './productBySubSlice'
 
 export interface ProductState {
   loading: boolean
@@ -12,21 +13,51 @@ const initialState: ProductState = {
   list: [],
 }
 
-const productSlice = createSlice({
-  name: 'product',
-  initialState,
+const initialListProductState: ProductBySubState = {
+  loading: false,
+  data: {
+    data: [],
+    pagination: {
+      page: 0,
+      limit: 0,
+      totals: 0,
+      totalRows: 0,
+      totalPages: 0,
+    },
+  },
+}
+
+const listProductSlice = createSlice({
+  name: 'all product',
+  initialState: initialListProductState,
   reducers: {
-    fetchProductList(state) {
+    fetchProductList(state, action: PayloadAction<Params>) {
       state.loading = true
     },
-    fetchProductListSuccess(state, action: PayloadAction<Product[]>) {
-      state.list = action.payload
+    fetchProductListSuccess(state, action: PayloadAction<ListResponse<Product>>) {
+      state.data = action.payload
       state.loading = false
     },
     fetchProductListFailed(state) {
       state.loading = false
     },
+  },
+})
 
+// Actions
+export const listProductActions = listProductSlice.actions
+
+// Selectors
+export const selectAllProduct = (state: RootState) => state.allProduct.data
+export const selectAllProductLoading = (state: RootState) => state.allProduct.loading
+
+// Reducer
+export const listProductReducer = listProductSlice.reducer
+
+const productSlice = createSlice({
+  name: 'product',
+  initialState,
+  reducers: {
     // fetch product by subCategory
     fetchProductListBySub(state, action: PayloadAction<string>) {
       state.loading = true
@@ -62,7 +93,7 @@ const topProductDiscountInitialState: ProductState = {
 }
 
 const topProductDiscountSlice = createSlice({
-  name: 'top product slice',
+  name: 'top product',
   initialState: topProductDiscountInitialState,
   reducers: {
     // fetch top product discount

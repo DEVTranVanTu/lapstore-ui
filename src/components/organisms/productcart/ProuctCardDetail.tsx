@@ -1,33 +1,21 @@
+import { MuiThemeProps } from '@Atoms/themes/theme'
+import FlexBox from '@Atoms/ui/FlexBox'
 import LapstoreCard from '@Atoms/ui/LapstoreCard'
 import LazyImage from '@Atoms/ui/LazyImage'
 import { H3, Span } from '@Atoms/utils/Typography'
-import { useAppContext } from '@context/app/AppContext'
-import {
-  Box,
-  Button,
-  Chip,
-  Dialog,
-  DialogContent,
-  IconButton,
-} from '@material-ui/core'
+import { Box, Chip, Dialog, DialogContent, IconButton } from '@material-ui/core'
 import Close from '@material-ui/icons/Close'
-import Favorite from '@material-ui/icons/Favorite'
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
-import Remove from '@material-ui/icons/Remove'
 import RemoveRedEye from '@material-ui/icons/RemoveRedEye'
 import { CSSProperties, makeStyles } from '@material-ui/styles'
-import { CartItem } from '@reducer/cartReducer'
-import { MuiThemeProps } from '@Atoms/themes/theme'
 import Link from 'next/link'
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
-import FlexBox from '@Atoms/ui/FlexBox'
-import ProductIntro from '../products/ProductIntro'
-import { linkToName, formatVND } from 'utils'
+import React, { useCallback, useEffect, useState } from 'react'
+import { formatVND, linkToName } from 'utils'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import {
   getProductDetail,
   productDetailActions,
 } from '../../../../store/slices/productBySubSlice'
+import ProductIntro from '../products/ProductIntro'
 
 export interface ProductCardDetailProps {
   className?: string

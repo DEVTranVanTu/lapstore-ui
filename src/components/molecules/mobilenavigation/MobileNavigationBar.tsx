@@ -3,13 +3,14 @@ import Home from '@Atoms/icons/Home'
 import ShoppingBagOutlined from '@Atoms/icons/ShoppingBagOutlined'
 import User2 from '@Atoms/icons/User2'
 import NavLink from '@Molecules/navlink/NavLink'
-import { useAppContext } from '@context/app/AppContext'
 import useWindowSize from '@Atoms/hooks/useWindowSize'
 import { Badge, Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { MuiThemeProps } from '@Atoms/themes/theme'
 import { layoutConstant } from '@Atoms/utils/constants'
 import React from 'react'
+import { useAppSelector } from '../../../../store/hooks'
+import { getCart } from '../../../../store/slices/cartSlice'
 
 const useStyles = makeStyles(({ palette }: MuiThemeProps) => ({
   root: {
@@ -51,15 +52,14 @@ const useStyles = makeStyles(({ palette }: MuiThemeProps) => ({
 const MobileNavigationBar = () => {
   const width = useWindowSize()
   const classes = useStyles()
-  const { state } = useAppContext()
-  const { cartList } = state.cart
+  const cart = useAppSelector(getCart)
 
   return width <= 900 ? (
     <Box className={classes.root}>
       {list.map((item) => (
         <NavLink className={classes.link} href={item.href} key={item.title}>
           {item.title === 'Cart' ? (
-            <Badge badgeContent={cartList.length} color="primary">
+            <Badge badgeContent={cart?.products?.length} color="primary">
               <item.icon className={classes.icon} fontSize="small" />
             </Badge>
           ) : (

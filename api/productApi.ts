@@ -1,9 +1,9 @@
 import { Product, topProduct } from '@Models/index'
 import axiosClient from './axiosClient'
 const productApi = {
-  getAll(): Promise<Product[]> {
+  getAll(params: object) {
     const url = '/products'
-    return axiosClient.get(url)
+    return axiosClient.get(url, { params })
   },
 
   getTopProducts(): Promise<topProduct[]> {

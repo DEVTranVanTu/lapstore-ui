@@ -1,20 +1,24 @@
-import { Product, topProduct } from 'models'
+import { PayloadAction } from '@reduxjs/toolkit'
+import { ListResponse, Params, Product, topProduct } from 'models'
 import { all, call, put, takeLatest } from 'redux-saga/effects'
 import productApi from '../../api/productApi'
 import {
-  productActions,
+  listProductActions,
   topProductActions,
   topProductDiscountActions,
 } from '../slices/productSlice'
 
-function* fetchProductList() {
+function* fetchProductList(action: PayloadAction<Params>) {
   try {
-    const response: Product[] = yield call(productApi.getAll)
+    const response: ListResponse<Product> = yield call(
+      productApi.getAll,
+      action.payload
+    )
 
-    yield put(productActions.fetchProductListSuccess(response))
+    yield put(listProductActions.fetchProductListSuccess(response))
   } catch (error) {
     console.log('Failed to fetch product list', error)
-    yield put(productActions.fetchProductListFailed())
+    yield put(listProductActions.fetchProductListFailed())
   }
 }
 
@@ -38,7 +42,7 @@ function* fetchTopProductDiscount() {
 
 export default function* productSaga() {
   yield all([
-    takeLatest(productActions.fetchProductList.type, fetchProductList),
+    takeLatest(listProductActions.fetchProductList.type, fetchProductList),
     takeLatest(topProductActions.fetchTopProductList.type, fetchTopProducts),
     takeLatest(
       topProductDiscountActions.fetchTopProductDiscountList.type,

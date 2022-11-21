@@ -36,12 +36,12 @@ export default function ProductBrandResult() {
 
   const [params, setParams] = useState({
     page: 1,
-    limit: 1,
+    limit: 12,
   })
   const handleChange = (event: any, value: number) => {
     setParams({
       page: value,
-      limit: 1,
+      limit: 12,
     })
   }
 
@@ -162,8 +162,6 @@ export default function ProductBrandResult() {
 }
 
 const sortOptions = [
-  { label: 'Reviews Low to High', value: 'Relevance' },
-  { label: 'Reviews High to Low', value: 'Date' },
   { label: 'Price Low to High', value: 'Price Low to High' },
   { label: 'Price High to Low', value: 'Price High to Low' },
 ]

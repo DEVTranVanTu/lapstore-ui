@@ -27,7 +27,7 @@ const ProductCard1List: FC<ProductCard1ListProps> = (props) => {
         <>
           <Grid container spacing={3}>
             {products.data?.map((item, ind) => (
-              <Grid item lg={4} sm={6} xs={12} key={ind}>
+              <Grid item lg={3} sm={6} xs={12} key={ind}>
                 <ProductCardDetail {...item} />
               </Grid>
             ))}

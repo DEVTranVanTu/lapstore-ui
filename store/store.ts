@@ -26,6 +26,7 @@ import productBySubReducer, {
   productDetailReducer,
 } from './slices/productBySubSlice'
 import productReducer, {
+  listProductReducer,
   topProductDiscountReducer,
   topProductReducer,
 } from './slices/productSlice'
@@ -67,6 +68,7 @@ const rootReducer = combineReducers({
   shipping: ShippingReducer,
   addShipping: addShippingReducer,
   changeShipping: changeShippingReducer,
+  allProduct: listProductReducer,
 })
 
 const sagaMiddleware = createSagaMiddleware()
