@@ -19,7 +19,6 @@ function* fetchProductListBySub(action: PayloadAction<payload>) {
 
     yield put(productBySubActions.fetchProductListBySubSuccess(response))
   } catch (error) {
-    console.log('Failed to fetch product list', error)
     yield put(productBySubActions.fetchProductListBySubFailed())
   }
 }
@@ -29,7 +28,6 @@ function* fetchProductDetail(action: PayloadAction<string>) {
     const response: Product = yield call(productApi.getById, action.payload)
     yield put(productDetailActions.fetchProductDetailSuccess(response))
   } catch (error) {
-    console.log('Failed to fetch product detail', error)
     yield put(productDetailActions.fetchProductDetailFailed())
   }
 }

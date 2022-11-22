@@ -19,7 +19,6 @@ function* fetchInventoryList(action: PayloadAction<Params>) {
 
     yield put(inventoryActions.fetchInventoryListSuccess(response))
   } catch (error) {
-    console.log('Failed to fetch inventory list', error)
     yield put(inventoryActions.fetchInventoryListFailed())
   }
 }
@@ -34,7 +33,6 @@ function* fetchInventorySearchList(action: PayloadAction<ParamsSearch>) {
 
     yield put(inventorySearchActions.fetchSearchInventoryListSuccess(response))
   } catch (error) {
-    console.log('Failed to fetch inventory list', error)
     yield put(inventorySearchActions.fetchSearchInventoryListFailed())
   }
 }
@@ -49,7 +47,6 @@ function* fetchInventoryListByBrand(action: PayloadAction<ParamsBrand>) {
 
     yield put(inventoryByBrandActions.fetchInventoryListByBrandSuccess(response))
   } catch (error) {
-    console.log('Failed to fetch inventory list', error)
     yield put(inventoryByBrandActions.fetchInventoryListByBrandFailed())
   }
 }

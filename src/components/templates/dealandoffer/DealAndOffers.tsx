@@ -21,8 +21,6 @@ const DealAndOffers = () => {
 
   const topProducts = useAppSelector(selectTopProductList)
 
-  console.log('topProducts', topProducts)
-
   useEffect(() => {
     if (width < 650) setVisibleSlides(1)
     else if (width < 950) setVisibleSlides(2)

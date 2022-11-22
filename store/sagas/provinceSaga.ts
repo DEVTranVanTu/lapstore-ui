@@ -7,7 +7,6 @@ function* fetchProvinceList() {
     const response: any = yield call(provinceApi.getProvince)
     yield put(provinceActions.fetchProvinceListSuccess(response.data))
   } catch (error) {
-    console.log('Failed to fetch province list', error)
     yield put(provinceActions.fetchProvinceListFailed())
   }
 }

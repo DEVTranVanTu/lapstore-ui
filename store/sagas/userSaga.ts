@@ -21,7 +21,6 @@ function* login(action: PayloadAction<AuthData>) {
     setAuthToken(response.data.token)
     setUserInfo(response.data.user)
   } catch (error) {
-    console.log('Failed to login', error)
     yield put(userActions.loginFailed())
   }
 }
@@ -53,7 +52,6 @@ function* updateProfile(action: PayloadAction<uploadProfilePayload>) {
 function* listAdmin() {
   try {
     const response: listAdminPayload = yield call(userApi.getListAdmin)
-    console.log('response', response)
 
     yield put(listAdminActions.getListAdminSuccess(response))
   } catch (error) {

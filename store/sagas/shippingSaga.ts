@@ -15,7 +15,6 @@ function* fetchShippingList(action: PayloadAction<String>) {
 
     yield put(shippingActions.fetchShippingListSuccess(response))
   } catch (error) {
-    console.log('Failed to fetch category list', error)
     yield put(shippingActions.fetchShippingListFailed())
   }
 }

@@ -23,7 +23,6 @@ function* payment(action: PayloadAction<PaymentParams>) {
     yield put(orderActions.paymentSuccess(response))
     removeStoreCartItem()
   } catch (error) {
-    console.log('Payment faild', error)
     yield put(orderActions.paymentFaild())
   }
 }

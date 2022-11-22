@@ -17,7 +17,6 @@ function* fetchProductList(action: PayloadAction<Params>) {
 
     yield put(listProductActions.fetchProductListSuccess(response))
   } catch (error) {
-    console.log('Failed to fetch product list', error)
     yield put(listProductActions.fetchProductListFailed())
   }
 }

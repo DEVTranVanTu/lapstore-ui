@@ -9,7 +9,6 @@ function* fetchCategoryNavList() {
 
     yield put(categoryNavActions.fetchCategoryNavListSuccess(response))
   } catch (error) {
-    console.log('Failed to fetch category list', error)
     yield put(categoryNavActions.fetchCategoryNavListFailed())
   }
 }

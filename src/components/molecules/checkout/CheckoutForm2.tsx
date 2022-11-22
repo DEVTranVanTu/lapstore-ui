@@ -29,7 +29,6 @@ const CheckoutForm2 = () => {
   const router = useRouter()
 
   const handleFormSubmit = async (values: any) => {
-    console.log(values)
     router.push('/payment')
   }
 

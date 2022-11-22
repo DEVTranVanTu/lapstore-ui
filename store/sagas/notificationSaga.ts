@@ -17,7 +17,6 @@ function* getNotification(action: PayloadAction<string>) {
 
     yield put(notificationActions.getNotificationSuccess(response.data))
   } catch (error) {
-    console.log('Get notification by user faild', error)
     yield put(notificationActions.getNotificationFaild())
   }
 }

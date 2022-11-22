@@ -110,7 +110,7 @@ export default function ShippingForm({ selectAddress, id }: Props) {
 
   useEffect(() => {
     const userInfo = getUserInfo()
-    const id = userInfo._id
+    const id = userInfo?._id
     id && dispatch(shippingActions.fetchShippingList(id))
     dispatch(provinceActions.fetchProvinceList())
   }, [dispatch, addShippingAddressLoading])

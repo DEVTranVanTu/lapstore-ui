@@ -7,7 +7,6 @@ const CheckoutSummary = () => {
   const [total, setTotal] = useState(0)
   useEffect(() => {
     const cartItem = getCartItemToPayment()
-    console.log(cartItem)
 
     setTotal(cartItem.totalPrice)
   }, [])

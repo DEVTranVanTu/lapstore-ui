@@ -10,7 +10,6 @@ function* getCartByUser(action: PayloadAction<string>) {
 
     yield put(cartActions.getCartByUserSuccess(response))
   } catch (error) {
-    console.log('Get cart by user faild', error)
     yield put(cartActions.getCartByUserFaild())
   }
 }

@@ -13,7 +13,6 @@ function* fetchReviewList(action: PayloadAction<string>) {
 
     yield put(reviewActions.fetchReviewListSuccess(response))
   } catch (error) {
-    console.log('Failed to fetch review list', error)
     yield put(reviewActions.fetchReviewListFailed())
   }
 }
@@ -26,7 +25,6 @@ function* addReview(action: PayloadAction<Review>) {
     )
     yield put(addReviewActions.addReviewSuccess(response))
   } catch (error) {
-    console.log('Failed to add review', error)
     yield put(addReviewActions.addReviewFailed())
   }
 }

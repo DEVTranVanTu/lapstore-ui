@@ -55,7 +55,6 @@ const Signup: FC<signup> = ({ handleChangeForm }) => {
 
   const handleFormSubmit = async (values: any) => {
     router.push('/profile')
-    console.log(values)
   }
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =

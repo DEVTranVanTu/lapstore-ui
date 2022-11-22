@@ -129,6 +129,7 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
     removeAuthToken()
     const isLogoutStatus = !isLogout
     setIsLogout(isLogoutStatus)
+    router.push('/')
   }
 
   const cart = useAppSelector(getCart)

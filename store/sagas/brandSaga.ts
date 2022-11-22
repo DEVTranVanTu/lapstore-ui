@@ -9,14 +9,10 @@ function* fetchBrandList() {
 
     yield put(brandActions.fetchBrandListSuccess(response))
   } catch (error) {
-    console.log('Failed to fetch category list', error)
     yield put(brandActions.fetchBrandListFailed())
   }
 }
 
 export default function* brandSaga() {
-  yield takeLatest(
-    brandActions.fetchBrandList.type,
-    fetchBrandList
-  )
+  yield takeLatest(brandActions.fetchBrandList.type, fetchBrandList)
 }

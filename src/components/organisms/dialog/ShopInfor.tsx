@@ -9,7 +9,6 @@ import { listAdmin, listAdminActions } from '../../../../store/slices/userSlice'
 export default function ShopInfor() {
   const dispatch = useAppDispatch()
   const admins = useAppSelector(listAdmin)
-  console.log(admins)
 
   useEffect(() => {
     dispatch(listAdminActions.getListAdmin())

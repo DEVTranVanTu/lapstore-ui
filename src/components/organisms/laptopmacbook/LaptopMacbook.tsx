@@ -14,7 +14,6 @@ const LaptopMacbook = () => {
   const dispatch = useAppDispatch()
 
   const topProductDiscount = useAppSelector(selectTopProductDiscount)
-  console.log('topProductDiscount', topProductDiscount)
 
   useEffect(() => {
     dispatch(topProductDiscountActions.fetchTopProductDiscountList())
