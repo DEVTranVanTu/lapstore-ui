@@ -1,15 +1,33 @@
 import LapstoreButton from '@Atoms/ui/LapstoreButton'
 import LapstoreTextField from '@Atoms/ui/LapstoreTextField'
 import FlexBox from '@Atoms/ui/FlexBox'
-import { H3, H6, Small } from '@Atoms/utils/Typography'
-import { Box, Card, CardProps, IconButton } from '@material-ui/core'
+import { H3, H6, Paragraph, Small } from '@Atoms/utils/Typography'
+import {
+  Box,
+  Button,
+  Card,
+  CardProps,
+  Dialog,
+  IconButton,
+  TextField,
+  useMediaQuery,
+} from '@material-ui/core'
 import { styled } from '@material-ui/core/styles'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
+import { useTheme } from '@material-ui/core/styles'
+
 import * as yup from 'yup'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
+import {
+  registerActions,
+  registerResponse,
+  verifyEmailActions,
+  verifyResponse,
+} from '../../../../store/slices/userSlice'
 
 type StyledCardProps = {
   passwordVisibility?: boolean
@@ -42,8 +60,21 @@ const StyledCard = styled<React.FC<StyledCardProps & CardProps>>(
 }))
 
 const Signup: FC<signup> = ({ handleChangeForm }) => {
+  const dispatch = useAppDispatch()
+
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const toggleDialog = () => setDialogOpen(!dialogOpen)
+  const theme = useTheme()
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
+
   const [passwordVisibility, setPasswordVisibility] = useState(false)
+  const [otp, setOtp] = useState('')
+  const [data, setData] = useState<any>()
   const router = useRouter()
+
+  const verifyMessage = useAppSelector(verifyResponse)
+  const register = useAppSelector(registerResponse)
 
   const changeForm = () => {
     handleChangeForm(true)
@@ -54,7 +85,24 @@ const Signup: FC<signup> = ({ handleChangeForm }) => {
   }, [])
 
   const handleFormSubmit = async (values: any) => {
-    router.push('/profile')
+    const data = {
+      email: values?.email,
+      username: values?.name,
+      password: values?.password,
+      otp: otp,
+    }
+    setData(values)
+    dispatch(verifyEmailActions.verifyEmail(data))
+  }
+
+  const handleVerifyEmail = async () => {
+    const dataConfirm = {
+      email: data?.email,
+      username: data?.name,
+      password: data?.password,
+      otp: otp,
+    }
+    dispatch(registerActions.register(dataConfirm))
   }
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
@@ -64,6 +112,18 @@ const Signup: FC<signup> = ({ handleChangeForm }) => {
       validationSchema: formSchema,
     })
 
+  useEffect(() => {
+    if (verifyMessage.success) {
+      toggleDialog()
+    }
+  }, [verifyMessage])
+
+  useEffect(() => {
+    if (register.success) {
+      console.log('register', register)
+      router.push('/account/profile')
+    }
+  }, [register])
   return (
     <StyledCard elevation={3} passwordVisibility={passwordVisibility}>
       <form className="content" onSubmit={handleSubmit}>
@@ -84,8 +144,8 @@ const Signup: FC<signup> = ({ handleChangeForm }) => {
         <LapstoreTextField
           mb={1.5}
           name="name"
-          label="Tên đầy đủ"
-          placeholder="Trần Văn Tú"
+          label="Tên người dùng"
+          placeholder="Nhập tên ..."
           variant="outlined"
           size="small"
           fullWidth
@@ -99,7 +159,7 @@ const Signup: FC<signup> = ({ handleChangeForm }) => {
         <LapstoreTextField
           mb={1.5}
           name="email"
-          label="Email hoặc Số Điện Thoại"
+          label="Nhập email ..."
           placeholder="exmple@mail.com"
           variant="outlined"
           size="small"
@@ -182,6 +242,7 @@ const Signup: FC<signup> = ({ handleChangeForm }) => {
           fullWidth
           sx={{
             height: 44,
+            mt: 2,
           }}
         >
           Tạo tài khoản
@@ -199,6 +260,37 @@ const Signup: FC<signup> = ({ handleChangeForm }) => {
           </H6>
         </FlexBox>
       </form>
+      <Dialog
+        open={dialogOpen}
+        fullWidth={isMobile}
+        scroll="body"
+        onClose={toggleDialog}
+      >
+        <Box px={4} py={2}>
+          <Paragraph color="grey.700">Nhập mã OTP</Paragraph>
+          <Paragraph color="grey.500">
+            Mã OPT đã được gửi đến email của bạn.
+          </Paragraph>
+          <Box my={1}>
+            <TextField
+              name="voucher"
+              placeholder="Nhập mã OTP"
+              fullWidth
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+            />
+          </Box>
+          <Button
+            variant="contained"
+            color="primary"
+            type="button"
+            fullWidth
+            onClick={handleVerifyEmail}
+          >
+            Xác nhận
+          </Button>
+        </Box>
+      </Dialog>
     </StyledCard>
   )
 }

@@ -183,3 +183,87 @@ export const listAdmin = (state: RootState) => state.listAdmin.data
 export const listAdminLoading = (state: RootState) => state.listAdmin.loading
 
 export const listAdminReducer = listAdminSlice.reducer
+
+export interface verifyResponse {
+  success: Boolean
+  message: String
+}
+
+export interface verifyResquest {
+  email: String
+  password: String
+  username: String
+  otp?: String
+}
+
+export interface sendEmailPayload {
+  loading: boolean
+  data: verifyResponse
+}
+
+const initialVerifyState: sendEmailPayload = {
+  loading: false,
+  data: {
+    success: false,
+    message: '',
+  },
+}
+
+const verifyEmailSlice = createSlice({
+  name: 'verify email',
+  initialState: initialVerifyState,
+  reducers: {
+    verifyEmail(state, action: PayloadAction<verifyResquest>) {
+      state.loading = true
+    },
+    verifyEmailSuccess(state, action: PayloadAction<verifyResponse>) {
+      state.loading = false
+      state.data = action.payload
+    },
+    verifyEmailFaild(state) {
+      state.loading = false
+    },
+  },
+})
+
+export const verifyEmailActions = verifyEmailSlice.actions
+
+export const verifyResponse = (state: RootState) => state.verifyEmail.data
+export const verifyResponseLoading = (state: RootState) => state.verifyEmail.loading
+
+export const verifyEmailReducer = verifyEmailSlice.reducer
+
+export interface registerPayload {
+  loading: boolean
+  data: verifyResponse
+}
+const initialRegisterState: registerPayload = {
+  loading: false,
+  data: {
+    success: false,
+    message: '',
+  },
+}
+const registerSlice = createSlice({
+  name: 'register',
+  initialState: initialRegisterState,
+  reducers: {
+    register(state, action: PayloadAction<verifyResquest>) {
+      state.loading = true
+    },
+    registerSuccess(state, action: PayloadAction<verifyResponse>) {
+      state.loading = false
+      state.data = action.payload
+    },
+    registerFaild(state) {
+      state.loading = false
+    },
+  },
+})
+
+export const registerActions = registerSlice.actions
+
+export const registerResponse = (state: RootState) => state.register.data
+export const registerResponseLoading = (state: RootState) => state.register.loading
+
+export const registerReducer = registerSlice.reducer

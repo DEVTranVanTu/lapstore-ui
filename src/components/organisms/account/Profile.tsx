@@ -91,14 +91,14 @@ const Profile: FC<Profile> = ({ profile, updateProfile }) => {
   const [userProfile, setUserProfile] = React.useState<StateProfile>(
     profile.user.profile
   )
-  const [images, setImages] = useState(userProfile.photo)
+  const [images, setImages] = useState(userProfile?.photo)
 
   const handleChangeProfile =
     (prop: keyof StateProfile) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setUserProfile({ ...userProfile, [prop]: event.target.value })
     }
 
-  const dateOfBirth = userProfile.dateOfBirth?.toString()
+  const dateOfBirth = userProfile?.dateOfBirth?.toString()
 
   const DateArr = dateOfBirth ? dateOfBirth.split('-') : []
 
@@ -141,32 +141,6 @@ const Profile: FC<Profile> = ({ profile, updateProfile }) => {
           </Box>
           <Box display={'flex'} mb={3}>
             <Span width={'30%'}>Mật khẩu</Span>
-            {/* <FormControl variant="outlined">
-                  <OutlinedInput
-                    id="outlined-adornment-password"
-                    type={values.showPassword ? 'text' : 'password'}
-                    value={values.password}
-                    size={'small'}
-                    onChange={handleChange('password')}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          size="small"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {values.showPassword ? (
-                            <VisibilityOff fontSize="small" />
-                          ) : (
-                            <Visibility fontSize="small" />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl> */}
             <Box>
               <Span>********</Span>
               <Span ml={2}>Thay đổi</Span>
@@ -182,7 +156,7 @@ const Profile: FC<Profile> = ({ profile, updateProfile }) => {
               <FormControl variant="outlined" fullWidth>
                 <OutlinedInput
                   id="outlined-adornment-name"
-                  value={userProfile?.phoneNumber}
+                  value={userProfile?.phoneNumber || ''}
                   onChange={handleChangeProfile('phoneNumber')}
                   size={'small'}
                   fullWidth

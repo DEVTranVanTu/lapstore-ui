@@ -35,8 +35,10 @@ import reviewReducer, { addReviewReducer } from './slices/reviewSlice'
 import ShippingReducer, { addShippingReducer } from './slices/shippingSlice'
 import userReducer, {
   listAdminReducer,
+  registerReducer,
   userProfileReducer,
   userUpdateReducer,
+  verifyEmailReducer,
 } from './slices/userSlice'
 
 const rootReducer = combineReducers({
@@ -69,6 +71,8 @@ const rootReducer = combineReducers({
   addShipping: addShippingReducer,
   changeShipping: changeShippingReducer,
   allProduct: listProductReducer,
+  verifyEmail: verifyEmailReducer,
+  register: registerReducer,
 })
 
 const sagaMiddleware = createSagaMiddleware()

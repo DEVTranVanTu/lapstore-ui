@@ -6,6 +6,14 @@ const userApi = {
     const url = '/auth/login'
     return axiosClient.post(url, data)
   },
+  verifyEmail(data: any) {
+    const url = '/auth/register'
+    return axiosClient.post(url, data)
+  },
+  register(data: any) {
+    const url = '/auth/verify'
+    return axiosClient.post(url, data)
+  },
   getUserInfor(id: String): Promise<User> {
     const url = `auth/users/${id}`
     return axiosClient.get(url)

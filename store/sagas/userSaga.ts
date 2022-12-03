@@ -6,10 +6,14 @@ import userApi from '../../api/userApi'
 import {
   listAdminActions,
   listAdminPayload,
+  registerActions,
   uploadProfilePayload,
   userActions,
   userProfileActions,
   userProfileUpdateAction,
+  verifyEmailActions,
+  verifyResponse,
+  verifyResquest,
 } from '../slices/userSlice'
 
 function* login(action: PayloadAction<AuthData>) {
@@ -59,11 +63,31 @@ function* listAdmin() {
   }
 }
 
+function* verifyEmail(action: PayloadAction<verifyResquest>) {
+  try {
+    const response: verifyResponse = yield call(userApi.verifyEmail, action.payload)
+    yield put(verifyEmailActions.verifyEmailSuccess(response))
+  } catch (error) {
+    yield put(verifyEmailActions.verifyEmailFaild)
+  }
+}
+
+function* register(action: PayloadAction<verifyResquest>) {
+  try {
+    const response: verifyResponse = yield call(userApi.register, action.payload)
+    yield put(registerActions.registerSuccess(response))
+  } catch (error) {
+    yield put(registerActions.registerFaild)
+  }
+}
+
 export default function* userSaga() {
   yield all([
     takeLatest(userActions.login.type, login),
     takeLatest(userProfileActions.getUserProfile.type, getUserProfile),
     takeLatest(userProfileUpdateAction.uploadProfile.type, updateProfile),
     takeLatest(listAdminActions.getListAdmin.type, listAdmin),
+    takeLatest(verifyEmailActions.verifyEmail.type, verifyEmail),
+    takeLatest(registerActions.register.type, register),
   ])
 }
