@@ -9,7 +9,7 @@ import {
   MenuItem,
   MenuList,
 } from '@material-ui/core'
-import { LocalMall, Notifications, Person } from '@material-ui/icons'
+import { LocalMall, Person } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/styles'
 import Link from 'next/link'
 import { useRouter } from 'next/router'

@@ -53,6 +53,7 @@ export interface payload {
   params: {
     page: number
     limit: number
+    filters?: any
   }
 }
 

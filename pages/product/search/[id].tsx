@@ -34,23 +34,45 @@ export default function ProductSearchResult() {
   const router = useRouter()
 
   const id: string = String(router.query.id)?.split('.', -1)[1]
+  const [filters, setFilters] = useState({})
+  const [sort, setSort] = useState('lowToHigh')
 
   const [params, setParams] = useState({
     page: 1,
     limit: 12,
+    sort: sort,
+    filters: {},
   })
   const handleChange = (event: any, value: number) => {
     setParams({
       page: value,
       limit: 12,
+      sort: sort,
+      filters: filters,
     })
   }
 
   const products = useAppSelector(selectProductListBySub)
   const loading = useAppSelector(selectProductLoadingBySub)
 
+  const handleFilterData = (value: any) => {
+    setFilters(value)
+  }
   useEffect(() => {
-    id && dispatch(productBySubActions.fetchProductListBySub({ id, params }))
+    setParams({
+      ...params,
+      sort: sort,
+      filters: filters,
+    })
+  }, [filters, sort])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      id && dispatch(productBySubActions.fetchProductListBySub({ id, params }))
+    }, 1000)
+    return () => {
+      clearTimeout(timer)
+    }
   }, [dispatch, id, params])
 
   const searchBy = router.query.id
@@ -93,6 +115,7 @@ export default function ProductSearchResult() {
                 placeholder="Short by"
                 select
                 defaultValue={sortOptions[0].value}
+                onChange={(e) => setSort(e.target.value)}
                 fullWidth
                 sx={{
                   flex: '1 1 0',
@@ -127,7 +150,7 @@ export default function ProductSearchResult() {
                     </IconButton>
                   }
                 >
-                  <ProductFilterCard />
+                  <ProductFilterCard handleFilterData={handleFilterData} />
                 </Sidenav>
               )}
             </FlexBox>
@@ -145,7 +168,7 @@ export default function ProductSearchResult() {
               },
             }}
           >
-            <ProductFilterCard />
+            <ProductFilterCard handleFilterData={handleFilterData} />
           </Grid>
 
           <Grid item lg={9} xs={12}>
@@ -163,6 +186,6 @@ export default function ProductSearchResult() {
 }
 
 const sortOptions = [
-  { label: 'Price Low to High', value: 'Price Low to High' },
-  { label: 'Price High to Low', value: 'Price High to Low' },
+  { label: 'Price Low to High', value: 'lowToHigh' },
+  { label: 'Price High to Low', value: 'highToLow' },
 ]

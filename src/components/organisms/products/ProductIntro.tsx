@@ -12,7 +12,7 @@ import FlexBox from '@Atoms/ui/FlexBox'
 import { formatVND, getUserInfo } from 'utils'
 import { Product } from '@Models/product'
 import { useAppDispatch } from '../../../../store/hooks'
-import { addToCartActions, cartActions } from '../../../../store/slices/cartSlice'
+import { addToCartActions } from '../../../../store/slices/cartSlice'
 import { useRouter } from 'next/router'
 
 export interface ProductIntroProps {

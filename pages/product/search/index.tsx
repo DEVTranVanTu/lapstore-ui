@@ -45,6 +45,10 @@ export default function ProductSearchInputResult() {
     })
   }
 
+  const handleFilterData = (value: any) => {
+    console.log('filter', value)
+  }
+
   const products = useAppSelector(selectInventoryListSearch)
   const loading = useAppSelector(selectInventorySearchLoading)
 
@@ -125,7 +129,7 @@ export default function ProductSearchInputResult() {
                     </IconButton>
                   }
                 >
-                  <ProductFilterCard />
+                  <ProductFilterCard handleFilterData={handleFilterData} />
                 </Sidenav>
               )}
             </FlexBox>
@@ -143,7 +147,7 @@ export default function ProductSearchInputResult() {
               },
             }}
           >
-            <ProductFilterCard />
+            <ProductFilterCard handleFilterData={handleFilterData} />
           </Grid>
 
           <Grid item lg={9} xs={12}>
