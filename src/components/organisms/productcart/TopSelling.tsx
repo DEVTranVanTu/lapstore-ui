@@ -67,7 +67,7 @@ const TopSelling: React.FC<TopSellingProps> = ({ product }) => {
             justifyContent={'space-between'}
           >
             <LapstoreRating value={product.rating | 0} color="warn" readOnly />
-            <Span fontSize={'12px'}>Đã bán:&nbsp;{product.quantity}</Span>
+            <Span fontSize={'12px'}>{'Đã bán:' + product.quantity}</Span>
           </FlexBox>
         </Box>
       </Box>

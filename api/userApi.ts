@@ -29,6 +29,14 @@ const userApi = {
     const url = '/auth/users/admin'
     return axiosClient.get(url)
   },
+  loginFacebook() {
+    const url = '/auth/login/facebook'
+    return axiosClient.get(url)
+  },
+  loginGoogle() {
+    const url = '/auth/login/google'
+    return axiosClient.get(url)
+  },
 }
 
 export default userApi

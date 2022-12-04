@@ -9,7 +9,6 @@ import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import {
   listProductActions,
   selectAllProduct,
-  selectAllProductLoading,
 } from '../../../../store/slices/productSlice'
 
 const useStyles = makeStyles(() => ({
@@ -26,7 +25,6 @@ const Recommended = () => {
   const dispatch = useAppDispatch()
 
   const products = useAppSelector(selectAllProduct)
-  const loading = useAppSelector(selectAllProductLoading)
 
   const [params, setParams] = useState({
     page: 1,

@@ -1,10 +1,15 @@
 import { Box } from '@material-ui/system'
 import ProductCard7Style from '@Organisms/productcart/ProductCard7Style'
 
-import { Paragraph, Span } from '@Atoms/utils/Typography'
+import FlexBox from '@Atoms/ui/FlexBox'
 import Image from '@Atoms/ui/LapstoreImage'
+import { Paragraph, Span } from '@Atoms/utils/Typography'
+import { Dialog, IconButton, Pagination } from '@material-ui/core'
+import { BorderColorOutlined, Delete } from '@material-ui/icons'
+import { makeStyles } from '@material-ui/styles'
+import ShippingForm from '@Molecules/checkout/ShippingForm'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { formatVND, getUserInfo } from 'utils'
 import { useAppDispatch, useAppSelector } from '../../../../../store/hooks'
 import {
@@ -12,16 +17,9 @@ import {
   cancelOrderLoading,
   changeShippingActions,
   changeShippingData,
-  changeShippingLoading,
   getListOrderData,
-  getListOrderLoading,
   listOrderActions,
 } from '../../../../../store/slices/orderSlice'
-import FlexBox from '@Atoms/ui/FlexBox'
-import { makeStyles } from '@material-ui/styles'
-import { Dialog, IconButton, Pagination } from '@material-ui/core'
-import { BorderColorOutlined, Delete } from '@material-ui/icons'
-import ShippingForm from '@Molecules/checkout/ShippingForm'
 
 type Props = {
   filter: String

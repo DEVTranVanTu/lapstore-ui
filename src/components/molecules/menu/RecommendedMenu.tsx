@@ -2,13 +2,14 @@ import { Box, MenuItem } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { MuiThemeProps } from '@Atoms/themes/theme'
 import Link from 'next/link'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 interface RecommendedMenuProps {
   href: string
   icon?: any
   title: string
   caret?: boolean
+  children?: ReactNode
 }
 
 const useStyles = makeStyles(({ palette }: MuiThemeProps) => ({

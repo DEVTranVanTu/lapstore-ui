@@ -13,7 +13,10 @@ import Link from 'next/link'
 import React, { FC, useCallback, useState } from 'react'
 import * as yup from 'yup'
 import { useAppDispatch } from '../../../../store/hooks'
-import { userActions } from '../../../../store/slices/userSlice'
+import {
+  loginFacebookActions,
+  userActions,
+} from '../../../../store/slices/userSlice'
 
 const fbStyle = {
   background: '#3B5998',
@@ -90,6 +93,12 @@ const Login: FC<login> = ({ handleChangeForm, handleSignIn }) => {
     dispatch(userActions.login(values))
     checkSignIn()
   }
+
+  const loginWithFacebook = async () => {
+    dispatch(loginFacebookActions.loginWithFacebook())
+  }
+
+  const loginWithGoogle = async () => {}
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
@@ -205,6 +214,7 @@ const Login: FC<login> = ({ handleChangeForm, handleSignIn }) => {
             mb: '10px',
             height: 44,
           }}
+          onClick={loginWithFacebook}
         >
           <Image src="/icons/facebook-filled-white.svg" alt="facebook" />
           <Box fontSize="12px" ml={1}>
@@ -218,6 +228,7 @@ const Login: FC<login> = ({ handleChangeForm, handleSignIn }) => {
           sx={{
             height: 44,
           }}
+          onClick={loginWithGoogle}
         >
           <Image src="/icons/google-1.svg" alt="facebook" />
           <Box fontSize="12px" ml={1}>

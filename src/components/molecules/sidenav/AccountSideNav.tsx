@@ -58,18 +58,6 @@ export default function AccountSideNav({ userInfor }: Props) {
               </a>
             </Link>
           </MenuItem>
-          {/* <MenuItem
-            className={pathname === '/account/notification' ? classes.active : ''}
-          >
-            <Link href={'/account/notification'}>
-              <a className={classes.link}>
-                <ListItemIcon>
-                  <Notifications fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Notification</ListItemText>
-              </a>
-            </Link>
-          </MenuItem> */}
           <MenuItem className={pathname === '/account/orders' ? classes.active : ''}>
             <Link href={'/account/orders'}>
               <a className={classes.link}>

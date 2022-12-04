@@ -1,7 +1,14 @@
 import { styled } from '@material-ui/core/styles'
 import { slideDown } from 'animations/keyframes'
 import clsx from 'clsx'
-import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react'
+import React, {
+  ReactElement,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 export interface StickyProps {
   fixedOn: number
@@ -15,6 +22,7 @@ type StyledBoxProps = {
   componentHeight?: number
   fixedOn?: number
   fixed?: boolean
+  children: ReactNode
 }
 
 export const StyledBox = styled<React.FC<StyledBoxProps>>(

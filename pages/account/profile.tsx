@@ -21,7 +21,7 @@ export default function profile() {
 
   useEffect(() => {
     const user = getUserInfo()
-    const id = user._id
+    const id = user?._id
 
     id && dispatch(userProfileActions.getUserProfile(id))
   }, [dispatch])

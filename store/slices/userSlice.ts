@@ -233,15 +233,20 @@ export const verifyResponseLoading = (state: RootState) => state.verifyEmail.loa
 
 export const verifyEmailReducer = verifyEmailSlice.reducer
 
+export interface registerResponse {
+  success: Boolean
+  data: any
+}
+
 export interface registerPayload {
   loading: boolean
-  data: verifyResponse
+  data: registerResponse
 }
 const initialRegisterState: registerPayload = {
   loading: false,
   data: {
     success: false,
-    message: '',
+    data: {},
   },
 }
 const registerSlice = createSlice({
@@ -251,7 +256,7 @@ const registerSlice = createSlice({
     register(state, action: PayloadAction<verifyResquest>) {
       state.loading = true
     },
-    registerSuccess(state, action: PayloadAction<verifyResponse>) {
+    registerSuccess(state, action: PayloadAction<registerResponse>) {
       state.loading = false
       state.data = action.payload
     },
@@ -267,3 +272,37 @@ export const registerResponse = (state: RootState) => state.register.data
 export const registerResponseLoading = (state: RootState) => state.register.loading
 
 export const registerReducer = registerSlice.reducer
+
+export interface registerPayload {
+  loading: boolean
+  data: registerResponse
+}
+const initialLoginFacebookState: registerPayload = {
+  loading: false,
+  data: {
+    success: false,
+    data: {},
+  },
+}
+
+const loginWithFacebook = createSlice({
+  name: 'login with facebook',
+  initialState: initialLoginFacebookState,
+  reducers: {
+    loginWithFacebook(state) {
+      state.loading = true
+    },
+    loginWithFacebookSuccess(state) {
+      state.loading = false
+    },
+    loginWithFacebookFaild(state) {
+      state.loading = false
+    },
+  },
+})
+
+export const loginFacebookActions = loginWithFacebook.actions
+
+export const loginFacebookResponse = (state: RootState) => state.loginFacebook.data
+export const loginFacebookLoading = (state: RootState) => state.loginFacebook.loading
+export const loginFacebookReducer = loginWithFacebook.reducer

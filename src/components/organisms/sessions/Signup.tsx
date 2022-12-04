@@ -28,6 +28,7 @@ import {
   verifyEmailActions,
   verifyResponse,
 } from '../../../../store/slices/userSlice'
+import { setAuthToken, setUserInfo } from 'utils'
 
 type StyledCardProps = {
   passwordVisibility?: boolean
@@ -120,7 +121,8 @@ const Signup: FC<signup> = ({ handleChangeForm }) => {
 
   useEffect(() => {
     if (register.success) {
-      console.log('register', register)
+      setAuthToken(register.data.token)
+      setUserInfo(register.data.user)
       router.push('/account/profile')
     }
   }, [register])

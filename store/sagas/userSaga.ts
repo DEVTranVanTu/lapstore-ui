@@ -6,7 +6,9 @@ import userApi from '../../api/userApi'
 import {
   listAdminActions,
   listAdminPayload,
+  loginFacebookActions,
   registerActions,
+  registerResponse,
   uploadProfilePayload,
   userActions,
   userProfileActions,
@@ -74,10 +76,19 @@ function* verifyEmail(action: PayloadAction<verifyResquest>) {
 
 function* register(action: PayloadAction<verifyResquest>) {
   try {
-    const response: verifyResponse = yield call(userApi.register, action.payload)
+    const response: registerResponse = yield call(userApi.register, action.payload)
     yield put(registerActions.registerSuccess(response))
   } catch (error) {
     yield put(registerActions.registerFaild)
+  }
+}
+
+function* loginFacebook() {
+  try {
+    const response: registerResponse = yield call(userApi.loginFacebook)
+    yield put(loginFacebookActions.loginWithFacebookSuccess())
+  } catch (error) {
+    yield put(loginFacebookActions.loginWithFacebookFaild)
   }
 }
 
@@ -89,5 +100,6 @@ export default function* userSaga() {
     takeLatest(listAdminActions.getListAdmin.type, listAdmin),
     takeLatest(verifyEmailActions.verifyEmail.type, verifyEmail),
     takeLatest(registerActions.register.type, register),
+    takeLatest(loginFacebookActions.loginWithFacebook.type, loginFacebook),
   ])
 }

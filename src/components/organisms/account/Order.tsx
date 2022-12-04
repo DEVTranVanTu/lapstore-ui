@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs, Typography } from '@material-ui/core'
+import { Box, Tab, Tabs } from '@material-ui/core'
 import React from 'react'
 import OrderList from './components/OrderList'
 

@@ -1,11 +1,11 @@
-import LapstoreAvatar from '@Atoms/ui/LapstoreAvatar'
-import LapstoreRating from '@Molecules/rating/LapstoreRating'
 import FlexBox from '@Atoms/ui/FlexBox'
-import { H5, H6, Paragraph, Span } from '@Atoms/utils/Typography'
-import { Box } from '@material-ui/core'
+import LapstoreAvatar from '@Atoms/ui/LapstoreAvatar'
+import { H5, Paragraph, Span } from '@Atoms/utils/Typography'
 import { getDateDifference } from '@Atoms/utils/utils'
-import React from 'react'
+import { Box } from '@material-ui/core'
 import { Review } from '@Models/review'
+import LapstoreRating from '@Molecules/rating/LapstoreRating'
+import React from 'react'
 
 export interface ProductCommentProps {
   reviews: Review

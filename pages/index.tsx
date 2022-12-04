@@ -10,7 +10,6 @@ const Home = () => {
       <Promotions />
       <DealAndOffer />
       <LaptopMacbook />
-      {/* <ProductsElectronics /> */}
       <Recommended />
     </HomeLayout>
   )

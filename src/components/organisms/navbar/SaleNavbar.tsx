@@ -14,7 +14,7 @@ const SaleNavbar: React.FC<SaleNavbarProps> = ({ saleCategoryList, onChange }) =
   const [selected, setSelected] = useState(1)
 
   const handleCategoryClick = useCallback(
-    (categoryIndex) => () => {
+    (categoryIndex: any) => () => {
       setSelected(categoryIndex)
       if (onChange) onChange(saleCategoryList[categoryIndex])
     },

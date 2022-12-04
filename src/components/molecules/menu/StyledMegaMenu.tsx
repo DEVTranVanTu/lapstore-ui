@@ -2,7 +2,11 @@ import { Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { MuiThemeProps } from '@Atoms/themes/theme'
 import clsx from 'clsx'
-import React from 'react'
+import React, { ReactNode } from 'react'
+
+type props = {
+  children: ReactNode
+}
 
 const useStyles = makeStyles(({ palette, shadows }: MuiThemeProps) => ({
   root: {
@@ -35,7 +39,7 @@ const useStyles = makeStyles(({ palette, shadows }: MuiThemeProps) => ({
   },
 }))
 
-const StyledMegaMenu: React.FC = ({ children }) => {
+const StyledMegaMenu: React.FC<props> = ({ children }) => {
   const classes = useStyles()
 
   return <Box className={clsx(classes.root, 'mega-menu')}>{children}</Box>

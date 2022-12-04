@@ -35,6 +35,7 @@ import reviewReducer, { addReviewReducer } from './slices/reviewSlice'
 import ShippingReducer, { addShippingReducer } from './slices/shippingSlice'
 import userReducer, {
   listAdminReducer,
+  loginFacebookReducer,
   registerReducer,
   userProfileReducer,
   userUpdateReducer,
@@ -73,6 +74,7 @@ const rootReducer = combineReducers({
   allProduct: listProductReducer,
   verifyEmail: verifyEmailReducer,
   register: registerReducer,
+  loginFacebook: loginFacebookReducer,
 })
 
 const sagaMiddleware = createSagaMiddleware()
