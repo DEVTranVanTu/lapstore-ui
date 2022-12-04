@@ -39,6 +39,7 @@ import React, { useEffect, useState } from 'react'
 import { getUserInfo, removeAuthToken, removeUserInfo } from 'utils'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { cartActions, getCart } from '../../../../store/slices/cartSlice'
+import { getGlobalLogin } from '../../../../store/slices/globalSlice'
 import {
   deleteNotificationActions,
   getDeleteNotificationLoading,
@@ -94,6 +95,15 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
   const toggleDialog = () => setDialogOpen(!dialogOpen)
 
   const loading = useAppSelector(getUserInforLoading)
+  const signed = useAppSelector(getGlobalLogin)
+
+  useEffect(() => {
+    const user = getUserInfo()
+
+    if (signed && !user) {
+      toggleDialog()
+    }
+  }, [signed])
 
   const handleSignIn = (signIn: boolean) => {
     setDialogOpen(signIn)

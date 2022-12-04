@@ -25,8 +25,8 @@ const recommendNavigation = [
     menuComponent: 'MegaMenu2',
   },
   {
-    title: 'Linh kiện laptop',
-    href: '/product/search/abarrotes',
+    title: 'Laptop Mini',
+    href: '/product/search/Laptop-Mini-cat.62483e531c6b0cf4bb75b2d3',
     menuComponent: 'MegaMenu2',
   },
 ]

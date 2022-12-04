@@ -6,14 +6,18 @@ import { H1, H2, H6, Span } from '@Atoms/utils/Typography'
 import { Box, Button, Grid } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
 import Remove from '@material-ui/icons/Remove'
-import React, { Fragment, useCallback, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import ImageViewer from 'react-simple-image-viewer'
 import FlexBox from '@Atoms/ui/FlexBox'
 import { formatVND, getUserInfo } from 'utils'
 import { Product } from '@Models/product'
-import { useAppDispatch } from '../../../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { addToCartActions } from '../../../../store/slices/cartSlice'
 import { useRouter } from 'next/router'
+import {
+  getGlobalLoginLoading,
+  globalActions,
+} from '../../../../store/slices/globalSlice'
 
 export interface ProductIntroProps {
   productDetail: Product
@@ -68,16 +72,24 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
     }
   }
 
+  const loading = useAppSelector(getGlobalLoginLoading)
+
   const handleCartAmountChange = () => {
     const user = getUserInfo()
 
-    const data = {
-      userId: user._id,
-      productId: _id || '',
-      quantity: amount,
+    if (user) {
+      const data = {
+        userId: user._id,
+        productId: _id || '',
+        quantity: amount,
+      }
+      dispatch(addToCartActions.addToCart(data)) && router.push('/cart')
+    } else {
+      dispatch(globalActions.changeLogin())
     }
-    dispatch(addToCartActions.addToCart(data)) && router.push('/cart')
   }
+
+  useEffect(() => {}, [loading])
 
   return (
     <Box width="100%">

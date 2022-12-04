@@ -11,6 +11,7 @@ import notificationSaga from './sagas/notificationSaga'
 import provinceSaga from './sagas/provinceSaga'
 import orderSaga from './sagas/orderSaga'
 import shippingSaga from './sagas/shippingSaga'
+import globalSaga from './sagas/globalSaga'
 
 export default function* rootSaga() {
   yield all([
@@ -26,5 +27,6 @@ export default function* rootSaga() {
     provinceSaga(),
     orderSaga(),
     shippingSaga(),
+    globalSaga(),
   ])
 }

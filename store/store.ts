@@ -9,6 +9,7 @@ import rootSaga from './rootSaga'
 import brandReducer from './slices/brandSlice'
 import cartReducer, { addToCartReducer } from './slices/cartSlice'
 import categoryNavReducer from './slices/categoryNavSlice'
+import globalReducer from './slices/globalSlice'
 import inventoryReducer, {
   inventoryByBrandReducer,
   inventorySearchReducer,
@@ -75,6 +76,7 @@ const rootReducer = combineReducers({
   verifyEmail: verifyEmailReducer,
   register: registerReducer,
   loginFacebook: loginFacebookReducer,
+  globalLogin: globalReducer,
 })
 
 const sagaMiddleware = createSagaMiddleware()
