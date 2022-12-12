@@ -39,14 +39,14 @@ export default function ProductSearchResult() {
 
   const [params, setParams] = useState({
     page: 1,
-    limit: 12,
+    limit: 8,
     sort: sort,
     filters: {},
   })
   const handleChange = (event: any, value: number) => {
     setParams({
       page: value,
-      limit: 12,
+      limit: 8,
       sort: sort,
       filters: filters,
     })
@@ -99,15 +99,15 @@ export default function ProductSearchResult() {
           elevation={1}
         >
           <div>
-            <H5>Searching for “ {searchBy} ”</H5>
+            <H5>Tìm kiếm theo “ {searchBy} ”</H5>
             <Paragraph color="grey.600">
-              {products.data.length} results found
+              {products.data.length} được tìm thấy
             </Paragraph>
           </div>
           <FlexBox alignItems="center" flexWrap="wrap" my="0.5rem">
             <FlexBox alignItems="center" flex="1 1 0">
               <Paragraph color="grey.600" mr={2} whiteSpace="pre">
-                Short by:
+                Sắp xếp:
               </Paragraph>
               <TextField
                 variant="outlined"
@@ -186,6 +186,6 @@ export default function ProductSearchResult() {
 }
 
 const sortOptions = [
-  { label: 'Price Low to High', value: 'lowToHigh' },
-  { label: 'Price High to Low', value: 'highToLow' },
+  { label: 'Giá từ thấp đến cao', value: 'lowToHigh' },
+  { label: 'Giá từ cao đến thấp', value: 'highToLow' },
 ]

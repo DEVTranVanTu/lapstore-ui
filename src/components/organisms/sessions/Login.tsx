@@ -171,7 +171,7 @@ const Login: FC<login> = ({ handleChangeForm, handleSignIn }) => {
           error={!!touched.password && !!errors.password}
           helperText={touched.password && errors.password}
         />
-        <FlexBox pt={2} pb={2.5}>
+        {/* <FlexBox pt={2} pb={2.5}>
           Bạn quên mật khẩu?
           <Link href="/">
             <a>
@@ -180,13 +180,14 @@ const Login: FC<login> = ({ handleChangeForm, handleSignIn }) => {
               </H6>
             </a>
           </Link>
-        </FlexBox>
+        </FlexBox> */}
         <LapstoreButton
           variant="contained"
           color="primary"
           type="submit"
           fullWidth
           sx={{
+            mt: '1rem',
             mb: '1.65rem',
             height: 44,
           }}
@@ -194,7 +195,7 @@ const Login: FC<login> = ({ handleChangeForm, handleSignIn }) => {
           Đăng nhập
         </LapstoreButton>
 
-        <Box mb={2}>
+        {/* <Box mb={2}>
           <Box width="200px" mx="auto">
             <Divider />
           </Box>
@@ -204,9 +205,9 @@ const Login: FC<login> = ({ handleChangeForm, handleSignIn }) => {
               Hoặc
             </Box>
           </FlexBox>
-        </Box>
+        </Box> */}
 
-        <LapstoreButton
+        {/* <LapstoreButton
           className="facebookButton"
           size="medium"
           fullWidth
@@ -234,7 +235,7 @@ const Login: FC<login> = ({ handleChangeForm, handleSignIn }) => {
           <Box fontSize="12px" ml={1}>
             Đăng nhập với Google
           </Box>
-        </LapstoreButton>
+        </LapstoreButton> */}
 
         <FlexBox justifyContent="center" alignItems="center" my="1.25rem">
           <Box>Bạn chưa có tài khoản?</Box>

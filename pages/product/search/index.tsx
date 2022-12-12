@@ -33,33 +33,52 @@ export default function ProductSearchInputResult() {
 
   const router = useRouter()
   const keyword = router.query.keyword
+  const [sort, setSort] = useState('lowToHigh')
+  const [filters, setFilters] = useState({})
 
   const [params, setParams] = useState({
     page: 1,
-    limit: 1,
+    limit: 8,
+    sort: sort,
+    filters: {},
   })
   const handleChange = (event: any, value: number) => {
     setParams({
       page: value,
-      limit: 1,
+      limit: 8,
+      sort: sort,
+      filters: filters,
     })
   }
 
   const handleFilterData = (value: any) => {
-    console.log('filter', value)
+    setFilters(value)
   }
 
   const products = useAppSelector(selectInventoryListSearch)
   const loading = useAppSelector(selectInventorySearchLoading)
 
   useEffect(() => {
-    keyword &&
-      dispatch(
-        inventorySearchActions.fetchSearchInventoryList({
-          keyword: keyword.toString(),
-          params,
-        })
-      )
+    setParams({
+      ...params,
+      sort: sort,
+      filters: filters,
+    })
+  }, [filters, sort])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      keyword &&
+        dispatch(
+          inventorySearchActions.fetchSearchInventoryList({
+            keyword: keyword.toString(),
+            params,
+          })
+        )
+    }, 1000)
+    return () => {
+      clearTimeout(timer)
+    }
   }, [keyword, dispatch, params])
 
   return (
@@ -81,13 +100,15 @@ export default function ProductSearchInputResult() {
           elevation={1}
         >
           <div>
-            <H5>Searching for “ {keyword}”</H5>
-            <Paragraph color="grey.600">10 results found</Paragraph>
+            <H5>Tìm kiếm theo “ {keyword}”</H5>
+            <Paragraph color="grey.600">
+              {products.data.length} được tìm thấy
+            </Paragraph>
           </div>
           <FlexBox alignItems="center" flexWrap="wrap" my="0.5rem">
             <FlexBox alignItems="center" flex="1 1 0">
               <Paragraph color="grey.600" mr={2} whiteSpace="pre">
-                Short by:
+                Sắp xếp:
               </Paragraph>
               <TextField
                 variant="outlined"
@@ -95,6 +116,7 @@ export default function ProductSearchInputResult() {
                 placeholder="Short by"
                 select
                 defaultValue={sortOptions[0].value}
+                onChange={(e) => setSort(e.target.value)}
                 fullWidth
                 sx={{
                   flex: '1 1 0',
@@ -165,8 +187,6 @@ export default function ProductSearchInputResult() {
 }
 
 const sortOptions = [
-  { label: 'Reviews Low to High', value: 'Relevance' },
-  { label: 'Reviews High to Low', value: 'Date' },
-  { label: 'Price Low to High', value: 'Price Low to High' },
-  { label: 'Price High to Low', value: 'Price High to Low' },
+  { label: 'Giá từ thấp đến cao', value: 'lowToHigh' },
+  { label: 'Giá từ cao đến thấp', value: 'highToLow' },
 ]

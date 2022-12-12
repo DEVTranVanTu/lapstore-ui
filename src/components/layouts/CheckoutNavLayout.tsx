@@ -50,15 +50,15 @@ const CheckoutNavLayout: React.FC<checkout> = ({ children }) => {
 
 const stepperList = [
   {
-    title: 'Cart',
+    title: 'Giỏ hàng',
     disabled: false,
   },
   {
-    title: 'Payment',
+    title: 'Thanh toán',
     disabled: false,
   },
   {
-    title: 'Review',
+    title: 'Đánh giá',
     disabled: true,
   },
 ]

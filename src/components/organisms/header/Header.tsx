@@ -326,13 +326,13 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
               <ListItemIcon>
                 <Person fontSize="small" />
               </ListItemIcon>
-              Profile
+              Thông tin cá nhân
             </MenuItem>
             <MenuItem onClick={onLogout}>
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>
-              Logout
+              Đăng xuất
             </MenuItem>
           </Menu>
           {notificationHandle}

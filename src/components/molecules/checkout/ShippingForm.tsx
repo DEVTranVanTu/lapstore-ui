@@ -208,7 +208,7 @@ export default function ShippingForm({ selectAddress, id }: Props) {
                       onChange={handleChange}
                       value={values.shipping_name || ''}
                       error={!!touched.shipping_name && !!errors.shipping_name}
-                      helperText={touched.shipping_name && errors.shipping_name}
+                      helperText={!!touched.shipping_name && !!errors.shipping_name}
                     />
                   </Grid>
                   <Grid item sm={6} xs={12}>
@@ -221,7 +221,9 @@ export default function ShippingForm({ selectAddress, id }: Props) {
                       onChange={handleChange}
                       value={values.shipping_phone || ''}
                       error={!!touched.shipping_phone && !!errors.shipping_phone}
-                      helperText={touched.shipping_phone && errors.shipping_phone}
+                      helperText={
+                        !!touched.shipping_phone && !!errors.shipping_phone
+                      }
                     />
                   </Grid>
                   <Grid item sm={4} xs={12}>
@@ -246,7 +248,7 @@ export default function ShippingForm({ selectAddress, id }: Props) {
                             !!touched.shipping_province && !!errors.shipping_province
                           }
                           helperText={
-                            touched.shipping_province && errors.shipping_province
+                            !!touched.shipping_province && !!errors.shipping_province
                           }
                           {...params}
                         />
@@ -274,7 +276,7 @@ export default function ShippingForm({ selectAddress, id }: Props) {
                             !!touched.shipping_district && !!errors.shipping_district
                           }
                           helperText={
-                            touched.shipping_district && errors.shipping_district
+                            !!touched.shipping_district && !!errors.shipping_district
                           }
                           {...params}
                         />
@@ -295,7 +297,9 @@ export default function ShippingForm({ selectAddress, id }: Props) {
                           placeholder="Select Ward"
                           variant="outlined"
                           error={!!touched.shipping_ward && !!errors.shipping_ward}
-                          helperText={touched.shipping_ward && errors.shipping_ward}
+                          helperText={
+                            !!touched.shipping_ward && !!errors.shipping_ward
+                          }
                           {...params}
                         />
                       )}
@@ -311,7 +315,7 @@ export default function ShippingForm({ selectAddress, id }: Props) {
                       value={values.shipping_address || ''}
                       error={!!touched.shipping_address && !!errors.shipping_address}
                       helperText={
-                        touched.shipping_address && errors.shipping_address
+                        !!touched.shipping_address && !!errors.shipping_address
                       }
                     />
                   </Grid>

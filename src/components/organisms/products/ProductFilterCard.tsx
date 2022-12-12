@@ -140,10 +140,10 @@ const ProductFilterCard = ({ handleFilterData }: Props) => {
   }, [screenSize, cpu, ram, priceFrom, priceTo])
   return (
     <Card sx={{ p: '18px 27px', overflow: 'auto' }} elevation={1}>
-      <H6 mb={2}>Price Range</H6>
+      <H6 mb={2}>Khoảng giá</H6>
       <FlexBox justifyContent="space-between" alignItems="center">
         <TextField
-          placeholder="Price from"
+          placeholder="Từ"
           type="number"
           size="small"
           fullWidth
@@ -154,7 +154,7 @@ const ProductFilterCard = ({ handleFilterData }: Props) => {
           -
         </H5>
         <TextField
-          placeholder="Price to"
+          placeholder="đến"
           type="number"
           size="small"
           fullWidth

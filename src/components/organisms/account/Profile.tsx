@@ -130,7 +130,7 @@ const Profile: FC<Profile> = ({ profile, updateProfile }) => {
   return (
     <Box>
       <H3 p={1.25} pl={0} lineHeight={'40px'}>
-        My profile
+        Thông tin cá nhân
       </H3>
       <Divider />
       <Box mt={5} display={'flex'}>

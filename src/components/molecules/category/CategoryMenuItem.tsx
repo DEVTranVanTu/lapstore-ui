@@ -3,7 +3,7 @@ import ChevronRight from '@material-ui/icons/ChevronRight'
 import { makeStyles } from '@material-ui/styles'
 import { MuiThemeProps } from '@Atoms/themes/theme'
 import Link from 'next/link'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 interface CategoryMenuItemProps {
   href: string
@@ -11,6 +11,7 @@ interface CategoryMenuItemProps {
   title: string
   id?: string
   caret?: boolean
+  children?: ReactNode
 }
 
 const useStyles = makeStyles(({ palette }: MuiThemeProps) => ({

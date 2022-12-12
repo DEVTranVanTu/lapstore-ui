@@ -121,7 +121,7 @@ const CheckoutForm = () => {
       <ShippingForm selectAddress={selectAddress} />
       <Card1 sx={{ mb: '2rem' }}>
         <Typography fontWeight="600" mb={2}>
-          Payment method
+          Phương thức thanh toán
         </Typography>
 
         <FormControl>
@@ -144,7 +144,7 @@ const CheckoutForm = () => {
         <Grid item sm={6} xs={12}>
           <Link href="/cart">
             <Button variant="outlined" color="primary" type="button" fullWidth>
-              Back to Cart
+              Quay lại giỏ hàng
             </Button>
           </Link>
         </Grid>
@@ -156,7 +156,7 @@ const CheckoutForm = () => {
             fullWidth
             onClick={handleFormSubmit}
           >
-            Proceed to Payment
+            Tiến hành thanh toán
           </Button>
         </Grid>
       </Grid>

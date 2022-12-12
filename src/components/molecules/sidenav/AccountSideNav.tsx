@@ -54,7 +54,7 @@ export default function AccountSideNav({ userInfor }: Props) {
                 <ListItemIcon>
                   <Person fontSize="small" />
                 </ListItemIcon>
-                <ListItemText>Profile</ListItemText>
+                <ListItemText>Thông tin cá nhân</ListItemText>
               </a>
             </Link>
           </MenuItem>
@@ -64,7 +64,7 @@ export default function AccountSideNav({ userInfor }: Props) {
                 <ListItemIcon>
                   <LocalMall fontSize="small" />
                 </ListItemIcon>
-                <ListItemText>Orders</ListItemText>
+                <ListItemText>Đơn hàng</ListItemText>
               </a>
             </Link>
           </MenuItem>

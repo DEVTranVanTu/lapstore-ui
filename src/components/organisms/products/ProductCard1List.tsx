@@ -39,7 +39,8 @@ const ProductCard1List: FC<ProductCard1ListProps> = (props) => {
             mt={4}
           >
             <Span color="grey.600">
-              Showing {products.data.length} of {products.pagination.totals} Products
+              Hiển thị {products.data.length} trên {products.pagination.totals} sản
+              phẩm
             </Span>
             <Pagination
               count={products.pagination.totalPages}
