@@ -136,7 +136,6 @@ const CheckoutForm = () => {
               control={<Radio />}
               label="Thanh toán khi nhận hàng"
             />
-            <FormControlLabel value="2" control={<Radio />} label="Momo" />
           </RadioGroup>
         </FormControl>
       </Card1>

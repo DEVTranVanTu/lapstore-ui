@@ -157,7 +157,10 @@ const Header: React.FC<HeaderProps> = ({ isFixed, className }) => {
   const notificationHandle = (
     <div>
       <Badge
-        badgeContent={notifications[0]?._id && notifications?.length}
+        badgeContent={
+          notifications[0]?._id &&
+          notifications?.filter((i: any) => i.status === 'active').length
+        }
         color="primary"
       >
         <Box

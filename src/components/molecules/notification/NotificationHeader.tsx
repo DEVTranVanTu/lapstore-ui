@@ -6,8 +6,10 @@ import { Assignment, Delete } from '@material-ui/icons'
 import React from 'react'
 import FlexBox from '@Atoms/ui/FlexBox'
 import { makeStyles } from '@material-ui/styles'
-import Link from 'next/link'
 import { formatDay } from 'utils'
+import router from 'next/router'
+import { useAppDispatch } from '../../../../store/hooks'
+import { editNotificationActions } from '../../../../store/slices/notificationSlice'
 
 type Props = {
   data: Notification[]
@@ -47,7 +49,12 @@ const useStyles = makeStyles(() => ({
 
 export default function NotificationHeader({ data, onDeleteNotification }: Props) {
   const classes = useStyles()
+  const dispatch = useAppDispatch()
 
+  const onViewNotification = () => {
+    dispatch(editNotificationActions.editNotification('unactive'))
+    router.push('/account/orders')
+  }
   return (
     <Box padding={2}>
       {data.length > 0 && data[0]._id ? (
@@ -74,20 +81,17 @@ export default function NotificationHeader({ data, onDeleteNotification }: Props
                   </Paragraph>
                   <Paragraph mt={1} color="#666">
                     <Span ml={2}>#{notification.idToReview}</Span>
-                    <Link href={'/account/orders'}>
-                      <a>
-                        <Span
-                          ml={2}
-                          className={
-                            notification.status === 'active'
-                              ? classes.link + ' ' + classes.linkActive
-                              : classes.link
-                          }
-                        >
-                          Xem đơn hàng
-                        </Span>
-                      </a>
-                    </Link>
+                    <Span
+                      onClick={onViewNotification}
+                      ml={2}
+                      className={
+                        notification.status === 'active'
+                          ? classes.link + ' ' + classes.linkActive
+                          : classes.link
+                      }
+                    >
+                      Xem đơn hàng
+                    </Span>
                   </Paragraph>
                 </Box>
               </FlexBox>
