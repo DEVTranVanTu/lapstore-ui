@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { getAuthToken } from 'utils'
 
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:5555/api',
+  baseURL: 'https://shop-tutran.site/backend/',
   headers: {
     'Content-Type': 'application/json',
   },
