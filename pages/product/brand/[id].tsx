@@ -101,7 +101,7 @@ export default function ProductBrandResult() {
           <div>
             <H5>Tìm kiếm theo “ {searchBy} ”</H5>
             <Paragraph color="grey.600">
-              {products.pagination.totals} được tìm thấy
+              {products.pagination.totals} sản phẩm được tìm thấy
             </Paragraph>
           </div>
           <FlexBox alignItems="center" flexWrap="wrap" my="0.5rem">

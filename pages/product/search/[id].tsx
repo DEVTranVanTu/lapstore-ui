@@ -39,14 +39,14 @@ export default function ProductSearchResult() {
 
   const [params, setParams] = useState({
     page: 1,
-    limit: 8,
+    limit: 12,
     sort: sort,
     filters: {},
   })
   const handleChange = (event: any, value: number) => {
     setParams({
       page: value,
-      limit: 8,
+      limit: 12,
       sort: sort,
       filters: filters,
     })
@@ -101,7 +101,7 @@ export default function ProductSearchResult() {
           <div>
             <H5>Tìm kiếm theo “ {searchBy} ”</H5>
             <Paragraph color="grey.600">
-              {products.pagination.totals} được tìm thấy
+              {products.pagination.totals} sản phẩm được tìm thấy
             </Paragraph>
           </div>
           <FlexBox alignItems="center" flexWrap="wrap" my="0.5rem">

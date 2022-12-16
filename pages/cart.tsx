@@ -27,8 +27,8 @@ const Cart = () => {
       data.reduce(
         (pre: number, cur: any) =>
           pre +
-          cur.quantity * cur.price -
-          (cur.discount > 0 ? (cur.price * cur.discount) / 100 : 0),
+          cur.quantity *
+            (cur.price - (cur.discount > 0 ? (cur.price * cur.discount) / 100 : 0)),
         0
       ) || 0
     )
