@@ -1,6 +1,6 @@
 import Card1 from '@Atoms/ui/Card1'
 import FlexBox from '@Atoms/ui/FlexBox'
-import { Paragraph, Span } from '@Atoms/utils/Typography'
+import { H2, Paragraph, Span } from '@Atoms/utils/Typography'
 import Image from '@Atoms/ui/LapstoreImage'
 import {
   Button,
@@ -96,9 +96,19 @@ const CheckoutForm = () => {
                       </Span>
                     </a>
                   </Link>
-                  <Paragraph color={'#1266f1'} fontWeight={600}>
-                    {formatVND(item.price)}
-                  </Paragraph>
+                  <Box alignItems="center" mt={0.5}>
+                    <H2 pr={1} fontWeight="600" color="primary.main">
+                      {formatVND(item.price - (item.price * item.discount) / 100)}
+                    </H2>
+                    {!!item.discount && (
+                      <Box color="grey.600" fontWeight="600">
+                        <del>{formatVND(item.price)}</del>
+                        <Span ml={2} color={'primary.main'}>
+                          {item.discount}%
+                        </Span>
+                      </Box>
+                    )}
+                  </Box>
                 </Box>
 
                 <FlexBox justifyContent="space-between" alignItems="flex-end">

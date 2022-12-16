@@ -1,6 +1,6 @@
 import Image from '@Atoms/ui/LapstoreImage'
 import FlexBox from '@Atoms/ui/FlexBox'
-import { Paragraph, Span } from '@Atoms/utils/Typography'
+import { H2, Paragraph, Span } from '@Atoms/utils/Typography'
 import { Button, IconButton } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
 import Close from '@material-ui/icons/Close'
@@ -66,6 +66,7 @@ const ProductCard7: React.FC<ProductCard7Props> = ({
       productThumbnail: products.product.productThumbnail,
       productName: products.product.productName,
       quantity: products.quantity,
+      discount: products.product.discount,
     }
     selectCartItem(data)
   }
@@ -105,9 +106,22 @@ const ProductCard7: React.FC<ProductCard7Props> = ({
               </Span>
             </a>
           </Link>
-          <Paragraph color={'#1266f1'} fontWeight={600}>
-            {formatVND(products.product.price)}
-          </Paragraph>
+          <Box alignItems="center" mt={0.5}>
+            <H2 pr={1} fontWeight="600" color="primary.main">
+              {formatVND(
+                products.product.price -
+                  (products.product.price * products.product.discount) / 100
+              )}
+            </H2>
+            {!!products.product.discount && (
+              <Box color="grey.600" fontWeight="600">
+                <del>{formatVND(products.product.price)}</del>
+                <Span ml={2} color={'primary.main'}>
+                  {products.product.discount}%
+                </Span>
+              </Box>
+            )}
+          </Box>
         </Box>
         <Box position="absolute" right="1rem" top="1rem">
           <IconButton
