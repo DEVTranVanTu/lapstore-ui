@@ -25,8 +25,8 @@ const recommendNavigation = [
     menuComponent: 'MegaMenu2',
   },
   {
-    title: 'Laptop cũ - giá rẻ',
-    href: '/product/search/Laptop-cu-gia-re-cat.639c231f0d33f3cac1dff522',
+    title: 'Laptop 2 trong 1',
+    href: '/product/search/Laptop-2-in-1-cat.6394b109cc987b4ad6469608',
     menuComponent: 'MegaMenu2',
   },
 ]
