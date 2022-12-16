@@ -185,7 +185,7 @@ const ProductIntro: React.FC<ProductIntroProps> = ({
 
           <Box alignItems="center" mb={2}>
             <Span>Còn lại:</Span>
-            <Span ml={1}>{quantity}</Span>
+            <Span ml={1}>{quantity ? quantity : 0}</Span>
           </Box>
 
           <FlexBox className="add-cart" alignItems="center" mb={2}>

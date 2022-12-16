@@ -102,7 +102,7 @@ export default function ProductSearchInputResult() {
           <div>
             <H5>Tìm kiếm theo “ {keyword}”</H5>
             <Paragraph color="grey.600">
-              {products.data.length} được tìm thấy
+              {products.pagination.totals} được tìm thấy
             </Paragraph>
           </div>
           <FlexBox alignItems="center" flexWrap="wrap" my="0.5rem">

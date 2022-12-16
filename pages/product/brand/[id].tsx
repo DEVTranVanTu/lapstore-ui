@@ -99,15 +99,15 @@ export default function ProductBrandResult() {
           elevation={1}
         >
           <div>
-            <H5>Searching for “ {searchBy} ”</H5>
+            <H5>Tìm kiếm theo “ {searchBy} ”</H5>
             <Paragraph color="grey.600">
-              {products.data.length} results found
+              {products.pagination.totals} được tìm thấy
             </Paragraph>
           </div>
           <FlexBox alignItems="center" flexWrap="wrap" my="0.5rem">
             <FlexBox alignItems="center" flex="1 1 0">
               <Paragraph color="grey.600" mr={2} whiteSpace="pre">
-                Short by:
+                Sắp xếp:
               </Paragraph>
               <TextField
                 variant="outlined"
@@ -186,6 +186,6 @@ export default function ProductBrandResult() {
 }
 
 const sortOptions = [
-  { label: 'Price Low to High', value: 'Price Low to High' },
-  { label: 'Price High to Low', value: 'Price High to Low' },
+  { label: 'Giá từ thấp đến cao', value: 'lowToHigh' },
+  { label: 'Giá từ cao đến thấp', value: 'highToLow' },
 ]
