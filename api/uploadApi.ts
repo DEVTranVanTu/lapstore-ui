@@ -9,9 +9,13 @@ const uploadApi = {
     const formData = new FormData()
     formData.append('image', image)
 
-    const result = axios.post('http://localhost:5555/api/upload/images', formData, {
-      headers: { 'Content-Type': 'image/png' },
-    })
+    const result = axios.post(
+      'https://shop-tutran.site/backend/upload/images',
+      formData,
+      {
+        headers: { 'Content-Type': 'image/png' },
+      }
+    )
     return result
   },
 }
