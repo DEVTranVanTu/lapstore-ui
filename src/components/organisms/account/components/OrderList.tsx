@@ -155,12 +155,7 @@ export default function OrderList({ filter }: Props) {
                   <FlexBox justifyContent={'space-between'}>
                     <Link href={`/product/${i.productId}`}>
                       <a>
-                        <Span
-                          className="title"
-                          fontWeight="600"
-                          fontSize="18px"
-                          mb={1}
-                        >
+                        <Span fontWeight="600" fontSize="18px" mb={1}>
                           {i.productDetail.productName}
                         </Span>
                       </a>
